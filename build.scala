@@ -22,7 +22,7 @@ object DatesFor{
     val sha = lines(0).stripPrefix("commit ")
     val author = lines(1).stripPrefix("Author: ")
     val date = lines(2).stripPrefix("Date:   ")
-    val files = %%('git, 'diff, "--name-only", sha, sha + "~1").out.lines
+    val files = %%('git, 'show, "--pretty=\"format\"", "--name-only", sha).out.lines
     (sha, author, date, files)
   }
 
