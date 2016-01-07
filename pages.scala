@@ -22,7 +22,7 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       meta(charset := "utf-8"),
       for(sheet <- sheets)
         yield link(href := sheet, rel := "stylesheet", `type` := "text/css" ),
-      tags2.title("lihaoyi.com: " + titleText),
+      tags2.title("lihaoyi.com: " + titleText.getOrElse("")),
       tags2.style(s"@media (min-width: 48em) {${WideStyles.styleSheetText}}"),
       tags2.style(s"@media (max-width: 48em) {${NarrowStyles.styleSheetText}}"),
       tags2.style(Styles.styleSheetText)
