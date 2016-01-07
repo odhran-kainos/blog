@@ -17,12 +17,12 @@ val targetFolder = cwd/'target
 object DatesFor{
   import ammonite.ops.ImplicitWd._
   val commitChunks = %%('git, 'log, "--date=short").out.string.split("\n(?=commit)")
-  val commits = for(chunk <- commitChunks.dropRight(1)) yield {
+  val commits = for(chunk <- commitChunks) yield {
     val lines = chunk.lines.toSeq
     val sha = lines(0).stripPrefix("commit ")
     val author = lines(1).stripPrefix("Author: ")
     val date = lines(2).stripPrefix("Date:   ")
-    val files = %%('git, 'show, "--pretty=\"format\"", "--name-only", sha).out.lines
+    val files = %%('git, 'show, "--pretty=format:", "--name-only", sha).out.lines
     (sha, author, date, files)
   }
 
