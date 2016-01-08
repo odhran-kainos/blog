@@ -104,6 +104,9 @@ def main(publish: Boolean = false) = {
   for(otherFile <- otherFiles){
     cp(otherFile, targetFolder/'post/(otherFile relativeTo postsFolder))
   }
+
+  cp(cwd/"favicon.ong", targetFolder/"favicon.png")
+
   for((name, rawHtmlContent, _, dates) <- posts){
     write(
       targetFolder/'post/s"${name.replace(" ", "")}.html",
