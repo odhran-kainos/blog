@@ -14,7 +14,7 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
     "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/github-gist.min.css"
   )
   val headerLinks = Seq(
-    div(div(i(cls:= "fa fa-question-circle")), " About") -> s"$unNesting/post/Hello%20World%20Blog.html",
+    div(div(i(cls:= "fa fa-question-circle")), " About") -> s"$unNesting/post/HelloWorldBlog.html",
     div(div(i(cls:= "fa fa-file-text-o")), " Resume") -> "https://lihaoyi.github.io/Resume/",
     div(div(i(cls:= "fa fa-github")), " Github") -> "https://github.com/lihaoyi"
   )
@@ -45,7 +45,7 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
             a(
               i(cls:= "fa fa-cogs"),
               color := "white",
-              " Haoyi's Programming Blog", href := s"$unNesting/index.html",
+              " Haoyi's Programming Blog", href := s"$unNesting",
               Styles.subtleLink,
               fontWeight.bold
             ),
