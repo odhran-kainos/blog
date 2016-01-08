@@ -176,7 +176,8 @@ In general, most of these files can be ignored for now: they're only used
 in later games (*also* in `GameLibrary.java`!) that make use of 3D graphics,
 files, etc., and Asteroids doesn't need any of it.  The `GUI/` folder itself
 was presumably named because this is where all the graphical interfaced,
-non-terminal programs I ever wrote lived.
+non-terminal programs I ever wrote lived. The code we're interested in all
+lives in the first few hundred lines of `GameLibrary.java`.
 
 Suffice to say, directory/file organization would not pass code review in my
 workplace today. In 2004, though, I was not competent at working with
