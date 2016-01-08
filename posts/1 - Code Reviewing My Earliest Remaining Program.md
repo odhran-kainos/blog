@@ -1,7 +1,7 @@
 Programmers usually view old, legacy code with a mix of fear and respect.
 As a professional software engineer, you often have to deal with systems
 written long before you turned up. You have to dive into them,
-understand them, review them, and improve them. You often wonder
+understand them, review them, and improve them. You often wonder...
 
 > Why did they do this
 
