@@ -117,7 +117,7 @@ def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) 
     for((name, _, rawHtmlSnippet, dates) <- posts.reverse) yield div(
       h1(a(
         name,
-        href := s"post/$name.html",
+        href := s"post/${name.replace(" ", "")}.html",
         Styles.subtleLink,
         color := "rgb(34, 34, 34)"
       )),

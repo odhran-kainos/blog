@@ -106,7 +106,7 @@ def main(publish: Boolean = false) = {
   }
   for((name, rawHtmlContent, _, dates) <- posts){
     write(
-      targetFolder/'post/s"$name.html",
+      targetFolder/'post/s"${name.replace(" ", "")}.html",
       postContent(name, rawHtmlContent, dates)
     )
   }
