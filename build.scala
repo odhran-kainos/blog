@@ -105,7 +105,7 @@ def main(publish: Boolean = false) = {
     cp(otherFile, targetFolder/'post/(otherFile relativeTo postsFolder))
   }
 
-  cp(cwd/"favicon.ong", targetFolder/"favicon.png")
+  cp(cwd/"favicon.png", targetFolder/"favicon.ico")
 
   for((name, rawHtmlContent, _, dates) <- posts){
     write(
