@@ -40,15 +40,23 @@ The earliest working code I could find dates back from 2004.
 I was 15 years old, and had just learned programming in secondary-school.
 I would eventually pick up a huge number of various programming-in-Java books,
 write a 3D combat flight simulator, learn C#, pick up Python, PHP & Javascript
-in MIT, become involved in [Open-Source Scala] stuff, and get a job at Dropbox.
+in MIT, become involved in the [Open-Source Scala] community, and get a job at Dropbox.
 However, at the time, there I was with 1 year of Java lessons in school, and
 probably having worked through a single book, *Java in Easy Steps*:
 
 ![JavaInEasySteps.jpg](JavaInEasySteps.jpg)
 
+It wasn't just myself which was younger in 2004, the entire field was younger.
+In 2004, Java was on version 1.4. [The Scala language barely existed].
+[Facebook had just started] writing their world-changing website in PHP,
+possibly because at the timeweb frameworks like [Ruby on Rails] and [Django]
+did not exist.
+
 In this case, the 2004 code is a 2D Asteroids clone, written in Java.
-I had written earlier programs: for class, for my own amusement, but
-none of them survive in an intact state today.
+I had written earlier programs: for class, for my own amusement. Those include
+some pretty elaborate console applications: I had a complete 2D-grid
+console-based Dungeons-&-Dragons game implemented at one point. But none
+of those earlier works survive in an intact state today.
 
 Here's how it begins:
 
@@ -578,3 +586,7 @@ Hopefully you've enjoyed the journey!
 [Virtual Dom]: http://tonyfreed.com/blog/what_is_virtual_dom
 [React.js]: https://facebook.github.io/react/
 [Google Go]: https://golang.org/
+[Ruby on Rails]: https://en.wikipedia.org/wiki/Ruby_on_Rails
+[Django]: https://en.wikipedia.org/wiki/Django_(web_framework)
+[Facebook had just started]: https://en.wikipedia.org/wiki/Facebook
+[The Scala language barely existed]: https://en.wikipedia.org/wiki/Scala_(programming_language)
