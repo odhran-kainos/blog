@@ -49,7 +49,7 @@ probably having worked through a single book, *Java in Easy Steps*:
 It wasn't just myself which was younger in 2004, the entire field was younger.
 In 2004, Java was on version 1.4. [The Scala language barely existed].
 [Facebook had just started] writing their world-changing website in PHP,
-possibly because at the timeweb frameworks like [Ruby on Rails] and [Django]
+possibly because at the time web frameworks like [Ruby on Rails] and [Django]
 did not exist.
 
 In this case, the 2004 code is a 2D Asteroids clone, written in Java.
