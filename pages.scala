@@ -28,7 +28,8 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       tags2.style(s"@media (max-width: 48em) {${NarrowStyles.styleSheetText}}"),
       tags2.style(Styles.styleSheetText),
       script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"),
-      script(raw("hljs.initHighlightingOnLoad();"))
+      script(raw("hljs.initHighlightingOnLoad();")),
+      googleAnalytics
     ),
     body(
       margin := 0,
