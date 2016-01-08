@@ -10,7 +10,8 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
 
   val sheets = Seq(
     "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
-    "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+    "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/github-gist.min.css"
   )
   val headerLinks = Seq(
     div(div(i(cls:= "fa fa-question-circle")), " About") -> s"$unNesting/post/Hello%20World%20Blog.html",
@@ -25,7 +26,9 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       tags2.title("lihaoyi.com" + titleText.map(": " + _).getOrElse("")),
       tags2.style(s"@media (min-width: 48em) {${WideStyles.styleSheetText}}"),
       tags2.style(s"@media (max-width: 48em) {${NarrowStyles.styleSheetText}}"),
-      tags2.style(Styles.styleSheetText)
+      tags2.style(Styles.styleSheetText),
+      script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"),
+      script(raw("hljs.initHighlightingOnLoad();"))
     ),
     body(
       margin := 0,

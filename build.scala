@@ -8,7 +8,8 @@ import scalatags.Text.all.{width, height, _}
 
 import scalatags.Text._
 import ammonite.ops._
-import org.pegdown.{PegDownProcessor, ToHtmlSerializer, LinkRenderer}
+import org.pegdown.{PegDownProcessor, ToHtmlSerializer, LinkRenderer, Extensions}
+import org.pegdown.ast.{VerbatimNode, ExpImageNode}
 
 
 val postsFolder = cwd/'posts
@@ -38,24 +39,52 @@ object DatesFor{
 
 }
 
-
+val (markdownFiles, otherFiles) = ls.rec! postsFolder partition (_.ext == "md")
 // Walk the posts/ folder and parse out the name, full- and first-paragraph-
 // HTML of each post to be used on their respective pages and on the index
 val posts = {
-  val split = for(path <- ls.rec! postsFolder if path.ext == "md") yield {
-    val Array(number, name) = path.last.split(" - ")
+  val split = for(path <- markdownFiles) yield {
+    val Array(number, name) = path.last.split(" - ", 2)
     (number, name.stripSuffix(".md"), path)
   }
   for ((index, name, path) <- split.sortBy(_._1.toInt)) yield {
-    val processor = new PegDownProcessor()
+    val processor = new PegDownProcessor(Extensions.FENCED_CODE_BLOCKS)
     val ast = processor.parseMarkdown(read! path toArray)
-    val rawHtmlContent = new ToHtmlSerializer(new LinkRenderer).toHtml(ast)
+    object serializer extends ToHtmlSerializer(new LinkRenderer){
+      override def printImageTag(rendering: LinkRenderer.Rendering) {
+        printer.print("<div style=\"text-align: center\"><img")
+        printAttribute("src", rendering.href)
+        // shouldn't include the alt attribute if its empty
+        if(!rendering.text.equals("")){
+          printAttribute("alt", rendering.text)
+        }
+        import collection.JavaConversions._
+        for (attr <- rendering.attributes) {
+          printAttribute(attr.name, attr.value)
+        }
+        printer.print(" style=\"max-width: 100%; max-height: 500px\"")
+        printer.print(" /></div>")
+      }
+      override def visit(node: VerbatimNode) = {
+        printer.println().print("<pre><code class=\"" + node.getType() + "\">");
+
+        var text = node.getText();
+        // print HTML breaks for all initial newlines
+        while(text.charAt(0) == '\n') {
+          printer.print("<br/>");
+          text = text.substring(1);
+        }
+        printer.printEncoded(text);
+        printer.print("</code></pre>");
+      }
+    }
+    val rawHtmlContent = serializer.toHtml(ast)
     if (ast.getChildren.size > 0) {
       val firstNode = ast.getChildren.get(0)
       ast.getChildren.clear()
       ast.getChildren.add(firstNode)
     }
-    val rawHtmlSnippet = new ToHtmlSerializer(new LinkRenderer).toHtml(ast)
+    val rawHtmlSnippet = serializer.toHtml(ast)
     val updates = DatesFor(s"posts/$index - ").toSeq
     (name, rawHtmlContent, rawHtmlSnippet, updates)
   }
@@ -71,6 +100,10 @@ def main(publish: Boolean = false) = {
     mainContent(posts)
   )
 
+  mkdir! targetFolder/'post
+  for(otherFile <- otherFiles){
+    cp(otherFile, targetFolder/'post/(otherFile relativeTo postsFolder))
+  }
   for((name, rawHtmlContent, _, dates) <- posts){
     write(
       targetFolder/'post/s"$name.html",
