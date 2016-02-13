@@ -8,6 +8,9 @@ import java.time.LocalDate
 @
 load.module(ammonite.ops.cwd/"styles.scala")
 @
+def sanitize(s: String): String = {
+  s.filter(_.isLetterOrDigit)
+}
 def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): String = {
   val pageTitle = titleText.getOrElse("Haoyi's Programming Blog")
   val sheets = Seq(
@@ -120,7 +123,7 @@ def metadata(dates: Seq[(String, LocalDate)]) = div(
   color := "#999",
   marginBottom := 20,
   "Posted ",
-  for ((sha, date) <- dates.headOption) yield a(
+  for ((sha, date) <- dates.lastOption) yield a(
     date.toString, href := s"https://github.com/lihaoyi/site/commit/$sha"
   )
 )
@@ -131,7 +134,7 @@ def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) 
     for((name, _, rawHtmlSnippet, dates) <- posts.reverse) yield div(
       h1(a(
         name,
-        href := s"post/${name.replace(" ", "")}.html",
+        href := s"post/${sanitize(name)}.html",
         Styles.subtleLink,
         color := "rgb(34, 34, 34)"
       )),

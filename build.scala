@@ -15,9 +15,7 @@ import org.pegdown.ast.{VerbatimNode, ExpImageNode, HeaderNode, TextNode}
 
 val postsFolder = cwd/'posts
 val targetFolder = cwd/'target
-def sanitize(s: String): String = {
-  s.filter(_.isLetterOrDigit)
-}
+
 object DatesFor{
   import ammonite.ops.ImplicitWd._
   val commitChunks = %%('git, 'log, "--date=short").out.string.split("\n(?=commit)")
