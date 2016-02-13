@@ -73,7 +73,7 @@ Here is a listing of all the guidelines at a glance
     3. *[If you don't know what can go wrong, use exceptions](#Exceptions)*
     4. *Never set error flags*
 - **[Asynchronous Return Types](#AsynchronousReturnTypes)**
-    1. *[The simplest case, return `T`])(#ReturnT)*
+    1. *[The simplest case, return `T`](#ReturnT)*
     2. *[For asynchronous results, return `Future[T]`](#ReturnFuture)*
     3. *[Only pass in callbacks e.g. `onSuccess: T => Unit` as a last resort](#TakeacallbackTUnit)*
 - **[Dependency Injection](#DependencyInjection)**
