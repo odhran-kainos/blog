@@ -8,13 +8,16 @@ import scalatags.Text.all.{width, height, _}
 
 import scalatags.Text._
 import ammonite.ops._
+import collection.JavaConversions._
 import org.pegdown.{PegDownProcessor, ToHtmlSerializer, LinkRenderer, Extensions}
-import org.pegdown.ast.{VerbatimNode, ExpImageNode}
+import org.pegdown.ast.{VerbatimNode, ExpImageNode, HeaderNode, TextNode}
 
 
 val postsFolder = cwd/'posts
 val targetFolder = cwd/'target
-
+def sanitize(s: String): String = {
+  s.filter(_.isLetterOrDigit)
+}
 object DatesFor{
   import ammonite.ops.ImplicitWd._
   val commitChunks = %%('git, 'log, "--date=short").out.string.split("\n(?=commit)")
@@ -65,6 +68,20 @@ val posts = {
         printer.print(" style=\"max-width: 100%; max-height: 500px\"")
         printer.print(" /></div>")
       }
+      override def visit(node: HeaderNode) = {
+        val tag = "h" + node.getLevel()
+
+        val id =
+          node
+            .getChildren
+            .collect{case t: TextNode => t.getText}
+            .mkString
+
+        val setId = s"id=${'"'+sanitize(id)+'"'}"
+        printer.print(s"<$tag $setId>")
+        visitChildren(node)
+        printer.print(s"</$tag>")
+      }
       override def visit(node: VerbatimNode) = {
         printer.println().print("<pre><code class=\"" + node.getType() + "\">");
 
@@ -109,7 +126,7 @@ def main(publish: Boolean = false) = {
 
   for((name, rawHtmlContent, _, dates) <- posts){
     write(
-      targetFolder/'post/s"${name.replace(" ", "")}.html",
+      targetFolder/'post/s"${sanitize(name)}.html",
       postContent(name, rawHtmlContent, dates)
     )
   }

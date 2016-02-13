@@ -1,13 +1,15 @@
 load.ivy("com.lihaoyi" %% "scalatags" % "0.5.3")
-load.module(ammonite.ops.cwd/"styles.scala")
+
 @
 
 import scalatags.Text.all.{width, height, _}
 import scalatags.Text._
 import java.time.LocalDate
 @
+load.module(ammonite.ops.cwd/"styles.scala")
+@
 def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): String = {
-
+  val pageTitle = titleText.getOrElse("Haoyi's Programming Blog")
   val sheets = Seq(
     "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
     "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",
@@ -23,7 +25,7 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       meta(charset := "utf-8"),
       for(sheet <- sheets)
         yield link(href := sheet, rel := "stylesheet", `type` := "text/css" ),
-      tags2.title("lihaoyi.com" + titleText.map(": " + _).getOrElse("")),
+      tags2.title(pageTitle),
       tags2.style(s"@media (min-width: 48em) {${WideStyles.styleSheetText}}"),
       tags2.style(s"@media (max-width: 48em) {${NarrowStyles.styleSheetText}}"),
       tags2.style(Styles.styleSheetText),

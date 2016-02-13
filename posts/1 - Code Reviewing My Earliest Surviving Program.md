@@ -558,7 +558,9 @@ and generics in statically-typed languages are now table stakes, and
 demonstrably improve the code from the awkward patterns that were necessary
 back in 2004.
 
-Hopefully you've enjoyed the journey!
+Hopefully you've enjoyed the journey, and are as fascinated as I am by the
+code and way the field has changed since then. What does the your earliest
+surviving code look like? Put it on-line and post a link in the comments!
 
 
 [Open-Source Scala]: https://github.com/lihaoyi
