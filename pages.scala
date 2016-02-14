@@ -38,7 +38,8 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       // This makes media queries work on iphone (???)
       // http://stackoverflow.com/questions/13002731/responsive-design-media-query-not-working-on-iphone
       meta(name:="viewport", content:="initial-scale = 1.0,maximum-scale = 1.0"),
-      googleAnalytics
+      googleAnalytics,
+      forceHttps
     ),
     body(
       margin := 0,
@@ -121,6 +122,11 @@ def googleAnalytics: Frag = script(raw(
   |
   |ga('create', 'UA-27464920-5', 'auto');
   |ga('send', 'pageview');
+""".stripMargin
+))
+def forceHttps: Frag = script(raw(
+"""if (window.location.protocol != "https:")
+  |    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
 """.stripMargin
 ))
 def metadata(dates: Seq[(String, LocalDate)]) = div(
