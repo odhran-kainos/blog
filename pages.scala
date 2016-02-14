@@ -35,6 +35,9 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"),
       script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/languages/scala.min.js"),
       script(raw("hljs.initHighlightingOnLoad();")),
+      // This makes media queries work on iphone (???)
+      // http://stackoverflow.com/questions/13002731/responsive-design-media-query-not-working-on-iphone
+      meta(name:="viewport", content:="initial-scale = 1.0,maximum-scale = 1.0"),
       googleAnalytics
     ),
     body(
@@ -52,6 +55,7 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
               color := "white",
               " Haoyi's Programming Blog", href := s"$unNesting",
               Styles.subtleLink,
+              NarrowStyles.flexFont,
               fontWeight.bold
             ),
             padding := "10px 10px",

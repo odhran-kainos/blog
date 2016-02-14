@@ -48,6 +48,10 @@ trait NarrowStyles extends StyleSheet{
   def linkFlex = cls(
     alignSelf.flexEnd
   )
+
+  def flexFont = cls(
+    fontSize := "4vw"
+  )
 }
 val NarrowStyles = Sheet[NarrowStyles]
 trait Styles extends StyleSheet{
