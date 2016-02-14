@@ -762,6 +762,33 @@ code knows at a glance roughly what to expect. When looking at an ad-hoc
 used, and will have to actually read the documentation or dig through the
 source code.
 
+Furthermore, the fact that ad-hoc classes are so ad-hoc means you lose concrete
+features that simpler data-types provide. For example:
+
+- Built-ins and primitives are all trivially serializable, without reflection,
+  using implicits (e.g. using [spray-json](https://github.com/spray/spray-json))
+- Case classes and sealed-traits are all almost-trivially serializable, without
+  reflection, using a few macros (e.g. using
+  [spray-json-shapeless](https://github.com/fommil/spray-json-shapeless) or
+  [uPickle](http://lihaoyi.github.io/upickle-pprint/upickle/))
+- Built-ins, primitives, and case-classes all provide automatic, structural
+  `==` equality, `.hashCode`, and a meaningful `.toString`.
+- Built-ins and case-classes all allow destructuring pattern matching, which
+  is often very convenient
+
+These are all things you lose when you start using ad-hoc classes. In exchange
+for the flexibility they offer, you lose a whole lot of features!
+
+This isn't to say ad-hoc classes or traits are *bad*; in fact, most Scala
+programs have tons of them, and Java programs are basically 100% ad-hoc
+classes! What this means is that, where possible, you should try to avoid
+using an ad-hoc class in favor of something simpler: a
+[Simple Case Class](#SimpleCaseClass), [Sealed Traits](#SealedTraits),
+[Functions](#Functions) or [Built-ins](#Builtins). Again, this applies
+anywhere a type an be seen: as a method argument, as a return type, as the
+type of a variable or value, whether local-to-a-method or belonging to
+an object or class.
+
 ## Error Handling
 
 1. *[If you know there is only one thing that can go wrong, use an Option](#Option)*
