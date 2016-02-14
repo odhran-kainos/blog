@@ -8,6 +8,8 @@ I am not the first person to have a blog, nor the first person to have a
 programming blog, nor is this my first blog. Nevertheless, for me, doing
 this is a mix of new and old ideas.
 
+-------------------------------------------------------------------------------
+
 ## The Old
 
 This is not the first time I have had a blog/site. I had built one back

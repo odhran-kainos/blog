@@ -7,6 +7,8 @@ aiming to provide style guidelines at a "strategic" level. Above the level of
 a developer working with the Scala language choose from the buffet of possible
 solutions.
 
+-------------------------------------------------------------------------------
+
 ## About Strategic Scala Style
 
 These guidelines are based on my own experience working on open- and

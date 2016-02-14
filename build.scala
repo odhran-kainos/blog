@@ -8,9 +8,9 @@ import scalatags.Text.all.{width, height, _}
 
 import scalatags.Text._
 import ammonite.ops._
-import collection.JavaConversions._
+import collection.JavaConverters._
 import org.pegdown.{PegDownProcessor, ToHtmlSerializer, LinkRenderer, Extensions}
-import org.pegdown.ast.{VerbatimNode, ExpImageNode, HeaderNode, TextNode}
+import org.pegdown.ast.{VerbatimNode, ExpImageNode, HeaderNode, TextNode, SimpleNode}
 
 
 val postsFolder = cwd/'posts
@@ -51,7 +51,7 @@ val posts = {
   for ((index, name, path) <- split.sortBy(_._1.toInt)) yield {
     val processor = new PegDownProcessor(Extensions.FENCED_CODE_BLOCKS)
     val ast = processor.parseMarkdown(read! path toArray)
-    object serializer extends ToHtmlSerializer(new LinkRenderer){
+    class Serializer extends ToHtmlSerializer(new LinkRenderer){
       override def printImageTag(rendering: LinkRenderer.Rendering) {
         printer.print("<div style=\"text-align: center\"><img")
         printAttribute("src", rendering.href)
@@ -72,6 +72,7 @@ val posts = {
         val id =
           node
             .getChildren
+            .asScala
             .collect{case t: TextNode => t.getText}
             .mkString
 
@@ -93,13 +94,19 @@ val posts = {
         printer.print("</code></pre>");
       }
     }
-    val rawHtmlContent = serializer.toHtml(ast)
-    if (ast.getChildren.size > 0) {
-      val firstNode = ast.getChildren.get(0)
-      ast.getChildren.clear()
-      ast.getChildren.add(firstNode)
-    }
-    val rawHtmlSnippet = serializer.toHtml(ast)
+    val rawHtmlContent = new Serializer().toHtml(ast)
+    val snippetNodes =
+      ast.getChildren
+         .asScala
+         .takeWhile{
+           case n: SimpleNode if n.getType == SimpleNode.Type.HRule => false
+           case _ => true
+         }
+
+    ast.getChildren.clear()
+    snippetNodes.foreach(ast.getChildren.add)
+
+    val rawHtmlSnippet = new Serializer().toHtml(ast)
     val updates = DatesFor(s"posts/$index - ").toSeq
     (name, rawHtmlContent, rawHtmlSnippet, updates)
   }

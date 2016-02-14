@@ -11,6 +11,8 @@ or
 
 Sometimes to realize later that the *they* is in fact, yourself!
 
+-------------------------------------------------------------------------------
+
 You learn things to get the job done: the code's purpose, it's constraints and
 abilities. Often though, you learn more than that: you feel the thoughts,
 feelings and characters of the people who wrote it. You feel their
