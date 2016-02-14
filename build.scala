@@ -40,7 +40,7 @@ object DatesFor{
 
 }
 
-val (markdownFiles, otherFiles) = ls.rec! postsFolder partition (_.ext == "md")
+val (markdownFiles, otherFiles) = ls! postsFolder partition (_.ext == "md")
 // Walk the posts/ folder and parse out the name, full- and first-paragraph-
 // HTML of each post to be used on their respective pages and on the index
 val posts = {
