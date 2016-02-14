@@ -71,7 +71,7 @@ Here is a listing of all the guidelines at a glance
     1. *[If you know there is only one thing that can go wrong, use an Option](#Option)*
     2. *[If you know there is multiple things that can go wrong, use a Simple Sealed Trait](#SimpleSealedTrait)*
     3. *[If you don't know what can go wrong, use exceptions](#Exceptions)*
-    4. *Never set error flags*
+    4. *[(Almost) Never set error flags](#ErrorFlags)*
 - **[Asynchronous Return Types](#AsynchronousReturnTypes)**
     1. *[The simplest case, return `T`](#ReturnT)*
     2. *[For asynchronous results, return `Future[T]`](#ReturnFuture)*
@@ -765,7 +765,7 @@ source code.
 1. *[If you know there is only one thing that can go wrong, use an Option](#Option)*
 2. *[If you know there is multiple things that can go wrong, use a Simple Sealed Trait](#SimpleSealedTrait)*
 3. *[If you don't know what can go wrong, use exceptions](#Exceptions)*
-4. *Never set error flags*
+4. *[(Almost) Never set error flags](#ErrorFlags)*
 
 In general, `Option`s, simple sealed traits, and exceptions are the most
 common way of dealing with errors. It is likely that different APIs you end
@@ -859,6 +859,48 @@ possibly-failure point and convert them all to `Option`s or your own
 that really does is convolute your code considerably for (in this case) no
 benefit.
 
+### Error Flags
+
+Error flags are a convention which goes something like
+
+- If some succeeds, it does something
+- If it fails, it does nothing and sets a special variable e.g.
+
+```scala
+var error = -1 // no error
+
+def doThing() = {
+  ...
+  if (didntWork) error = 5 //
+  ...
+}
+
+doThing()
+if (error == 5) println("It failed =/")
+```
+
+This has a few problems:
+
+- It is much less safe than the above cases of using [Option](#Option),
+  [ADTs](#SimpleSealedTrait) or [Exceptions](#Exceptions): if you forget
+  to check the error flag, the program keeps running, possibly doing the
+  wrong thing!
+- It is *incredibly* easy to forget to check error flags. They aren't shown
+  in type signatures, and you have to remember that for each method there's
+  a special mutable variable you have to check each time.
+
+Overall, you should avoid them as much as is possible.
+
+*Sometimes it is not possible*: error flags are probably the fastest way of
+transmitting the "something failed" information, and it could matter in hot
+code paths. Like using [Mutability For Perf](#MutabilityForPerf), it is
+reasonable to *sometimes* drop down to using an error flag to eek out the last
+5% of performance after you've profiled the code and identified the bottleneck
+as error-handling.
+
+Even when you do this, make sure to encapsulate the error flag as tightly as
+possible, keeping it local to the internals of the class or method or package,
+and documenting it like crazy as the dangerous performance-hack that it is.
 
 ## Asynchronous Return Types
 
