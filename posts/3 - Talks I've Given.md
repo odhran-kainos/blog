@@ -9,7 +9,7 @@ I'll keep this updated as time goes on.
 -------------------------------------------------------------------------------
 
 
-## Isomorphic client-side web dev without Javascript, with Scala.js
+## Client-side web dev without Javascript, with Scala.js
 **ForwardJS Summit** *10 Feb 2016*
 
 - [Video](https://vimeo.com/154932681)
