@@ -337,7 +337,7 @@ This:
 ```scala
 def getFibs(n: Int): Seq[Int] = {
   val fibs = mutable.Buffer(1, 1)
-  while(fibs.length < 100){
+  while(fibs.length < n){
     fibs.append(fibs(fibs.length-1) + fibs(fibs.length-2))
   }
   fibs
@@ -352,7 +352,7 @@ def getFibs(n: Int, fibs: mutable.Buffer[Int]): Unit = {
   fibs.clear()
   fibs.append(1)
   fibs.append(1)
-  while(fibs.length < 100){
+  while(fibs.length < n){
     fibs.append(fibs(fibs.length-1) + fibs(fibs.length-2))
   }
 }
