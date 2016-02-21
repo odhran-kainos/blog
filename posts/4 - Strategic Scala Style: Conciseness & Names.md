@@ -806,7 +806,7 @@ above.
 
 Since operators are just really-short names, they should be used in the same
 places really-short names would be used according to the logic in [Long
-Names vs Short Names)(#LongNamesvsShortNames).
+Names vs Short Names](#LongNamesvsShortNames).
 
 - [Wider-scoped names should be Longer](#WiderscopednamesshouldbeLonger), and
   operators should be avoided in scattered, globally available helpers. Prefer
@@ -837,6 +837,8 @@ Names vs Short Names)(#LongNamesvsShortNames).
   feel more free to use them in more strongly-typed code where you can be
   confident the compiler can catch screw-ups.
 
+For more concrete examples where usage of operators is good or bad, check out
+the [Case Studies](#CaseStudies) below!
 
 ### When to name methods "apply"?
 
@@ -969,9 +971,56 @@ knows, you shouldn't need to keep repeating it in their face.
 Like any other short name, `_` should be constrained by the same guidelines
 described above: it should only be used if the scope is *very* narrow, for
 something with a lot of source context around it that tells you what it is,
-and which you know the static type.
+and which you know the static type. You don't want it, for example, in
+multiline blocks:
 
-Nevertheless, if your case satisfies these criterion, you shouldn't be afraid
+```scala
+foo.foldLeft{
+  _.doThingNow(
+    123,
+    "hello",
+    x => {
+      ...
+      ...
+      ...
+    }
+    Enum.Thingy,
+    _,
+    verbose = true,
+  )
+}
+```
+
+In these cases you probably should use explicit names, even if short ones:
+
+```scala
+foo.foldLeft{ (current, op) =>
+  current.doThingNow(
+    123,
+    "hello",
+    x => {
+      ...
+      ...
+      ...
+    }
+    Enum.Thingy,
+    op,
+    verbose = true,
+  )
+}
+```
+
+Since in such large blocks the `_` is scoped widely enough that
+[Wider-scoped names should be Longer](#WiderscopednamesshouldbeLonger) applies.
+
+Nevertheless, if your case satisfies all the criterion for for very short names:
+
+- It's scoped very tightly; preferably to a single line
+- The static type is relatively tight (e.g. not `Any` or `AnyRef`)
+- You can see from the surrounding code what the `_` could possibly mean.
+- It's not dangerous (e.g. using `_` won't result in your disk being re-formatted)
+
+You shouldn't be afraid
 to use it. Just like the `*poke*` dinner-call people use in [human
 languages](#HumanLanguages), if the future programmer already knows enough
 to know what "it" is, there's no need to belabour the point or elaborate.
