@@ -125,7 +125,7 @@ def googleAnalytics: Frag = script(raw(
 """.stripMargin
 ))
 def forceHttps: Frag = script(raw(
-"""if (window.location.protocol != "https:")
+"""if (window.location.protocol == "http:")
   |    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
 """.stripMargin
 ))
