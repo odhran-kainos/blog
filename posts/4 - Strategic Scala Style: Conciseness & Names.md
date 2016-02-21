@@ -1312,7 +1312,7 @@ def myPut = myRequest <<< myFile
 
 While `<<` does save keystrokes over `.param`, whether or not its a good idea
 or not comes down to our
-[earlier considerations on names](#LongNamesvsShortNamesvsOperators): are the
+[earlier considerations on names](#LongNamesvsShortNames): are the
 usage patterns of Dispatch heavy enough to warrent operators for all these
 methods? After all, we found that for
 [Parser Combinators](#CaseStudyParserCombinators), with heavy usage operators
