@@ -542,7 +542,7 @@ object Foo{
 }
 ```
 
-Regardless of what it's doing, that's probably too long. Maybe call it
+Given what it's doing, that's probably too long. Maybe call it
 `loadCache` or something. On the other hand, if it's doing something like
 
 
@@ -557,14 +557,14 @@ object Foo{
 In which case, it's ok for it to be that long. It's dangerous! In fact, making
 it short is probably a bad idea:
 
- ```scala
- object Foo{
-   def drop() = {
-     // Drops all your databases in the production environment
-     ...
-   }
- }
- ```
+```scala
+object Foo{
+  def drop() = {
+   // Drops all your databases in the production environment
+   ...
+  }
+}
+```
 
 This is *not* the kind of thing you want to miss during a code-review and
 accidentally call at runtime!
