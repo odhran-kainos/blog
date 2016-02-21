@@ -571,7 +571,7 @@ accidentally call at runtime!
 
 While you might
 not worry about someone accidentally calling `loadCache` at the wrong time, you
-very much would *not* want someone calling a tersely-named `dropProd` function
+very much would *not* want someone calling a tersely-named `drop` function
 at the wrong time! In fact, for something this dangerous it may even be worth
 going through a bit more ceremony:
 ```scala
