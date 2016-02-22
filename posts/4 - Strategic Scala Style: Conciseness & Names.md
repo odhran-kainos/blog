@@ -465,7 +465,7 @@ object Foo{
 }
 ```
 
-But `init` is a poor name in *this* example:
+But `cacheIt` is a poor name in *this* example:
 
 ```scala
 // Foo.scala
