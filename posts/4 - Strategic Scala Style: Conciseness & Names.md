@@ -741,7 +741,7 @@ longer.
 
 Everything in Scala is "strongly typed", but some things are more
 strongly-typed than others. Functions which take no arguments, return no
-result (`Unit`)`, take their input from global-state and produce their output
+result (`Unit`), take their input from global-state and produce their output
 via side-effects are the least "strongly typed" of Scala functions. Variables
 labelled as `Any`, or functions taking `Any` or returning `Any` are the least
 "strongly typed" of Scala variables. Avoid using short names for these, since
