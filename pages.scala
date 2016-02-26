@@ -125,8 +125,8 @@ def googleAnalytics: Frag = script(raw(
 """.stripMargin
 ))
 def forceHttps: Frag = script(raw(
-"""if (window.location.protocol == "http:")
-  |    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+"""if (window.location.protocol == "https:")
+  |    window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);
 """.stripMargin
 ))
 def metadata(dates: Seq[(String, LocalDate)]) = div(
@@ -134,7 +134,7 @@ def metadata(dates: Seq[(String, LocalDate)]) = div(
   marginBottom := 20,
   "Posted ",
   for ((sha, date) <- dates.lastOption) yield a(
-    date.toString, href := s"https://github.com/lihaoyi/site/commit/$sha"
+    date.toString, href := s"https://github.com/lihaoyi/blog/commit/$sha"
   )
 )
 def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) = pageChrome(
@@ -168,7 +168,7 @@ def postContent(name: String, rawHtmlContent: String, dates: Seq[(String, LocalD
           color := "rgb(158, 167, 174)",
           "Updated ",
           for((sha, date) <- dates.drop(1)) yield a(
-            date.toString, " ", href := s"https://github.com/lihaoyi/site/commit/$sha"
+            date.toString, " ", href := s"https://github.com/lihaoyi/blog/commit/$sha"
           )
 
         )

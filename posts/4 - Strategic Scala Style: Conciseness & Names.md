@@ -5,7 +5,7 @@ arbitrary length, you can also name things using operators, or in many cases
 not names things at all using language features like `apply` or the `_`
 placeholder parameter.
 
-Howver, the fact that code ends up "too concise" is itself one of the most
+However, the fact that code ends up "too concise" is itself one of the most
 common complaints leveled against the Scala programming language. How can we
 pick the right balance of verbosity and conciseness, at the right times, to
 ensure future maintainers of our software do not end up hating us?
