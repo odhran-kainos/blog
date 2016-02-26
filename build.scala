@@ -22,12 +22,11 @@ object DatesFor{
   val commits = for(chunk <- commitChunks) yield {
     val lines = chunk.lines.toSeq
     val sha = lines(0).stripPrefix("commit ")
-    val author = lines(1).stripPrefix("Author: ")
-    val date = lines(2).stripPrefix("Date:   ")
+    val author = lines.find(_.startsWith("Author: ")).get.stripPrefix("Author: ")
+    val date = lines.find(_.startsWith("Date: ")).get.stripPrefix("Date:   ")
     val files = %%('git, 'show, "--pretty=format:", "--name-only", sha).out.lines
     (sha, author, date, files)
   }
-
   val fileChanges = for{
     (sha, author, date, files) <- commits
     file <- files
@@ -36,7 +35,10 @@ object DatesFor{
   def apply(filePrefix: String) = for {
     (file, sha, author, date) <- fileChanges
     if file.startsWith(filePrefix)
-  } yield (sha, java.time.LocalDate.parse(date))
+  } yield {
+    println("XXX " + date)
+    (sha, java.time.LocalDate.parse(date))
+  }
 
 }
 
@@ -138,6 +140,7 @@ def main(publish: Boolean = false) = {
 
   if (publish){
     implicit val publishWd = cwd/'target
+    write(publishWd/'CNAME, "www.lihaoyi.com")
     %git 'init
     %git('add, "-A", ".")
     %git('commit, "-am", "first commit")
