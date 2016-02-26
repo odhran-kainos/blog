@@ -22,7 +22,7 @@ skip-over the
 
 And instead focus on the follow-up question
 
-> What *should* you use short names?
+> When *should* you use short names?
 
 Similar to the earlier post, this covers a wide-range of topics, and is focused
 on the "Vanilla Scala" use case. It's unlikely that everyone will agree with
@@ -65,7 +65,7 @@ And guidelines:
 The basic approach to conciseness and boilerplate can be boiled down to the
 following:
 
-> Show programmers something they don't already know, but wants to know
+> Show programmers something they don't already know, but want to know
 
 This isn't as flippant as it at first seems: *knowing* something isn't
 all-or-nothing, and how much you *want* to know depends on a great many
@@ -137,7 +137,7 @@ to make an explicit choice to use those less-used less-convenient things,
 which is often good if they're less-used because they're error-prone,
 inefficient or otherwise dangerous.
 
-In the end, Huffman encoding and programming code has similar goals: the
+In the end, Huffman encoding and programming code has similar goals: to
 eliminate meaningless content and convey as much *useful* information to the
 reader as possible. Although that's not the *only* goal of the code you write,
 it definitely is something to work towards.
@@ -251,7 +251,7 @@ instantiating a `MouseAdapter`, or that the `mouseClicked` method is `public`
 and `void`!
 
 Again, it is possibly to get good at scanning this code, and mentally
-collapsing it down into it's "true" meaning: on click, print something. That
+collapsing it down into its "true" meaning: on click, print something. That
 is such a mechanical operation that IDEs like IntelliJ even do it for you!
 
 Thus, we can see that having too little boilerplate and too much boilerplate
@@ -600,8 +600,8 @@ this is part of the standard library, but probably bad:
 val vec: Vector[T] = ...
 val list: List[T] = ...
 
-println(vec(12)) // 12th element
-println(list(12)) // 12th element
+println(vec(12)) // 13th element
+println(list(12)) // 13th element
 ```
 
 In a `Vector`, indexing with an integer is fast and expected. With a `List`,
@@ -615,8 +615,8 @@ you called them via:
 val vec: Vector[T] = ...
 val list: List[T] = ...
 
-println(vec(12)) // 12th element
-println(list.slow(12)) // 12th element
+println(vec(12)) // 13th element
+println(list.slow(12)) // 13th element
 ```
 
 That way, if you are using a `List`, you can be pretty-sure you won't end up
@@ -713,7 +713,7 @@ object Foo{
 }
 ```
 
-In both cases, the name `tpose` is short and cryptic. However, in the first
+In both cases, the name is short and cryptic. However, in the first
 example you have entirely no clue what it does! In the second example, you can
 guess and quite likely be correct.
 
@@ -810,7 +810,7 @@ Names vs Short Names](#LongNamesvsShortNames).
 
 - [Wider-scoped names should be Longer](#WiderscopednamesshouldbeLonger), and
   operators should be avoided in scattered, globally available helpers. Prefer
-  to use them for names used in specific, narrow-ish contexts so that people
+  to use them for names used in specific, narrow-ish contexts.
 
 - [More-used Names should be Shorter](#MoreusedNamesshouldbeShorter), and
   operators are more justified when they are used a *lot*. If you find yourself
@@ -820,7 +820,7 @@ Names vs Short Names](#LongNamesvsShortNames).
 - [Dangerous Names should be Longer](#DangerousNamesshouldbeLonger), and you
   should never use an operator for something like "format hard disk" or
   "drop databases". Obviously, almost all functionality can be "dangerous" when
-  used badly, but there is always functionality which are *inherently*
+  used badly, but there is always functionality which is *inherently*
   dangerous, even when used correctly. Avoid naming these using operators.
 
 - [Names with Source-Context should be Shorter](#NameswithSourceContextshouldbeShorter),
@@ -869,7 +869,7 @@ apply to "zero"-length `apply` methods as to any other short name:
   equally applies to `apply` which is often defined on globally-available
   companion objects. Thus, given that global names should be long, this should
   discourage you from defining an `apply` method on a companion object unless
-  the following considerations must be strong enough to outweigh this
+  the following considerations are strong enough to outweigh this
   discouragement.
 
 - [More-used Names should be Shorter](#MoreusedNamesshouldbeShorter): you
@@ -1023,7 +1023,7 @@ Nevertheless, if your case satisfies all the criterion for for very short names:
 You shouldn't be afraid
 to use it. Just like the `*poke*` dinner-call people use in [human
 languages](#HumanLanguages), if the future programmer already knows enough
-to know what "it" is, there's no need to belabour the point or elaborate.
+to know what "it" is, there's no need to belabor the point or elaborate.
 
 ## How do you judge names in a library?
 
@@ -1272,7 +1272,7 @@ Which should make it pretty clear that `*>` seems to be taking a `F[A]` and
 opposite, and `<*>` seems to take in some kind of transformer-function
 that turns the `A` into the `B` using that function.
 
-While strong types doesn't mean names don't matter, *does* mean you can lean
+While strong types doesn't mean names don't matter, it *does* mean you can lean
 more heavily on the types than you would in a weakly-typed scenario dealing
 with `Any`s and `Unit`s with side-effects. Furthermore, even if you're likely
 to screw it up, the compiler will catch you:
