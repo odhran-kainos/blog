@@ -118,7 +118,8 @@ val posts = {
     snippetNodes.foreach(ast.getChildren.add)
 
     val rawHtmlSnippet = new Serializer().toHtml(ast)
-    val updates = DatesFor(s"post/$index - ").toSeq
+    // Handle both post/ and posts/ for legacy reasons
+    val updates = DatesFor(s"post/$index - ").toSeq ++ DatesFor(s"posts/$index - ").toSeq
     (name, rawHtmlContent, rawHtmlSnippet, updates)
   }
 }
