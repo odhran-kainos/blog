@@ -44,48 +44,48 @@ You may agree or disagree with any of these; let me know in the comments below!
 
 Here are the principles behind this set of guidelines:
 
-- **[Philosophy: Principle of Least Power](#PhilosophyPrincipleofLeastPower)**
-    1. *[Complexity is your Enemy](#ComplexityisyourEnemy)*
-    2. *[Don't Fear Refactoring](#DontFearRefactoring)*
-    3. *[Don't Over Engineer](#DontOverEngineer)*
+- **[Philosophy: Principle of Least Power](#philosophy-principle-of-least-power)**
+    1. *[Complexity is your Enemy](#complexity-is-your-enemy)*
+    2. *[Don't Fear Refactoring](#dont-fear-refactoring)*
+    3. *[Don't Over Engineer](#dont-over-engineer)*
 
 Here is a listing of all the guidelines at a glance
 
-- **[Immutability & Mutability](#ImmutabilityMutability)**
-    1. *[Use immutability as far as possible](#ImmutabilityByDefault)*
-    2. *[Unless you are actually modeling mutable things](#MutabilityForMutableThings)*
-    3. *[Or for performance](#MutabilityForPerf)*
-    4. *[Even then, scope it as tightly as possible](#LimittheScopeOfMutability)*
-    5. *[Don't use double-mutability, you probably don't need it](#NoDoubleMutability)*
-    6. *[Don't use Event-Sourcing/CQRS unless you know what you're doing](#EventSourcingCQRS)*
-- **[Published Interfaces](#PublishedInterfaces)**
-    1. *[The simplest interface to a package is static method with standard types](#StaticMethodsOnly)*
-    2. *[Next, static methods that take/return custom types, presumably with methods](#StaticMethodsOnly)*
-    3. *[Next, is needing the user to instantiate some classes](#InstantiatingCustomTypes)*
-    4. *[Lastly, is needing the user to inherit from some classes](#InheritingFromClasses)*
-- **[Data Types](#DataTypes)**
-    1. *[Use built-in primitives, collection & combinations of them when possible](#Builtins)*
+- **[Immutability & Mutability](#immutability--mutability)**
+    1. *[Use immutability as far as possible](#immutability-by-default)*
+    2. *[Unless you are actually modeling mutable things](#mutability-for-mutable-things)*
+    3. *[Or for performance](#mutability-for-perf)*
+    4. *[Even then, scope it as tightly as possible](#limit-the-scope-of-mutability)*
+    5. *[Don't use double-mutability, you probably don't need it](#no-double-mutability)*
+    6. *[Don't use Event-Sourcing/CQRS unless you know what you're doing](#event-sourcingcqrs)*
+- **[Published Interfaces](#published-interfaces)**
+    1. *[The simplest interface to a package is static method with standard types](#static-methods-only)*
+    2. *[Next, static methods that take/return custom types, presumably with methods](#static-methods-only)*
+    3. *[Next, is needing the user to instantiate some classes](#instantiating-custom-types)*
+    4. *[Lastly, is needing the user to inherit from some classes](#inheriting-from-classes)*
+- **[Data Types](#data-types)**
+    1. *[Use built-in primitives, collection & combinations of them when possible](#built-ins)*
     2. *[Use opaque functions when you just need a single callback or factory](#Functions)*
-    3. *[Use a simple `case class` if you want to bundle multiple things together](#SimpleCaseClasses)*
-    4. *[Use a `sealed trait` if you want to pass multiple different things](#SealedTraits)*
-    5. *[Use an opaque `class` or `trait` as a last resort](#AdhocClasses)*
-- **[Error Handling](#ErrorHandling)**
+    3. *[Use a simple `case class` if you want to bundle multiple things together](#simple-case-classes)*
+    4. *[Use a `sealed trait` if you want to pass multiple different things](#sealed-traits)*
+    5. *[Use an opaque `class` or `trait` as a last resort](#ad-hoc-classes)*
+- **[Error Handling](#error-handling)**
     1. *[If you know there is only one thing that can go wrong, use an Option](#Option)*
-    2. *[If you know there is multiple things that can go wrong, use a Simple Sealed Trait](#SimpleSealedTrait)*
+    2. *[If you know there is multiple things that can go wrong, use a Simple Sealed Trait](#simple-sealed-trait)*
     3. *[If you don't know what can go wrong, use exceptions](#Exceptions)*
-    4. *[(Almost) Never set error flags](#ErrorFlags)*
-- **[Asynchronous Return Types](#AsynchronousReturnTypes)**
-    1. *[The simplest case, return `T`](#ReturnT)*
-    2. *[For asynchronous results, return `Future[T]`](#ReturnFuture)*
-    3. *[Only pass in callbacks e.g. `onSuccess: T => Unit` as a last resort](#TakeacallbackTUnit)*
-- **[Dependency Injection](#DependencyInjection)**
-    1. *[First, hard-code the dependency](#HardcodeIt)*
-    2. *[Second, pass it as a parameter to the method which needs it](#MethodParameter)*
-    3. *[Third, inject it into multiple methods by passing it into a containing class](#ConstructorInjection)*
-    4. *[Fourth, if your containing class is split into traits in multiple files, use abstract members](#AbstractMembers)*
-    5. *[Fifth, make the method parameter implicit](#ImplicitMethodParameter)*
-    6. *[If all else fails, use "Dynamic Variables" aka global-mutable-state](#DynamicVariablesakaGlobalMutableState)*
-    7. *[Don't use setter injection](#SetterInjection)*
+    4. *[(Almost) Never set error flags](#error-flags)*
+- **[Asynchronous Return Types](#asynchronous-return-types)**
+    1. *[The simplest case, return `T`](#return-t)*
+    2. *[For asynchronous results, return `Future[T]`](#return-future)*
+    3. *[Only pass in callbacks e.g. `onSuccess: T => Unit` as a last resort](#take-a-callback-t--unit)*
+- **[Dependency Injection](#dependency-injection)**
+    1. *[First, hard-code the dependency](#hardcode-it)*
+    2. *[Second, pass it as a parameter to the method which needs it](#method-parameter)*
+    3. *[Third, inject it into multiple methods by passing it into a containing class](#constructor-injection)*
+    4. *[Fourth, if your containing class is split into traits in multiple files, use abstract members](#abstract-members)*
+    5. *[Fifth, make the method parameter implicit](#implicit-method-parameter)*
+    6. *[If all else fails, use "Dynamic Variables" aka global-mutable-state](#dynamic-variables-aka-global-mutable-state)*
+    7. *[Don't use setter injection](#setter-injection)*
 
 
 ## Philosophy: Principle of Least Power
@@ -216,12 +216,12 @@ the principle under which the following guidelines arise.
 
 When deciding between immutability and mutability...
 
-1. *[Use immutability as far as possible](#ImmutabilityByDefault)*
-2. *[Unless you are actually modeling mutable things](#MutabilityForMutableThings)*
-3. *[Or for performance](#MutabilityForPerf)*
-4. *[Even then, scope it as tightly as possible](#LimittheScopeOfMutability)*
-5. *[Don't use double-mutability, you probably don't need it](#NoDoubleMutability)*
-6. *[Don't use Event-Sourcing/CQRS unless you know what you're doing](#EventSourcingCQRS)*
+1. *[Use immutability as far as possible](#immutability-by-default)*
+2. *[Unless you are actually modeling mutable things](#mutability-for-mutable-things)*
+3. *[Or for performance](#mutability-for-perf)*
+4. *[Even then, scope it as tightly as possible](#limit-the-scope-of-mutability)*
+5. *[Don't use double-mutability, you probably don't need it](#no-double-mutability)*
+6. *[Don't use Event-Sourcing/CQRS unless you know what you're doing](#event-sourcingcqrs)*
 
 Immutable things don't change, and things changing when they shouldn't is a
 common source of bugs. If you're not sure whether something will need to change
@@ -437,10 +437,10 @@ and should not be used by default unless you know you want those benefits.
 
 When defining an interface to a package someone else will use...
 
-1. *[The simplest interface to a package is static method with standard types](#StaticMethodsOnly)*
-2. *[Next, static methods that take/return custom types, presumably with methods](#StaticMethodsOnly)*
-3. *[Next, is needing the user to instantiate some classes](#InstantiatingCustomTypes)*
-4. *[Lastly, is needing the user to inherit from some classes](#InheritingFromClasses)*
+1. *[The simplest interface to a package is static method with standard types](#static-methods-only)*
+2. *[Next, static methods that take/return custom types, presumably with methods](#static-methods-only)*
+3. *[Next, is needing the user to instantiate some classes](#instantiating-custom-types)*
+4. *[Lastly, is needing the user to inherit from some classes](#inheriting-from-classes)*
 
 I use the term "Published Interfaces" as distinct from a "normal" Java
 `interface` or Scala `trait`. A published interface is a larger-scale
@@ -564,11 +564,11 @@ used as a last resort.
 
 When picking what sort of type to use for some value...
 
-1. *[Use built-in primitives, collection & combinations of them when possible](#Builtins)*
-2. *[Use opaque functions when you just need a single callback or factory](#Functions)*
-3. *[Use a simple `case class` if you want to bundle multiple things together](#SimpleCaseClasses)*
-4. *[Use a `sealed trait` if you want to pass multiple different things](#SealedTraits)*
-5. *[Use an opaque `class` or `trait` as a last resort](#AdhocClasses)*
+1. *[Use built-in primitives, collection & combinations of them when possible](#built-ins)*
+2. *[Use opaque functions when you just need a single callback or factory](#functions)*
+3. *[Use a simple `case class` if you want to bundle multiple things together](#simple-case-classes)*
+4. *[Use a `sealed trait` if you want to pass multiple different things](#sealed-traits)*
+5. *[Use an opaque `class` or `trait` as a last resort](#ad-hoc-classes)*
 
 This applies whether that value is a method parameter, class parameter,
 field, or method return type. In general, using the "simplest" thing for each
@@ -783,8 +783,8 @@ This isn't to say ad-hoc classes or traits are *bad*; in fact, most Scala
 programs have tons of them, and Java programs are basically 100% ad-hoc
 classes! What this means is that, where possible, you should try to avoid
 using an ad-hoc class in favor of something simpler: a
-[Simple Case Class](#SimpleCaseClass), [Sealed Traits](#SealedTraits),
-[Functions](#Functions) or [Built-ins](#Builtins). Again, this applies
+[Simple Case Class](#simple-case-classes), [Sealed Traits](#sealed-traits),
+[Functions](#Functions) or [Built-ins](#built-ins). Again, this applies
 anywhere a type an be seen: as a method argument, as a return type, as the
 type of a variable or value, whether local-to-a-method or belonging to
 an object or class.
@@ -792,9 +792,9 @@ an object or class.
 ## Error Handling
 
 1. *[If you know there is only one thing that can go wrong, use an Option](#Option)*
-2. *[If you know there is multiple things that can go wrong, use a Simple Sealed Trait](#SimpleSealedTrait)*
+2. *[If you know there is multiple things that can go wrong, use a Simple Sealed Trait](#simple-sealed-trait)*
 3. *[If you don't know what can go wrong, use exceptions](#Exceptions)*
-4. *[(Almost) Never set error flags](#ErrorFlags)*
+4. *[(Almost) Never set error flags](#error-flags)*
 
 In general, `Option`s, simple sealed traits, and exceptions are the most
 common way of dealing with errors. It is likely that different APIs you end
@@ -857,7 +857,7 @@ interruption, etc..
 
 In general, it is often unfeasible to make everything that could fail with
 one of these errors return an [Option](#Option) or some kind of
-[ADT](#SimpleSealedTrait): every expression in your codebase can potentially
+[ADT](#simple-sealed-trait): every expression in your codebase can potentially
 `StackOverflow` or `OutOfMemory` or `ClassNotFound`! Much arithmetic is choke
 full of `/` calls, and it is unreasonable (both from the boilerplate and from
 the performance-cost) to wrap every one of those in an `Option`. So what
@@ -911,7 +911,7 @@ if (error == 5) println("It failed =/")
 This has a few problems:
 
 - It is much less safe than the above cases of using [Option](#Option),
-  [ADTs](#SimpleSealedTrait) or [Exceptions](#Exceptions): if you forget
+  [ADTs](#simple-sealed-trait) or [Exceptions](#Exceptions): if you forget
   to check the error flag, the program keeps running, possibly doing the
   wrong thing!
 - It is *incredibly* easy to forget to check error flags. They aren't shown
@@ -922,7 +922,7 @@ Overall, you should avoid them as much as is possible.
 
 *Sometimes it is not possible*: error flags are probably the fastest way of
 transmitting the "something failed" information, and it could matter in hot
-code paths. Like using [Mutability For Perf](#MutabilityForPerf), it is
+code paths. Like using [Mutability For Perf](#mutability-for-perf), it is
 reasonable to *sometimes* drop down to using an error flag to eek out the last
 5% of performance after you've profiled the code and identified the bottleneck
 as error-handling.
@@ -933,9 +933,9 @@ and documenting it like crazy as the dangerous performance-hack that it is.
 
 ## Asynchronous Return Types
 
-1. *[The simplest case, return `T`])(#ReturnT)*
-2. *[For asynchronous results, return `Future[T]`](#ReturnFuture)*
-3. *[Only pass in callbacks e.g. `onSuccess: T => Unit` as a last resort](#TakeacallbackTUnit)*
+1. *[The simplest case, return `T`](#return-t)*
+2. *[For asynchronous results, return `Future[T]`](#return-future)*
+3. *[Only pass in callbacks e.g. `onSuccess: T => Unit` as a last resort](#take-a-callback-t--unit)*
 
 If you can get away without any asynchrony, you should. Otherwise,
 `Future[T]` is the first preferred asynchronous return type. Only use callback
@@ -991,13 +991,13 @@ when they fire multiple times, but when `Future`s work use a `Future`.
 
 ## Dependency Injection
 
-1. *[First, hard-code the dependency](#HardcodeIt)*
-2. *[Second, pass it as a parameter to the method which needs it](#MethodParameter)*
-3. *[Third, inject it into multiple methods by passing it into a containing class](#ConstructorInjection)*
-4. *[Fourth, if your containing class is split into traits in multiple files, use abstract members](#AbstractMembers)*
-5. *[Fifth, make the method parameter implicit](#ImplicitMethodParameter)*
-6. *[If all else fails, use "Dynamic Variables" aka global-mutable-state](#DynamicVariablesakaGlobalMutableState)*
-7. *[Don't use setter injection](#SetterInjection)*
+1. *[First, hard-code the dependency](#hardcode-it)*
+2. *[Second, pass it as a parameter to the method which needs it](#method-parameter)*
+3. *[Third, inject it into multiple methods by passing it into a containing class](#constructor-injection)*
+4. *[Fourth, if your containing class is split into traits in multiple files, use abstract members](#abstract-members)*
+5. *[Fifth, make the method parameter implicit](#implicit-method-parameter)*
+6. *[If all else fails, use "Dynamic Variables" aka global-mutable-state](#dynamic-variables-aka-global-mutable-state)*
+7. *[Don't use setter injection](#setter-injection)*
 
 ### Hardcode It
 
@@ -1155,7 +1155,7 @@ into dozens of callsites at least. Nevertheless, in a large program that's
 not unreasonable, especially for common things like logging.
 
 However, if the use sites are all relatively localized, you should prefer to
-use [Constructor Injection](#ConstructorInjection) rather than creating a new
+use [Constructor Injection](#constructor-injection) rather than creating a new
 implicit parameter just for one small section of your code. Reserve implicit
 parameters for the cases where the callsites are scattered and constructor
 injection into all the disparate classes becomes tedious.
@@ -1243,4 +1243,4 @@ ad-hoc way of passing parameters to a function call.
 
 [Scala Parallel Collections Library]: http://docs.scala-lang.org/overviews/parallel-collections/configuration.html#task-support
 [Runnable]: https://docs.oracle.com/javase/7/docs/api/java/lang/Runnable.html
-[Comparator]: https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html
+[Comparator[T]]: https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html

@@ -33,30 +33,30 @@ whatever team-specific guidelines or conventions they prefer.
 Here's an overview of the philosophy
 
 - **[Philosophy](#Philosophy)**
-    - [Conciseness: not for Writing, but for Reading](#ConcisenessnotforWritingbutforReading)
-    - [Huffman Encoding](#HuffmanEncoding)
-    - [Human Languages](#HumanLanguages)
+    - [Conciseness: not for Writing, but for Reading](#conciseness-not-for-writing-but-for-reading)
+    - [Huffman Encoding](#huffman-encoding)
+    - [Human Languages](#human-languages)
     - [Extremes](#Extremes)
 
 And guidelines:
 
-- **[Long Names vs Short Names](#LongNamesvsShortNames)**
-    - [Wider scoped names should be Longer](#WiderscopednamesshouldbeLonger)
-    - [More used names should be Shorter](#MoreusedNamesshouldbeShorter)
-    - [Dangerous names should be Longer](#DangerousNamesshouldbeLonger)
-    - [Names with source context should be Shorter](#NameswithSourceContextshouldbeShorter)
-    - [Strongly-typed names should be Shorter](#StronglytypednamesshouldbeShorter)
-- **[Degenerate Names](#DegenerateNames)**
-    - [When to use operators?](#WhentouseOperators)
-    - [When to name methods "apply"](#Whentonamemethodsapply)
-    - [When to use the _ Underscore Argument?](#WhentousetheUnderscoreArgument)
-- **[How do you judge names in a library?](#Howdoyoujudgenamesinalibrary)**
-    - [If you are the library author](#Ifyouarethelibraryauthor)
-    - [If you are the library user](#Ifyouarethelibraryuser)
-- **[Case Studies](#CaseStudies)**
-    - [Scalaz](#CaseStudyScalaz)
-    - [Parser Combinators](#CaseStudyParserCombinators)
-    - [HTTP](#CaseStudyHTTP)
+- **[Long Names vs Short Names](#long-names-vs-short-names)**
+    - [Wider scoped names should be Longer](#wider-scoped-names-should-be-longer)
+    - [More used names should be Shorter](#more-used-names-should-be-shorter)
+    - [Dangerous names should be Longer](#dangerous-names-should-be-longer)
+    - [Names with source context should be Shorter](#names-with-source-context-should-be-shorter)
+    - [Strongly-typed names should be Shorter](#strongly-typed-names-should-be-shorter)
+- **[Degenerate Names](#degenerate-names)**
+    - [When to use operators?](#when-to-use-operators)
+    - [When to name methods "apply"](#when-to-name-methods-apply)
+    - [When to use the _ Underscore Argument?](#when-to-use-the-_-underscore-argument)
+- **[How do you judge names in a library?](#how-do-you-judge-names-in-a-library)**
+    - [If you are the library author](#if-you-are-the-library-author)
+    - [If you are the library user](#if-you-are-the-library-user)
+- **[Case Studies](#case-studies)**
+    - [Scalaz](#case-study-scalaz)
+    - [Parser Combinators](#case-study-parser-combinators)
+    - [HTTP](#case-study-http)
 
 
 
@@ -266,17 +266,17 @@ principles apply.
 
 How to decide the length of a name:
 
-- [Wider scoped names should be Longer](#WiderscopednamesshouldbeLonger)
-- [More used names should be Shorter](#MoreusedNamesshouldbeShorter)
-- [Dangerous names should be Longer](#DangerousNamesshouldbeLonger)
-- [Names with source context should be Shorter](#NameswithSourceContextshouldbeShorter)
-- [Strongly-typed names should be Shorter](#StronglytypednamesshouldbeShorter)
+- [Wider scoped names should be Longer](#wider-scoped-names-should-be-longer)
+- [More used names should be Shorter](#more-used-names-should-be-shorter)
+- [Dangerous names should be Longer](#dangerous-names-should-be-longer)
+- [Names with source context should be Shorter](#names-with-source-context-should-be-shorter)
+- [Strongly-typed names should be Shorter](#strongly-typed-names-should-be-shorter)
 
 The first and second point are valid separately, but can be combined to give
 a metric of *usage density*: how dense are your uses of an API? 5 times in 1
 line? 1/5 lines? 1/50? 1/5000? The denser your uses of an API, the shorter
 the name should be: methods used multiple-times-per-line should consider
-[using operators](#WhentouseOperators), whereas names used once per 5000 lines
+[using operators](#when-to-use-operators), whereas names used once per 5000 lines
 can afford to be a bit longer and more verbose.
 
 One interesting observation to make here is the second point: that how you name
@@ -290,7 +290,7 @@ behind these guidelines:
   multiplied by the number of usages
 
 Nevertheless, it's worth calling out, and we'll return to this point in the
-[last section of this post](#Wheredoyoucountusagepatterns).
+[last section of this post](#how-do-you-judge-names-in-a-library).
 
 Note that this section *totally ignores* what you put into the name! A short
 name which a maintenance programmer already understands can be more helpful
@@ -752,23 +752,23 @@ on the name when trying to figure out what it's for.
 
 Scala provides multiple ways to say "I don't want to give something a name".
 
-- [You can name things using meaningless operators](#WhentouseOperators)
-- [Name methods `apply` and call them via `foo(bar)` instead of `foo.methodName(bar)`](#Whentonamemethodsapply)
-- [and use `_` parameter, e.g. `foo.map(_+1)` instead of `foo.map(x => x+1)`](#WhentousetheUnderscoreArgument)
+- [You can name things using meaningless operators](#when-to-use-operators)
+- [Name methods `apply` and call them via `foo(bar)` instead of `foo.methodName(bar)`](#when-to-name-methods-apply)
+- [and use `_` parameter, e.g. `foo.map(_+1)` instead of `foo.map(x => x+1)`](#when-to-use-the-_-underscore-argument)
 
 It turns out, there are valid use cases for all of these! As degenerate "short
 names", using these Scala language features is basically governed by the same
-rules as any other name described in [Long Names vs Short Names](#LongNamesvsShortNames).
-Thus, when things are [narrowly scoped](#WiderscopednamesshouldbeLonger), are
-[heavily used](#MoreusedNamesshouldbeShorter), or have lots of
-[source context](#NameswithSourceContextshouldbeShorter) telling you what they
+rules as any other name described in [Long Names vs Short Names](#long-names-vs-short-names).
+Thus, when things are [narrowly scoped](#wider-scoped-names-should-be-longer), are
+[heavily used](#more-used-names-should-be-shorter), or have lots of
+[source context](#names-with-source-context-should-be-shorter) telling you what they
 do, using these features is totally fine. The sections below will elaborate on
 individual features.
 
 ### When to use Operators?
 
 For now, I am treating the operators as a black-box, as I did in the section on
-[Long Names vs Short Names](#LongNamesvsShortNames), and ignoring all the soft
+[Long Names vs Short Names](#long-names-vs-short-names), and ignoring all the soft
 considerations e.g. "oh this operator reminds the user of this other
 mathematical operation" considerations which can be a whole separate post.
 Many operators have essentially no inherent meaning to begin with, and even
@@ -806,24 +806,24 @@ above.
 
 Since operators are just really-short names, they should be used in the same
 places really-short names would be used according to the logic in [Long
-Names vs Short Names](#LongNamesvsShortNames).
+Names vs Short Names](#long-names-vs-short-names).
 
-- [Wider-scoped names should be Longer](#WiderscopednamesshouldbeLonger), and
+- [Wider-scoped names should be Longer](#wider-scoped-names-should-be-longer), and
   operators should be avoided in scattered, globally available helpers. Prefer
   to use them for names used in specific, narrow-ish contexts.
 
-- [More-used Names should be Shorter](#MoreusedNamesshouldbeShorter), and
+- [More-used Names should be Shorter](#more-used-names-should-be-shorter), and
   operators are more justified when they are used a *lot*. If you find yourself
   using a name or calling a method *multiple times per line*, over a large
   number of lines, it could be worth making the name an operator.
 
-- [Dangerous Names should be Longer](#DangerousNamesshouldbeLonger), and you
+- [Dangerous Names should be Longer](#dangerous-names-should-be-longer), and you
   should never use an operator for something like "format hard disk" or
   "drop databases". Obviously, almost all functionality can be "dangerous" when
   used badly, but there is always functionality which is *inherently*
   dangerous, even when used correctly. Avoid naming these using operators.
 
-- [Names with Source-Context should be Shorter](#NameswithSourceContextshouldbeShorter),
+- [Names with Source-Context should be Shorter](#names-with-source-context-should-be-shorter),
   and operators are acceptable in the case where someone "else" already tells
   you what's going on. For example,
   [Ammonite-Ops](http://lihaoyi.github.io/Ammonite/#Ammonite-Ops) uses the `!`
@@ -832,13 +832,13 @@ Names vs Short Names](#LongNamesvsShortNames).
   that tells you what it's doing: `ls!`, `rm!`, etc., so there shouldn't be
   much confusion.
 
-- [Strongly-typed names should be Shorter](StronglytypednamesshouldbeShorter),
+- [Strongly-typed names should be Shorter](#strongly-typed-names-should-be-shorter),
   so avoid using operators with things that deal with `Any` or `Unit`, but
   feel more free to use them in more strongly-typed code where you can be
   confident the compiler can catch screw-ups.
 
 For more concrete examples where usage of operators is good or bad, check out
-the [Case Studies](#CaseStudies) below!
+the [Case Studies](#case-studies) below!
 
 ### When to name methods "apply"?
 
@@ -865,29 +865,29 @@ short name: at *zero* characters it is the most convenient, but also provides
 and source-context to figure out what its for. Thus, the same considerations
 apply to "zero"-length `apply` methods as to any other short name:
 
-- [Wider-scoped names should be Longer](#WiderscopednamesshouldbeLonger), this
+- [Wider-scoped names should be Longer](#wider-scoped-names-should-be-longer), this
   equally applies to `apply` which is often defined on globally-available
   companion objects. Thus, given that global names should be long, this should
   discourage you from defining an `apply` method on a companion object unless
   the following considerations are strong enough to outweigh this
   discouragement.
 
-- [More-used Names should be Shorter](#MoreusedNamesshouldbeShorter): you
+- [More-used Names should be Shorter](#more-used-names-should-be-shorter): you
   should be using the `apply` method a *lot*, more than any other method on the
   object it's defined on. For example, `List.apply` to construct a `List(1, 2)`
   is definitely the most heavily used method on the `List` companion object.
   Similarly, `myArray.apply` to look up an index in an array `myArray(123)` is
   definitely the most-used operation on `Array` instances.
 
-- [Dangerous Names should be Longer](#DangerousNamesshouldbeLonger), and you
+- [Dangerous Names should be Longer](#dangerous-names-should-be-longer), and you
   should never write an `apply` method someone could call "by accident".
   Having a `myList.apply` to look up elements in a list is inefficient and
   not commonly used, and as described in the section on
-  [Dangerous Names](#DangerousNamesshouldbeLonger) it was probably a mistake to
+  [Dangerous Names](#dangerous-names-should-be-longer) it was probably a mistake to
   make that the `apply` method on the `List` type. If an operation is risky,
   don't stuff it under `apply`
 
-- [Names with Source-Context should be Shorter](#NameswithSourceContextshouldbeShorter),
+- [Names with Source-Context should be Shorter](#names-with-source-context-should-be-shorter),
   and usages of an `apply` method always have the source-context of who-ever
   you are calling `apply` on. For example, if you have a `Parser` class with
   a single interesting `.parse` method, you could around calling
@@ -898,7 +898,7 @@ apply to "zero"-length `apply` methods as to any other short name:
   it's an option to consider when your class/object really-truly has a single
   "obvious" operation to use that should be privileged over others.
 
-- [Strongly-typed names should be Shorter](#StronglytypednamesshouldbeShorter),
+- [Strongly-typed names should be Shorter](#strongly-typed-names-should-be-shorter),
   so if your method is dealing with `Any`s or returning `Unit`, it probably
   shouldn't be `apply` but instead of a longer more-descriptive name.
 
@@ -1011,7 +1011,7 @@ foo.foldLeft{ (current, op) =>
 ```
 
 Since in such large blocks the `_` is scoped widely enough that
-[Wider-scoped names should be Longer](#WiderscopednamesshouldbeLonger) applies.
+[Wider-scoped names should be Longer](#wider-scoped-names-should-be-longer) applies.
 
 Nevertheless, if your case satisfies all the criterion for for very short names:
 
@@ -1022,7 +1022,7 @@ Nevertheless, if your case satisfies all the criterion for for very short names:
 
 You shouldn't be afraid
 to use it. Just like the `*poke*` dinner-call people use in [human
-languages](#HumanLanguages), if the future programmer already knows enough
+languages](#human-languages), if the future programmer already knows enough
 to know what "it" is, there's no need to belabor the point or elaborate.
 
 ## How do you judge names in a library?
@@ -1085,8 +1085,8 @@ API should depend on how heavily you expect people to use it.
   even if it means there's some boilerplate
 
 - If you expect people to use it heavily, either in one part of their program
-  (like [FastParse](#PositiveParserCombinatorExample)) or throughout their
-  program (like [Scalaz](#CaseStudyScalaz)) you should provide a convenient,
+  (like [FastParse](#positive-parser-combinator-example)) or throughout their
+  program (like [Scalaz](#case-study-scalaz)) you should provide a convenient,
   boilerplate-free API even if it means making things shorter or using
   operators.
 
@@ -1251,7 +1251,7 @@ for {
 That is definitely enough density-of-usage that the benefits from having the
 operators be short and concise pays off, and giving them long names would make
 your program considerably more verbose. You certainly use Scalaz's operators
-much more than you would, say, [make HTTP requests](#NegativeDispatch), and so
+much more than you would, say, [make HTTP requests](#negative-dispatch), and so
 use of short operators are much more justified.
 
 **Scalaz's operators are all pretty strongly typed**. For example, you may
@@ -1361,17 +1361,17 @@ def myPut = myRequest <<< myFile
 
 While `<<` does save keystrokes over `.param`, whether or not its a good idea
 or not comes down to our
-[earlier considerations on names](#LongNamesvsShortNames): are the
+[earlier considerations on names](#long-names-vs-short-names): are the
 usage patterns of Dispatch heavy enough to warrent operators for all these
 methods? After all, we found that for
-[Parser Combinators](#CaseStudyParserCombinators), with heavy usage operators
+[Parser Combinators](#case-study-parser-combinators), with heavy usage operators
 can be justified.
 
 Ultimately, my judgement is that it isn't: even in the
 heaviest HTTP-request-making environment I can think of - client-server
 front-end web development - HTTP requests tended to happen less than once or
 twice per file. You certainly make HTTP requests much less than you use
-operators from [Scalaz](#CaseStudyScalaz), for exampe. My judgement is that
+operators from [Scalaz](#case-study-scalaz), for exampe. My judgement is that
 this usage density is less than the threshold for which I would consider
 operator-powered APIs valid.
 

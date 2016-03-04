@@ -392,7 +392,7 @@ There are some problems with this approach thought:
 
 Java does not have a good way
 to handle optional arguments. Apart from using mutator `set` methods to allow
-optional-ness, [Telescoping Constructors] are another method which
+optional-ness, Telescoping Constructors are another method which
 unfortunately doesn't scale as the number of optional arguments grows more
 than 4 or 5. In 2016 many in the community have switched to the
 [Builder Pattern], and if I was writing Java today that would hopefully be

@@ -11,6 +11,9 @@ load.module(ammonite.ops.cwd/"styles.scala")
 def sanitize(s: String): String = {
   s.filter(_.isLetterOrDigit)
 }
+def sanitizeAnchor(s: String): String = {
+  s.split(" |-", -1).map(_.filter(_.isLetterOrDigit)).mkString("-").toLowerCase
+}
 def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): String = {
   val pageTitle = titleText.getOrElse("Haoyi's Programming Blog")
   val sheets = Seq(

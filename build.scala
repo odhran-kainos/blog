@@ -10,10 +10,10 @@ import scalatags.Text._
 import ammonite.ops._
 import collection.JavaConverters._
 import org.pegdown.{PegDownProcessor, ToHtmlSerializer, LinkRenderer, Extensions}
-import org.pegdown.ast.{VerbatimNode, ExpImageNode, HeaderNode, TextNode, SimpleNode}
+import org.pegdown.ast.{VerbatimNode, ExpImageNode, HeaderNode, TextNode, SimpleNode, TableNode}
 
 
-val postsFolder = cwd/'posts
+val postsFolder = cwd/'post
 val targetFolder = cwd/'target
 
 object DatesFor{
@@ -51,7 +51,9 @@ val posts = {
     (number, name.stripSuffix(".md"), path)
   }
   for ((index, name, path) <- split.sortBy(_._1.toInt)) yield {
-    val processor = new PegDownProcessor(Extensions.FENCED_CODE_BLOCKS)
+    val processor = new PegDownProcessor(
+      Extensions.FENCED_CODE_BLOCKS | Extensions.TABLES
+    )
     val ast = processor.parseMarkdown(read! path toArray)
     class Serializer extends ToHtmlSerializer(new LinkRenderer){
       override def printImageTag(rendering: LinkRenderer.Rendering) {
@@ -78,7 +80,7 @@ val posts = {
             .collect{case t: TextNode => t.getText}
             .mkString
 
-        val setId = s"id=${'"'+sanitize(id)+'"'}"
+        val setId = s"id=${'"'+sanitizeAnchor(id)+'"'}"
         printer.print(s"<$tag $setId>")
         visitChildren(node)
         printer.print(s"</$tag>")
@@ -95,6 +97,13 @@ val posts = {
         printer.printEncoded(text);
         printer.print("</code></pre>");
       }
+      override def visit(node: TableNode) = {
+        currentTableNode = node;
+        printer.print("<table class=\"table table-bordered\">")
+        visitChildren(node)
+        printer.print("</table>")
+        currentTableNode = null;
+      }
     }
     val rawHtmlContent = new Serializer().toHtml(ast)
     val snippetNodes =
@@ -109,7 +118,7 @@ val posts = {
     snippetNodes.foreach(ast.getChildren.add)
 
     val rawHtmlSnippet = new Serializer().toHtml(ast)
-    val updates = DatesFor(s"posts/$index - ").toSeq
+    val updates = DatesFor(s"post/$index - ").toSeq
     (name, rawHtmlContent, rawHtmlSnippet, updates)
   }
 }
