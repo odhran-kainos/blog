@@ -1,4 +1,4 @@
-This post will walk you through a sample exercise in diving into someone else's
+This post will walk you through an exercise in diving into someone else's
 code. The goal will be to make an arbitrary change to the code of the 
 [Spyder Python IDE], a project I have never touched before in my life, and 
 learn *just* enough about it to accomplish what I want without getting bogged 
