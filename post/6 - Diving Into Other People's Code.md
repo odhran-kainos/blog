@@ -1,12 +1,12 @@
 This post will walk you through a sample exercise in diving into someone else's
-code. The goal will be to make an arbitrary change to the [Spyder Python IDE], 
-a project I have never touched before in my life, and learn *just* enough about 
-it to accomplish what I want without getting bogged down. You will learn how to
-approach problems without the rigour taught in formal education, and instead
-with guesswork, experimentation, and insight learned in a professional 
-environment. You will see first-hand the joys, sorrows and frustrations trying
-to navigate the project, culminating in a working (if rough) patch adding a 
-feature to a large, unfamiliar codebase.
+code. The goal will be to make an arbitrary change to the code of the 
+[Spyder Python IDE], a project I have never touched before in my life, and 
+learn *just* enough about it to accomplish what I want without getting bogged 
+down. You will learn how to approach problems without the rigour taught in 
+formal education, and instead with guesswork, experimentation, and insight 
+learned in a professional environment. You will see first-hand the joys, 
+sorrows and frustrations trying to navigate the project, culminating in a 
+working (if rough) patch adding a feature to a large, unfamiliar codebase.
 
 Everyone who learns programming has written a pile of code in a bunch
 of different programs: whether it's implementing algorithms for problem sets,
