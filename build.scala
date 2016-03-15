@@ -52,7 +52,7 @@ val posts = {
   }
   for ((index, name, path) <- split.sortBy(_._1.toInt)) yield {
     val processor = new PegDownProcessor(
-      Extensions.FENCED_CODE_BLOCKS | Extensions.TABLES
+      Extensions.FENCED_CODE_BLOCKS | Extensions.TABLES | Extensions.AUTOLINKS
     )
     val ast = processor.parseMarkdown(read! path toArray)
     class Serializer extends ToHtmlSerializer(new LinkRenderer){
