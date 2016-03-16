@@ -1334,7 +1334,7 @@ that menu. It doesn't seem to work on OS-X, but on the original screenshot
 presumably on Windows you can see the underlined characters indicating the
 hotkeys all in the right places:
 
-![Diving/MenuSearch.png](Diving/MenuSearch.png)
+![Diving/Spyder.png](Diving/Spyder.png)
 
 From there it's relatively straightforward to add a new menu to the menu bar:
 
@@ -1902,7 +1902,7 @@ programmers are usually nice people, so it probably does what I want.
 
 Now we know that we can `self.main.editor.get_current_editor()` inside 
 `misc_action` to get the current editor; but *which* editor are we getting?
-From the name we dont't really know, and possibilities include:
+From the name we don't really know, and possibilities include:
 
 - `spyderlib.plugins.editor.Editor`
 - `spyderlib.widgets.editor.EditorMainWindow`
