@@ -57,7 +57,6 @@ val NarrowStyles = Sheet[NarrowStyles]
 trait Styles extends StyleSheet{
   def header = cls(
     backgroundColor := "rgb(61, 79, 93)",
-    padding := 20,
     display.flex,
     alignItems.center,
     boxSizing.`border-box`
@@ -65,7 +64,7 @@ trait Styles extends StyleSheet{
   def headerLinkBox = cls(
     flex := 1,
     display.flex,
-    flexDirection.row,
+    flexDirection.column,
 
     textAlign.center
   )

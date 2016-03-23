@@ -21,10 +21,18 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
     "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",
     "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/github-gist.min.css"
   )
+  def icon(s: String) = div(i(cls:= s"fa fa-$s"))
   val headerLinks = Seq(
-    div(div(i(cls:= "fa fa-question-circle")), " About") -> s"$unNesting/post/HelloWorldBlog.html",
-    div(div(i(cls:= "fa fa-file-text-o")), " Resume") -> "https://lihaoyi.github.io/Resume/",
-    div(div(i(cls:= "fa fa-github")), " Github") -> "https://github.com/lihaoyi"
+    Seq(
+      div(icon("question-circle"), " About") -> s"$unNesting/post/HelloWorldBlog.html",
+      div(icon("file-text-o"), " Resume") -> "https://lihaoyi.github.io/Resume/",
+      div(icon("github"), " Github") -> "https://github.com/lihaoyi"
+    ),
+    Seq(
+      div(icon("twitter"), " Twitter") -> s"https://twitter.com/li_haoyi",
+      div(icon("youtube-play"), " Talks") -> s"$unNesting/post/TalksIveGiven.html",
+      div() -> "" // Placeholder, maybe in future I'll have something to put here.
+    )
   )
   html(
     head(
@@ -62,15 +70,19 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
               NarrowStyles.flexFont,
               fontWeight.bold
             ),
-            padding := "10px 10px",
+            padding := "30px 30px",
             margin := 0
           ),
           div(
             Styles.headerLinkBox,
             NarrowStyles.linkFlex,
-            for ((name, url) <- headerLinks) yield div(
-              Styles.headerLink,
-              a(name, href := url, Styles.subtleLink, color := "white")
+            for (headerLinksRow <- headerLinks) yield div(
+              display.flex,
+              flexDirection.row,
+              for( (name, url) <- headerLinksRow) yield div(
+                Styles.headerLink,
+                a(name, href := url, Styles.subtleLink, color := "white")
+              )
             )
           )
         )
@@ -144,17 +156,27 @@ def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) 
   None,
   ".",
   div(
-    for((name, _, rawHtmlSnippet, dates) <- posts.reverse) yield div(
-      h1(a(
-        name,
-        href := s"post/${sanitize(name)}.html",
-        Styles.subtleLink,
-        color := "rgb(34, 34, 34)"
-      )),
-      metadata(dates),
-      raw(rawHtmlSnippet),
-      hr(margin := "50px 0px 50px 0px")
-    )
+    for((name, _, rawHtmlSnippet, dates) <- posts.reverse) yield {
+      val url = s"post/${sanitize(name)}.html"
+      div(
+        h1(a(
+          name,
+          href := url,
+          Styles.subtleLink,
+          color := "rgb(34, 34, 34)"
+        )),
+        metadata(dates),
+        raw(rawHtmlSnippet),
+        a( // Snippet to make comment count appear
+          href:=s"$url#disqus_thread",
+          data.`disqus-identifier`:=name,
+          "Comments"
+        ),
+        hr(margin := "50px 0px 50px 0px")
+      )
+    },
+    // snippet to
+    script(id:="dsq-count-scr", src:="//lihaoyi.disqus.com/count.js", "async".attr:="async")
   )
 )
 def postContent(name: String, rawHtmlContent: String, dates: Seq[(String, LocalDate)]) = pageChrome(
