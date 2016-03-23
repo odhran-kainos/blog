@@ -40,8 +40,8 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       for(sheet <- sheets)
         yield link(href := sheet, rel := "stylesheet", `type` := "text/css" ),
       tags2.title(pageTitle),
-      tags2.style(s"@media (min-width: 48em) {${WideStyles.styleSheetText}}"),
-      tags2.style(s"@media (max-width: 48em) {${NarrowStyles.styleSheetText}}"),
+      tags2.style(s"@media (min-width: 60em) {${WideStyles.styleSheetText}}"),
+      tags2.style(s"@media (max-width: 60em) {${NarrowStyles.styleSheetText}}"),
       tags2.style(Styles.styleSheetText),
       script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"),
       script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/languages/scala.min.js"),
@@ -76,6 +76,10 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
           div(
             Styles.headerLinkBox,
             NarrowStyles.linkFlex,
+            // This is necessary otherwise it doesn't seem to render correctly
+            // on iPhone 6S+ Chrome; presumably they have some bug with flexbox
+            // which is making it take up insufficient space.
+            minWidth := 175,
             for (headerLinksRow <- headerLinks) yield div(
               display.flex,
               flexDirection.row,
