@@ -12,9 +12,17 @@ basic programming and data-science techniques, we will build a trip planner to
 find the shortest bus commute from A to B, but powered by real data and bounded 
 by real-world limitations.
 
+From registering an API key, fetching data from an endpoint, sanitizing and
+understanding the data, implementing algorithms like a [Breadth First Search]
+or [Dijkstra's Algorithm], and refining search. You'll get a full tour of the
+process involved in making good use of public datasets!
+
 [LTA Data Mall]: http://www.mytransport.sg/content/mytransport/home/dataMall.html
 [Singapore Smart Nation]: http://www.pmo.gov.sg/smartnation
 [Python]: https://www.python.org/
+[Dijkstra's Algorithm]: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+[Breadth First Search]: https://en.wikipedia.org/wiki/Breadth-first_search
+
 
 -------------------------------------------------------------------------------
 
@@ -3325,8 +3333,6 @@ people can still follow along.
 - [services.json](SmartNation/services.json)
 
 [Priority Queue]: https://en.wikipedia.org/wiki/Priority_queue
-[Dijkstra's Algorithm]: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-[Breadth First Search]: https://en.wikipedia.org/wiki/Breadth-first_search
 [Geography of Singapore]: https://en.wikipedia.org/wiki/Geography_of_Singapore
 [Paged]: https://en.wikipedia.org/wiki/Pagination
 [HTTP Status Code]: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
