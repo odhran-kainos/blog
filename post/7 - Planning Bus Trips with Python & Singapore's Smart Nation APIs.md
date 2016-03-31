@@ -2917,7 +2917,12 @@ in the process!
 ### Other Trips
 
 To properly evaluate the trip-planner, let's throw it a few more trips to plan,
-that we already know the answer to, to see how it fares! 
+that we already know the answer to, to see how it fares! For these we'll use
+"reasonable" costs for bus-stops and bus-transfers: counting each bus stop
+as equivalent to traveling 0.5km, and each bus transfer as traveling 5km. With
+an average speed of 20km/h, that's equivalent to saying each stop is for 90s 
+and each bus transfer takes 15 minutes; not exact, but roughly the correct 
+order of magnitude.
 
 
 For example, can it find the short direct bus from `Grange Residences` to 
