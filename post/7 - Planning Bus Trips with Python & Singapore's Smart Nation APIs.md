@@ -14,7 +14,8 @@ by real-world limitations.
 
 From registering an API key, fetching data from an endpoint, sanitizing and
 understanding the data, implementing algorithms like a [Breadth First Search]
-or [Dijkstra's Algorithm], and refining the search. You'll get a full tour of 
+or [Dijkstra's Algorithm], refining the search, and finally evaluating its
+ability to plan useful and correct bus trips. You'll get a full tour of 
 the process involved in making good use of public datasets!
 
 [LTA Data Mall]: http://www.mytransport.sg/content/mytransport/home/dataMall.html
