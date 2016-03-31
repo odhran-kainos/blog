@@ -3123,7 +3123,7 @@ In the process, we've written about 150 lines of Python, the final code being
 Hopefully this post has shown how easy it is to make "something useful" with
 the datasets and APIs being exposed as part of the [Singapore Smart Nation]
 initiative, as well as how "freshman year" algorithms and computer-science can 
-be to accomplish real work an make cool things. 
+be used to accomplish real work and make cool, useful things. 
 
 Let me know what you think in the comments below! 
 
