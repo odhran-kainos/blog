@@ -221,7 +221,7 @@ SR_NUM,LOC_TXT,CARPARK_CD,OWNR_TXT,REGION_TXT,LONGTD_TXT,LATTD_TXT
 
 While others like the 
 [Premium Bus Service](http://www.mytransport.sg/content/dam/mytransport/DataMall_StaticData/PublicTransportRelated/PremiumBus.zip)
-file has a 1-2 thousand rows and many columns in each one. Overall, 
+file has a 1-2 thousand rows and many columns in each one. Overall,
 these are still of the size that you can load them up in an excel spreadsheet 
 and have any corporate excel wizard deal with them semi-manually. Thus, they're
 probably not really of interest to a developer.
@@ -1032,7 +1032,7 @@ few options might be, in increasing order of complexity:
 
 Option 1 would be simplest: you just count the number of stops each route would
 take you Option 2 we would take into consideration how far away the stops were 
-to each other, while Option 3 would include the waiting time for the bus, 
+to each other, while Option 3 would include the waiting time for the bus,
 either in aggregate ("Bus 101 comes every 11-17 minutes") or using the 
 real-time data ("Bus 101 will be at bus stop 01234 in 4 minutes and 22 
 minutes").
@@ -1838,8 +1838,14 @@ As you can see, instead of constructing the a `set()` for the "next stops" for
 each bus stop we now construct a dictionary `{}` which will contain the next
 stops *along with the distance to each one*.
 
+- **Note**: The `"Distance"` attribute on each item is the distance of that
+  stop *from the start of that service's route*, and *not* the distance from
+  the previous stop. Thus if we want the distance from one stop to the next, we
+  need to subtract the two `"Distance"` attributes to get the distance the bus
+  would need to travel between the stops.
+
 At the same time, we need to modify our `bfs` to use a [Priority Queue], which 
-is the Python [heapq](https://docs.python.org/2/library/heapq.html) module, 
+is the Python [heapq](https://docs.python.org/2/library/heapq.html) module,
 to turn it into a `dijkstras` search:
 
 ```diff
@@ -2606,7 +2612,7 @@ you introduce even a tiny cost for transfering buses.
   even if you take a single bus it counts as 1 "transfer". Another way of 
   looking at it is your first bus counts as a trasnfer from "no service" to
   "some service". This is a technical detail that doesn't affect the algorithm
-  or the trip-planning sinec every trip is equally affected, and you can easily 
+  or the trip-planning since every trip is equally affected, and you can easily
   `- 1` from the final `transfer` count if you want to count only 
   transfers-between-buses.
 
