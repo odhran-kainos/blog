@@ -13,8 +13,8 @@ the Scala compiler catch more of your dumb bugs.
 This is the third in the Strategic Scala Style series (after 
 [Principle of Least Power] and [Conciseness & Names]). 
 
-[Principle of Least Power]: StrategicScalaStylePrincipleofLeastPower.html
-[Conciseness & Names]: StrategicScalaStyleConcisenessNames.html
+[Principle of Least Power]: http://http://www.lihaoyi.com/post/StrategicScalaStylePrincipleofLeastPower.html
+[Conciseness & Names]: http://http://www.lihaoyi.com/post/StrategicScalaStylePrincipleofLeastPower.html
 
 -------------------------------------------------------------------------------
 
