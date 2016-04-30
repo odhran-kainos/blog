@@ -465,7 +465,7 @@ As an example, let's consider a piece of code like:
 var result = 0
 
 for (i <- 0 until 10){
-  result += 1
+  result += i
 }
 
 if (result > 10) result = result + 5 
@@ -487,7 +487,7 @@ out one of the mutations
 var result = 0
 
 for (i <- 0 until 10){
-  results += 1
+  results += i
 } 
 
 println(result) // 45
@@ -506,7 +506,7 @@ var result = 0
 foo()
 
 for (i <- 0 until 10){
-  results += 1
+  results += i
 }
 
 if (result > 10) result = result + 5 
@@ -822,7 +822,7 @@ What should it return? It could return
   phone-numbers but the name may not exist in the phonebook sometimes
   
 Both of these return types correspond to the `Map[String, String]` case
-abpve. But that's not all it could return, it could also return:
+above. But that's not all it could return, it could also return:
 
 - `Seq[String]` if the name may correspond to multiple phone-numbers in 
   the phone-book (possibly with duplicates), or not exist, and the order 
