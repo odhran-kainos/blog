@@ -822,7 +822,7 @@ What should it return? It could return
   phone-numbers but the name may not exist in the phonebook sometimes
   
 Both of these return types correspond to the `Map[String, String]` case
-abpve. But that's not all it could return, it could also return:
+above. But that's not all it could return, it could also return:
 
 - `Seq[String]` if the name may correspond to multiple phone-numbers in 
   the phone-book (possibly with duplicates), or not exist, and the order 
