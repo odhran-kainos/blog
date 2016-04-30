@@ -18,6 +18,26 @@ This is the third in the Strategic Scala Style series (after
 
 -------------------------------------------------------------------------------
 
+
+- [Fundamentals](#fundamentals)
+    - [What is a Type?](#what-is-a-type)
+    - [What is Safety?](#what-is-safety)
+    - [What is Type-safety?](#what-is-type-safety) 
+- [Scalazzi Scala](#scalazzi-scala)
+    - [Avoid Null](#avoid-null)
+    - [Avoid Exceptions](#avoid-exceptions)
+    - [Avoid Side Effects](#avoid-side-effects)
+    - [Limitations of Scalazzi Scala](#limitations-of-scalazzi-scala)
+- [Structured Data](#structured-data)
+    - [Avoid Strings in favor of Structured Data](#avoid-strings-in-favor-of-structured-data)
+    - [Encode Invariants in Types](#encode-invariants-in-types)
+- [Self-describing Data](#self-describing-data)
+    - [Avoid Integer Enums](#avoid-integer-enums)
+    - [Avoid String Flags](#avoid-string-flags)
+    - [Box Integer IDs](#box-integer-ids)
+- [Conclusion](#conclusion)
+
+
 There are many facets to the term *Type Safety*. You could spend an 
 entire career studying the theoretical foundations for the type-systems 
 of the Haskell or Scala programming languages, and could spend *another* 
@@ -52,24 +72,6 @@ count as "common sense". Hopefully this post will lay a foundation
 of common principles that people share and basic techniques to be aware of,
 which you can combine with your own project-specific guidelines, preference 
 and judgement when designing your Scala programs. 
-
-- [Fundamentals](#fundamentals)
-    - [What is a Type?](#what-is-a-type)
-    - [What is Safety?](#what-is-safety)
-    - [What is Type-safety?](#what-is-type-safety) 
-- [Scalazzi Scala](#scalazzi-scala)
-    - [Avoid Null](#avoid-null)
-    - [Avoid Exceptions](#avoid-exceptions)
-    - [Avoid Side Effects](#avoid-side-effects)
-    - [Limitations of Scalazzi Scala](#limitations-of-scalazzi-scala)
-- [Structured Data](#structured-data)
-    - [Avoid Strings in favor of Structured Data](#avoid-strings-in-favor-of-structured-data)
-    - [Encode Invariants in Types](#encode-invariants-in-types)
-- [Self-describing Data](#self-describing-data)
-    - [Avoid Integer Enums](#avoid-integer-enums)
-    - [Avoid String Flags](#avoid-string-flags)
-    - [Box Integer IDs](#box-integer-ids)
-- [Conclusion](#conclusion)
 
 
 ## Fundamentals
