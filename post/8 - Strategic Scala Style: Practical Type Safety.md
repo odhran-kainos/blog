@@ -230,7 +230,7 @@ one of those philosophies:
 ![The Scalazzi Safe Subset of Scala](TypeSafety/ScalazziScala.png)
 
 While there is a lot to discuss about these guidelines, we'll spend time 
-reviewing a few of them I find the most interesting: 
+reviewing just the few of them I find the most interesting:
 
 - [Avoid Null](#avoid-null)
 - [Avoid Exceptions](#avoid-exceptions)
