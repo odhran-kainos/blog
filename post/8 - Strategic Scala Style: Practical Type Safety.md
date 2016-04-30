@@ -1195,7 +1195,7 @@ giving them separate wrapper-types.
 In this post we've talked about what it means to be "type safe" from a 
 practical point of view, and gone over a number of techniques that help 
 improve the type-safety properties of your Scala code. In all these cases, 
-the added safety is statistical: there isn't any 
+the added safety is approximate: there isn't any 
 theoretical barrier stopping people from reaching around "behind" your code
 to do bad things, e.g. unwrapping your boxed integer IDs or converting your
 non-string flags back into strings with by `match`ing on it. We just hope that
@@ -1203,14 +1203,19 @@ the added inconvenience of unwrapping these when we really need to is
 outweighed by the added safety of eliminating these "easy" mistakes in other 
 situations. 
 
-Whether the benefit *actually does* outweight the cost is an 
-empirical question depending on how you are using the code: how often you
-would get inconvenienced vs how often you'd be saved from your mistakes.
-Basically all of these techniques have trade-offs, whether in terms of 
-performance or convenience, and it's up to each developer to use their
+But how do you know if the benefit *actually does* outweight the cost? 
+
+That is an empirical question depending on how you are using the code: how 
+often you would get inconvenienced vs how often you'd be saved from your 
+mistakes. Basically all of these techniques have trade-offs, whether in terms 
+of performance or convenience, and it's up to each developer to use their
 judgement to decide what's the right trade-off for each scenario.
 
-What other tips or techniques to you use to help maintain type-safety when
+Hopefully by reading this post, you've learned some useful techniques that 
+you can make use of in your own Scala code to get the compiler to help catch
+your mistakes and improve type-safety.
+
+What other tips or techniques to you use to increase type-safety when
 you're writing Scala? Let us know in the comments below!
 
 
