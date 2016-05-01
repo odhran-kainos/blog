@@ -14,7 +14,7 @@ This is the third in the Strategic Scala Style series (after
 [Principle of Least Power] and [Conciseness & Names]). 
 
 [Principle of Least Power]: http://www.lihaoyi.com/post/StrategicScalaStylePrincipleofLeastPower.html
-[Conciseness & Names]: http://www.lihaoyi.com/post/StrategicScalaStylePrincipleofLeastPower.html
+[Conciseness & Names]: http://www.lihaoyi.com/post/StrategicScalaStyleConcisenessNames.html
 
 -------------------------------------------------------------------------------
 
