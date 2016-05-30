@@ -33,10 +33,10 @@ techniques have in a Scala codebase.
 - [Micro De-optimization](#micro-de-optimization) 
     - [Baseline (Optimized)](#baseline-optimized)
     - [arraycopy and copyOfRange](#arraycopy-and-copyofrange)
-    - [Vector Performance](#vector-performance)
+    - [Local Array Caching](#local-array-caching)
     - [Speed through While Loops](#speed-through-while-loops)
-    - [The Effect of Tries](#the-effect-of-tries)
-    - [Removing Fast Attr Lookup](#removing-fast-attr-lookup)
+    - [Tries instead of String-Maps](#tries-instead-of-string-maps)
+    - [Arrays instead of Int-Maps](#arrays-instead-of-int-maps)
     - [Bit Packing](#bit-packing)
 - [Conclusion](#conclusion) 
     - [Is it Worth It?](#is-it-worth-it) 
@@ -384,10 +384,10 @@ The last 7 commits:
 ```
 haoyi-mbp:fansi haoyi$ git log --oneline
 f9418b5 Bit Packing
-d016d88 Removing Fast Attr Lookup
-4a74c51 The Effect of Tries
+d016d88 Arrays instead of Int-Maps
+4a74c51 Tries instead of String-Maps
 8841540 Speed through While Loops
-a64a2fb Vector Performance
+a64a2fb Local Array Caching
 777dfa8 arraycopy and copyOfRange
 fd55742 Baseline (Optimized)
 ...
@@ -397,10 +397,10 @@ Correspond to the 7 stages being described in this post:
 
 - [Baseline (Optimized)](#baseline-optimized)
 - [arraycopy and copyOfRange](#arraycopy-and-copyofrange)
-- [Vector Performance](#vector-performance)
+- [Local Array Caching](#local-array-caching)
 - [Speed through While Loops](#speed-through-while-loops)
-- [The Effect of Tries](#the-effect-of-tries)
-- [Removing Fast Attr Lookup](#removing-fast-attr-lookup)
+- [Tries instead of String-Maps](#tries-instead-of-string-maps)
+- [Arrays instead of Int-Maps](#arrays-instead-of-int-maps)
 - [Bit Packing](#bit-packing)
 
 You can install 
@@ -614,7 +614,7 @@ That's a huge slowdown for using `.slice` and `.take` and `.drop` instead of
 yourself using `Array`s for performance reasons, `.copyOfRange` is definitely
 something that's worth thinking of!
 
-### Vector Performance
+### Local Array Caching
 
 The next micro-optimization we can try removing is the local `categoryArray` 
 variable:
@@ -622,9 +622,14 @@ variable:
 - [Github Source](https://github.com/lihaoyi/fansi/blob/35b48525af8894484d2bc2f9403fbb3994774749/fansi/shared/src/main/scala/fansi/Fansi.scala#L126-L128)
 
 This was introduced to make the `while`-loop going over the `Attr.categories`
-vector faster. Iterating over an `Array` is faster than iterating over a `Vector`,
-and this one is in the critical path for the `.render` method 
-converting our `fansi.Str`s into `java.lang.String`s.
+vector faster inside the `render` method. Iterating over an `Array` is faster 
+than iterating over a `Vector`, and this one is in the critical path for the 
+`.render` method converting our `fansi.Str`s into `java.lang.String`s.
+
+Although allocating this array costs something, it's the `Attr.categories` 
+vector only has 5 items in it, so allocating a 5-element array should be cheap.
+For `render`ing any non-trivial `Str` the speed up from faster iteration would 
+outweigh the cost of allocating that array.
 
 Removing it:
 
@@ -671,7 +676,15 @@ Results in the following benchmarks:
 
 Again we have a bunch of noise,  but it seems that **Rendering** has gotten
 a good amount slower: maybe about 25%. Not as large or obvious as the earlier
-change, but not nothing either.
+change, but not nothing either. 
+
+What's the take-away? Even if you want your public APIs to be immutable and
+"idiomatic", if you are going to be doing a lot of work with a data-structure
+it could be worth copying it into a more optimal representation for how you
+are using it: the speed up on the lot-of-work may well outweight the cost of
+copying! In this case, I just need to iterate over the `Category`s that
+are available, and there's no faster data-structure to iterate over than a 
+flat `Array`.
 
 ### Speed through While Loops
 
@@ -782,7 +795,13 @@ def apply(raw: CharSequence, strict: Boolean = false): fansi.Str = {
 This `while`-loop skips forward by varying numbers of characters each iteration,
 and cannot be changed into a trivial for-loop like the others.
 
-### The Effect of Tries
+If you find the bottle-neck your program involves fancy Scala collections
+methods like `.map` or `.foreach` on arrays, it's worth trying to re-write it 
+in a `while`-loop to see if it gets any faster! Although it's a bit tedious and 
+ugly, it's a relatively straightforward conversion to do and shouldn't take too
+long to measure if it had any effect.
+
+### Tries instead of String-Maps
 
 One optimization that is present in `Fansi.scala` is the character-trie
 at the bottom of the file, `Trie[T]`:
@@ -883,7 +902,12 @@ is clear: the **Parsing** performance has dropped by half, *again*! It's now dow
 to under a quarter of what it started off as, and even the significant noise in
 the measurements can't hide that.
 
-### Removing Fast Attr Lookup
+Tries are great data-structures. If you're dealing with a lot of 
+`Map[String, T]`s, and find that looking up things in those maps is the 
+bottleneck in your code, swapping in a Trie could give a great performance
+boost.
+
+### Arrays instead of Int-Maps
 
 One bit of unusual code is the `val lookupAttrTable: Array[Attr]` that's part
  of the `Category` class
@@ -974,7 +998,10 @@ But you end up paying a performance cost for it:
 | **Overlay**   |         630,863 |             837,962 |       751,720 |      782,994 |  676,621 |         624,217 |
 
 Among the noise, it seems **Overlay** has gotten about 10% slower as a result of 
-this change. Not a huge jump, but not insignificant!
+this change. Not a huge jump, but not insignificant! In general, if you find 
+yourself dealing with `Map[Int, T]`s, if you can figure out a way to keep the 
+`Int`s you're looking up in the map small then using an `Array` would be a lot
+faster.
 
 ### Bit Packing
 
@@ -1481,6 +1508,18 @@ version take only ~1.3 times as much memory as the colored `java.lang.String`s.
 And as expected, the uncolored `java.lang.String` containing `12000` `Char`s
 takes `24kb`, since in Java each `Char` is a 
 [UTF-16](https://en.wikipedia.org/wiki/UTF-16) character and takes 2 bytes.
+
+Bit-packing is a technique that is often ignored in "high level" languages like 
+Scala, despite having a rich history of usage in C++, C, or Assembly programs. 
+Nevertheless, as this example demonstrates, it can lead to huge 
+improvements in performance and memory-usage in the cases where it can be used.
+Not only does it take up less memory, but bitwise operations on `Int`s or 
+`Long`s are going to be much, much, much faster than any methods you could
+call on a `Set` or a `Map`.
+
+If you are dealing with a `Set` or `Map` which is the bottle-neck within your 
+program, it's worth considering whether you can replace it with a `BitSet` or
+even just a plain old `Int` or `Long`. 
  
 ## Conclusion
 
@@ -1489,10 +1528,10 @@ But what we haven't done is taken a step back and considered what the aggregate
 affect of all the optimizations is! The combined result of these 6 optimizations:
 
 - [arraycopy and copyOfRange](#arraycopy-and-copyofrange)
-- [Vector Performance](#vector-performance)
+- [Local Array Caching](#local-array-caching)
 - [Speed through While Loops](#speed-through-while-loops)
-- [The Effect of Tries](#the-effect-of-tries)
-- [Removing Fast Attr Lookup](#removing-fast-attr-lookup)
+- [Tries instead of String-Maps](#tries-instead-of-string-maps)
+- [Arrays instead of Int-Maps](#arrays-instead-of-int-maps)
 - [Bit Packing](#bit-packing)
 
 Can be summarized in one table:
@@ -1639,10 +1678,10 @@ time in one section, and you want it to spend less. These tools, and others
 like them, can be used to make it run faster:
 
 - [arraycopy and copyOfRange](#arraycopy-and-copyofrange)
-- [Vector Performance](#vector-performance)
+- [Local Array Caching](#local-array-caching)
 - [Speed through While Loops](#speed-through-while-loops)
-- [The Effect of Tries](#the-effect-of-tries)
-- [Removing Fast Attr Lookup](#removing-fast-attr-lookup)
+- [Tries instead of String-Maps](#tries-instead-of-string-maps)
+- [Arrays instead of Int-Maps](#arrays-instead-of-int-maps)
 - [Bit Packing](#bit-packing)
 
 While these techniques are often looked down upon in programming circles - 
@@ -1652,4 +1691,4 @@ care of it" - hopefully this post demonstrates that they still can have a
 powerful effect, and deserve a place in your programmer's toolbox. 
 
 What are your favorite micro-optimization tricks you've used in Scala or other
-languages? Let everyonw know in the comments below!
+languages?
