@@ -162,7 +162,7 @@ Therefore you end up looking for features like:
   unrelated commands (Compiling [SCSS]? Compiling Javascript?) that take less 
   than 8 cores each you can run them in parallel and save some time
 
-- Caching command results: if you're CI build is slow, you may want to avoid
+- Caching command results: if your CI build is slow, you may want to avoid
   needlessly re-computing parts of it to speed it up. For example, third-party
   binaries are often `apt-get install`ed once and then used for multiple CI
   builds, and third-party dependencies from e.g. [Maven Central] are often
@@ -232,7 +232,7 @@ section will discuss each of these features in greater detail.
 ### Running ad-hoc commands
 
 The basic requirement here is that you need to be able to run ad-hoc code as
-part of your build process. The list if things you may want to run are
+part of your build process. The list of things you may want to run are
 infinite, but includes things like:
 
 - Generating serialization code from IDL files
@@ -246,9 +246,9 @@ at all at runtime: they are purely a concern during developing, building and
 packaging your code.
 
 It's possible for this requirement to be satisfied by a bunch of
-[Shell Scripts](#shell-scripts), used together a simpler build tool which then
+[Shell Scripts](#shell-scripts) used together, a simpler build tool which then
 does not need to do this, but that has its downsides. For example, it means
-that the build tool is then un-aware of where these commands fit in to the
+that the build tool is then unaware of where these commands fit in to the
 larger scheme of things. For example, if compilation of the "main" codebase
 depends on the code generated from IDL files, you will then have to manually
 ensure you run this code-generation script every time the IDL files change.
