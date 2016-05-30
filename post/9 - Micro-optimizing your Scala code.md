@@ -1691,4 +1691,4 @@ care of it" - hopefully this post demonstrates that they still can have a
 powerful effect, and deserve a place in your programmer's toolbox. 
 
 What are your favorite micro-optimization tricks you've used in Scala or other
-languages?
+languages? Let everyone know in the comments below!
