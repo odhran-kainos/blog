@@ -818,7 +818,7 @@ What should it return? It could return
 
 - `String` if you are sure there is a 1 to 1 correspondence between names 
   and phone-numbers, and the name being looked up will always exist
-- `Option[String]` if there's a 1 to 1 correpsondence between names and 
+- `Option[String]` if there's a 1 to 1 correspondence between names and 
   phone-numbers but the name may not exist in the phonebook sometimes
   
 Both of these return types correspond to the `Map[String, String]` case
