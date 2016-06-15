@@ -1076,7 +1076,7 @@ These are just a small number of guidelines that I follow when deciding how to
 represent my data as `class`es or `case class`es in my Scala programs, together
 with the reasoning behind them. None of these guidelines are "novel", or of
 any academic interest, and in fact may well be "obvious" for people who have
-been writing Scala for a while; nevertheless, hopefully they will be useful to
+been writing Scala for a while. Nevertheless, hopefully they will be useful to
 beginning or intermediate Scala programmers trying to build a foundation for
 talking about Scala code and evaluating the plethora of solutions that the
 Scala programming language offers to someone designing their own data-types.
