@@ -632,7 +632,7 @@ things:
   comparing two paths to see if one is a sub-path of the other is much easier
   if both paths are already normalized. The cost of keeping
   already-normalized data normalized is usually not more expensive than
-  normalizedizing things manually when-necessary, and is often cheap.
+  normalizing things manually when-necessary, and is often actually cheaper.
 
 For example, rather than defining filesystem paths as a case class with a
 normalize method:
