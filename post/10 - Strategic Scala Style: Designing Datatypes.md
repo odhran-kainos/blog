@@ -976,7 +976,7 @@ val action = new MyAction(
 ```
 
 In this case it's simple, but you should try to maintain this style even if
-your constructor is getting large an unwieldy. Perhaps your constructor has
+your constructor is getting large and unwieldy. Perhaps your constructor has
 11 different arguments:
 
 ```scala
