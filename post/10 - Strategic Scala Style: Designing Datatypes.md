@@ -45,8 +45,7 @@ Apart from the built in data-types, you will end up using data-types defined in
 libraries, and find yourself defining your own as your program grows. This post
 will explore some considerations and guidelines to remember when designing your
 own data-types, and help you sort through the over-abundance of ways that Scala
-lets you model your data. Hopefully this should help you write safer and more
-maintainable Scala programs in future.
+lets you model your data:
 
 - [Opaque or Transparent?](#opaque-or-transparent)
     - [Opacity enforces Invariants](#opacity-enforces-invariants)
@@ -78,6 +77,9 @@ Many people who have been using Scala for a while might find much of this
 "obvious". Nevertheless, hopefully this post will still be useful in codifying
 this "obvious" knowledge for anyone who doesn't find it obvious, and form a
 basis for future discussion.
+
+And on to the first consideration: should you make your data-type opaque or 
+transparent?
    
 ## Opaque or Transparent?
 
