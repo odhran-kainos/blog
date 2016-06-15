@@ -6,7 +6,7 @@ import scalatags.Text.all.{width, height, _}
 import scalatags.Text._
 import java.time.LocalDate
 @
-load.module(ammonite.ops.cwd/"styles.scala")
+load.module(ammonite.ops.cwd/"pageStyles.scala")
 @
 def sanitize(s: String): String = {
   s.filter(_.isLetterOrDigit)

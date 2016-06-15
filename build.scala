@@ -1,7 +1,7 @@
 // Load dependencies
 load.ivy("org.pegdown" % "pegdown" % "1.6.0")
 load.ivy("com.lihaoyi" %% "scalatags" % "0.5.3")
-load.module(ammonite.ops.cwd/"styles.scala")
+load.module(ammonite.ops.cwd/"pageStyles.scala")
 load.module(ammonite.ops.cwd/"pages.scala")
 @
 import scalatags.Text.all.{width, height, _}
@@ -17,7 +17,6 @@ val postsFolder = cwd/'post
 val targetFolder = cwd/'target
 
 object DatesFor{
-  import ammonite.ops.ImplicitWd._
   val commitChunks = %%('git, 'log, "--date=short").out.string.split("\n(?=commit)")
   val commits = for(chunk <- commitChunks) yield {
     val lines = chunk.lines.toSeq
@@ -149,8 +148,8 @@ def main(publish: Boolean = false) = {
   }
 
   if (publish){
-    implicit val publishWd = cwd/'target
-    write(publishWd/'CNAME, "www.lihaoyi.com")
+    implicit val wd = cwd/'target
+    write(wd/'CNAME, "www.lihaoyi.com")
     %git 'init
     %git('add, "-A", ".")
     %git('commit, "-am", "first commit")
