@@ -31,7 +31,7 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
     Seq(
       div(icon("twitter"), " Twitter") -> s"https://twitter.com/li_haoyi",
       div(icon("youtube-play"), " Talks") -> s"$unNesting/post/TalksIveGiven.html",
-      div() -> "" // Placeholder, maybe in future I'll have something to put here.
+      div(icon("rss"), "RSS") -> s"$unNesting/feed.xml"
     )
   )
   html(

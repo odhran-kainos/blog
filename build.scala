@@ -123,7 +123,42 @@ val posts = {
   }
 }
 
+def formatRssDate(date: java.time.LocalDate) = {
+  date
+    .atTime(0, 0)
+    .atZone(java.time.ZoneId.systemDefault())
+    .format(java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME)
+}
+val rssXml = {
+  val rss = "rss".tag
+  val version = "version".attr
+  val channel = "channel".tag
+  val title = "title".tag
+  val link = "link".tag
+  val description = "description".tag
+  val item = "item".tag
+  val lastBuildDate = "lastBuildDate".tag
+  val pubDate = "pubDate".tag
+  val snippet = rss(version := "2.0")(
+    channel(
+      title("Haoyi's Programming Blog"),
+      link("http://www.lihaoyi.com/"),
+      description(),
 
+      for((name, rawHtmlContent, rawHtmlSnippet, updates) <- posts) yield item(
+        title(name),
+        link(s"http://www.lihaoyi.com/post/${sanitize(name)}.html"),
+        description(rawHtmlSnippet),
+        for ((sha, date) <- updates.lastOption)
+        yield pubDate(formatRssDate(date)),
+        for ((sha, date) <- updates.headOption)
+        yield lastBuildDate(formatRssDate(date))
+      )
+
+    )
+  )
+  """<?xml version="1.0"?>""" + snippet.render
+}
 def main(publish: Boolean = false) = {
 
   rm! targetFolder
@@ -147,6 +182,7 @@ def main(publish: Boolean = false) = {
     )
   }
 
+  write(targetFolder/"feed.xml", rssXml)
   if (publish){
     implicit val wd = cwd/'target
     write(wd/'CNAME, "www.lihaoyi.com")
