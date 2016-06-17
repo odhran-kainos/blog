@@ -25,20 +25,22 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
   val headerLinks = Seq(
     Seq(
       div(icon("question-circle"), " About") -> s"$unNesting/post/HelloWorldBlog.html",
-      div(icon("file-text-o"), " Resume") -> "https://lihaoyi.github.io/Resume/",
+      div(icon("file-text"), " Resume") -> "https://lihaoyi.github.io/Resume/",
       div(icon("github"), " Github") -> "https://github.com/lihaoyi"
     ),
     Seq(
       div(icon("twitter"), " Twitter") -> s"https://twitter.com/li_haoyi",
-      div(icon("youtube-play"), " Talks") -> s"$unNesting/post/TalksIveGiven.html",
-      div(icon("rss"), "RSS") -> s"$unNesting/feed.xml"
+//      div(icon("envelope"), " Subscribe") -> s"https://groups.google.com/forum/#!forum/haoyis-programming-blog/join",
+      div(icon("rss"), "RSS") -> s"$unNesting/feed.xml",
+      div(icon("youtube-play"), " Talks") -> s"$unNesting/post/TalksIveGiven.html"
+//      div() -> ""
     )
   )
   html(
     head(
       meta(charset := "utf-8"),
       for(sheet <- sheets)
-        yield link(href := sheet, rel := "stylesheet", `type` := "text/css" ),
+      yield link(href := sheet, rel := "stylesheet", `type` := "text/css" ),
       tags2.title(pageTitle),
       tags2.style(s"@media (min-width: 60em) {${WideStyles.styleSheetText}}"),
       tags2.style(s"@media (max-width: 60em) {${NarrowStyles.styleSheetText}}"),
@@ -132,7 +134,6 @@ def commentBox(titleText: String): Frag = Seq(
       })();
   """))
 )
-
 def googleAnalytics: Frag = script(raw(
 """(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   |(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
