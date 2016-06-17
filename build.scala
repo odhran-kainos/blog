@@ -126,7 +126,7 @@ val posts = {
 def formatRssDate(date: java.time.LocalDate) = {
   date
     .atTime(0, 0)
-    .atZone(java.time.ZoneId.systemDefault())
+    .atZone(java.time.ZoneId.of("UTC"))
     .format(java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME)
 }
 val rssXml = {
