@@ -25,11 +25,16 @@ The way that most programs interact with the Unix terminal is through [ANSI
 escape codes]. These are special codes that your program can print in order to 
 give the terminal instructions. Various terminals support different subsets
 of these codes, and it's difficult to find a "authoritative" list of what every
-code does.
+code does. Wikipedia has a [reasonable
+listing](https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_codes) of them, as
+do many other sites.
 
 Nevertheless, it's possible to write programs that make use of ANSI escape 
 codes, and at least will work on common Unix systems like Ubuntu or OS-X 
-(though not Windows, which I won't cover here and is its own adventure!): 
+(though not Windows, which I won't cover here and is its own adventure!). This
+post will explore the basics of what Ansi escape codes exist, and demonstrate
+how to use them to write your own interactive command-line from first
+principles:
 
 - [Rich Text](#rich-text)
     - [Colors](#colors)
