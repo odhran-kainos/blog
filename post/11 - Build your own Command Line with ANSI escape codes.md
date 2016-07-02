@@ -1,9 +1,10 @@
-Everyone is used to printing out output in a terminal that scrolls as new text 
-appears, but that's not all your can do: you can color your text, you can move 
-the cursor up, down, left or right, or clear portions of the screen if you are 
-going to re-print them later. This is what lets programs like [Git] implement
-its dynamic progress indicators, and [Vim] or [Bash] implement their editors
-that let you modify already-displayed text without scrolling the terminal.
+Everyone is used to programs printing out output in a terminal that scrolls as
+new text appears, but that's not all your can do: your program can color your
+text, move the cursor up, down, left or right, or clear portions of the
+screen if you are going to re-print them later. This is what lets programs like
+[Git] implement its dynamic progress indicators, and [Vim] or [Bash] implement
+their editors that let you modify already-displayed text without scrolling the
+terminal.
 
 There are libraries like [Readline], [JLine], or the [Python Prompt Toolkit]
 that help you do this in various programming languages, but you can also do it
@@ -21,11 +22,11 @@ can directly make use of all the special features the terminal has to offer.
 
 -------------------------------------------------------------------------------
 
-The way that most programs interact with the Unix terminal is through [ANSI 
-escape codes]. These are special codes that your program can print in order to 
-give the terminal instructions. Various terminals support different subsets
-of these codes, and it's difficult to find a "authoritative" list of what every
-code does. Wikipedia has a [reasonable
+The way that most programs interact with the Unix terminal is through
+[ANSI escape codes]. These are special codes that your program can print in
+order to give the terminal instructions. Various terminals support different
+subsets of these codes, and it's difficult to find a "authoritative" list of
+what every code does. Wikipedia has a [reasonable
 listing](https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_codes) of them, as
 do many other sites.
 
