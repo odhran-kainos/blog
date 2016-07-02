@@ -17,6 +17,7 @@ val postsFolder = cwd/'post
 val targetFolder = cwd/'target
 
 object DatesFor{
+  import ImplicitWd._
   val commitChunks = %%('git, 'log, "--date=short").out.string.split("\n(?=commit)")
   val commits = for(chunk <- commitChunks) yield {
     val lines = chunk.lines.toSeq
