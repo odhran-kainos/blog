@@ -1,14 +1,12 @@
-load.ivy("com.lihaoyi" %% "scalatags" % "0.5.3")
-@
+import $ivy.`com.lihaoyi::scalatags:0.6.0`
 
 import scalatags.stylesheet._
 import scalatags.Text.all.{width, height, _}
 import scalatags.Text._
 
-@
 
 val marginWidth = "25%"
-trait WideStyles extends StyleSheet{
+object WideStyles extends StyleSheet{
   def header = cls(
     position.fixed,
     top := 0,
@@ -32,8 +30,7 @@ trait WideStyles extends StyleSheet{
     styles.width := marginWidth
   )
 }
-val WideStyles = Sheet[WideStyles]
-trait NarrowStyles extends StyleSheet{
+object NarrowStyles extends StyleSheet{
   def header = cls(
     marginBottom := 10
   )
@@ -53,8 +50,7 @@ trait NarrowStyles extends StyleSheet{
     fontSize := "4vw"
   )
 }
-val NarrowStyles = Sheet[NarrowStyles]
-trait Styles extends StyleSheet{
+object Styles extends StyleSheet{
   def header = cls(
     backgroundColor := "rgb(61, 79, 93)",
     display.flex,
@@ -84,4 +80,3 @@ trait Styles extends StyleSheet{
     textDecoration.none
   )
 }
-val Styles = Sheet[Styles]

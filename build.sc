@@ -1,9 +1,7 @@
 // Load dependencies
-load.ivy("org.pegdown" % "pegdown" % "1.6.0")
-load.ivy("com.lihaoyi" %% "scalatags" % "0.5.3")
-load.module(ammonite.ops.cwd/"pageStyles.scala")
-load.module(ammonite.ops.cwd/"pages.scala")
-@
+import $ivy.{`org.pegdown:pegdown:1.6.0`, `com.lihaoyi::scalatags:0.6.0`}
+import $file.pageStyles, pageStyles._
+import $file.pages, pages._
 import scalatags.Text.all.{width, height, _}
 
 import scalatags.Text._
@@ -17,7 +15,7 @@ val postsFolder = cwd/'post
 val targetFolder = cwd/'target
 
 object DatesFor{
-  import ImplicitWd._
+  implicit val wd = ImplicitWd.implicitCwd
   val commitChunks = %%('git, 'log, "--date=short").out.string.split("\n(?=commit)")
   val commits = for(chunk <- commitChunks) yield {
     val lines = chunk.lines.toSeq
@@ -131,29 +129,20 @@ def formatRssDate(date: java.time.LocalDate) = {
     .format(java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME)
 }
 val rssXml = {
-  val rss = "rss".tag
-  val version = "version".attr
-  val channel = "channel".tag
-  val title = "title".tag
-  val link = "link".tag
-  val description = "description".tag
-  val item = "item".tag
-  val lastBuildDate = "lastBuildDate".tag
-  val pubDate = "pubDate".tag
-  val snippet = rss(version := "2.0")(
-    channel(
-      title("Haoyi's Programming Blog"),
-      link("http://www.lihaoyi.com/"),
-      description(),
+  val snippet = tag("rss")(attr("version") := "2.0")(
+    tag("channel")(
+      tag("title")("Haoyi's Programming Blog"),
+      tag("link")("http://www.lihaoyi.com/"),
+      tag("description"),
 
-      for((name, rawHtmlContent, rawHtmlSnippet, updates) <- posts) yield item(
-        title(name),
-        link(s"http://www.lihaoyi.com/post/${sanitize(name)}.html"),
-        description(rawHtmlSnippet),
+      for((name, rawHtmlContent, rawHtmlSnippet, updates) <- posts) yield tag("item")(
+        tag("title")(name),
+        tag("link")(s"http://www.lihaoyi.com/post/${sanitize(name)}.html"),
+        tag("description")(rawHtmlSnippet),
         for ((sha, date) <- updates.lastOption)
-        yield pubDate(formatRssDate(date)),
+        yield tag("pubDate")(formatRssDate(date)),
         for ((sha, date) <- updates.headOption)
-        yield lastBuildDate(formatRssDate(date))
+        yield tag("lastBuildDate")(formatRssDate(date))
       )
 
     )

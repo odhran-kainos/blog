@@ -1,13 +1,10 @@
-load.ivy("com.lihaoyi" %% "scalatags" % "0.5.3")
-
-@
-
+import $ivy.`com.lihaoyi::scalatags:0.6.0`
 import scalatags.Text.all.{width, height, _}
 import scalatags.Text._
 import java.time.LocalDate
-@
-load.module(ammonite.ops.cwd/"pageStyles.scala")
-@
+import $file.pageStyles, pageStyles._
+
+
 def sanitize(s: String): String = {
   s.filter(_.isLetterOrDigit)
 }
@@ -181,7 +178,7 @@ def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) 
       )
     },
     // snippet to
-    script(id:="dsq-count-scr", src:="//lihaoyi.disqus.com/count.js", "async".attr:="async")
+    script(id:="dsq-count-scr", src:="//lihaoyi.disqus.com/count.js", attr("async"):="async")
   )
 )
 def postContent(name: String, rawHtmlContent: String, dates: Seq[(String, LocalDate)]) = pageChrome(
