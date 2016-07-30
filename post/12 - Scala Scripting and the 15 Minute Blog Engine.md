@@ -8,7 +8,8 @@ people are starting to use it for front-end Web work, while the
 [Ammonite-REPL] has turned it into a pleasant interactive experience.
 
 This post will explore the new Scala Scripting functionality in the Ammonite
-project. We'll see how it compares to both the status-quo Scala programming
+project, and use it in the context of creating your own DIY blog engine in 15
+minutes. We'll see how it compares to both the status-quo Scala programming
 experience, other scripting languages like Python or Bash, and what place it
 can find in your Scala programming toolbox.
 
