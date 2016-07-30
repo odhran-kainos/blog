@@ -7,14 +7,14 @@ web applications. With the advent of [Scala.js](http://www.scala-js.org/),
 people are starting to use it for front-end Web work, while the
 [Ammonite-REPL] has turned it into a pleasant interactive experience.
 
-This post will explore the new Scala Scripting functionality in the Ammonite
+This post will explore the new [Scala Scripting] functionality in the Ammonite
 project, and use it in the context of creating your own DIY blog engine in 15
 minutes. We'll see how it compares to both the status-quo Scala programming
 experience, other scripting languages like Python or Bash, and what place it
 can find in your Scala programming toolbox.
 
 [Ammonite-REPL]: http://www.lihaoyi.com/Ammonite/
-
+[Scala Scripting]: http://www.lihaoyi.com/Ammonite/#ScalaScripts
 -------------------------------------------------------------------------------
 
 - [Serious Business](#serious-business)
@@ -89,11 +89,11 @@ traditionally been:
   (can't import files) and SBT (slow start times)
 
 Clearly, none of these satisfy the use case of "write code in file, run it".
-That is where Scala Scripting comes in.
+That is where [Scala Scripting] comes in.
 
 ## Scala Scripting with Ammonite
 
-Scala Scripting avoids many of the limitations of the status-quo Scala world.
+[Scala Scripting] avoids many of the limitations of the status-quo Scala world.
 A new feature of the [Ammonite](http://www.lihaoyi.com/Ammonite/) project, Scala
 Scripting lets you write tiny, self-contained Scala scripts that you can run
 quickly-and-conveniently from the command line using the `amm` script-runner.
@@ -1091,7 +1091,7 @@ design:
 
 ## Conclusion
 
-In this post, we've explored the world of Scala Scripting using the Ammonite
+In this post, we've explored the world of [Scala Scripting] using the Ammonite
 script-runner `amm`. We've toured the features that make it distinct from
 existing Scala tools, and demonstrated how you can use it "for real" to make
 a working static blog engine in 15 minutes and 60 lines of code. We've
@@ -1115,7 +1115,7 @@ traction among the Scala community.
 
 -------------------------------------------------------------------------------
 
-Fundamentally, Scala Scripting is an experiment that tests a hypothesis that
+Fundamentally, [Scala Scripting] is an experiment that tests a hypothesis that
 it is possible to make a script-file format for Scala
 that is sufficiently pleasant to use that people will actually use it.
 
