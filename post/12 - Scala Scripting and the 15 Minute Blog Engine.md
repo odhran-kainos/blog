@@ -119,12 +119,14 @@ can be anything, and not just `class`es `trait`s and `object`s. `amm` runs the
 file, compiling it, caching the compiled code, and executing it. You can also
 add a `#!/usr/bin/env amm` shebang line to let you execute the file directly
 
+```scala
 > cat Foo.sc
 #!/usr/bin/env amm
 println("Hello World")
 
 > ./Foo.sc
 Hello World
+```
 
 ## Ammonite Goodies
 
