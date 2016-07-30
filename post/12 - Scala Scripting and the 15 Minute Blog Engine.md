@@ -94,7 +94,7 @@ That is where Scala Scripting comes in.
 ## Scala Scripting with Ammonite
 
 Scala Scripting avoids many of the limitations of the status-quo Scala world.
-A part of the [Ammonite](http://www.lihaoyi.com/Ammonite/) project, Scala
+A new feature of the [Ammonite](http://www.lihaoyi.com/Ammonite/) project, Scala
 Scripting lets you write tiny, self-contained Scala scripts that you can run
 quickly-and-conveniently from the command line using the `amm` script-runner.
 
