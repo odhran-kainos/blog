@@ -7,6 +7,7 @@ import scalatags.Text._
 
 val marginWidth = "25%"
 object WideStyles extends StyleSheet{
+  override def customSheetName = Some("WideStyles")
   def header = cls(
     position.fixed,
     top := 0,
@@ -31,6 +32,7 @@ object WideStyles extends StyleSheet{
   )
 }
 object NarrowStyles extends StyleSheet{
+  override def customSheetName = Some("NarrowStyles")
   def header = cls(
     marginBottom := 10
   )
@@ -51,6 +53,7 @@ object NarrowStyles extends StyleSheet{
   )
 }
 object Styles extends StyleSheet{
+  override def customSheetName = Some("Styles")
   def header = cls(
     backgroundColor := "rgb(61, 79, 93)",
     display.flex,

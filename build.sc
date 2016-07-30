@@ -41,6 +41,7 @@ object DatesFor{
 }
 
 val (markdownFiles, otherFiles) = ls! postsFolder partition (_.ext == "md")
+markdownFiles.foreach(println)
 // Walk the posts/ folder and parse out the name, full- and first-paragraph-
 // HTML of each post to be used on their respective pages and on the index
 val posts = {
@@ -149,6 +150,7 @@ val rssXml = {
   )
   """<?xml version="1.0"?>""" + snippet.render
 }
+@main
 def main(publish: Boolean = false) = {
 
   rm! targetFolder
