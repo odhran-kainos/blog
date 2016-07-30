@@ -1,6 +1,3 @@
-This post presents a new way of using the Scala programming language: as a
-language for writing command-line scripts, in the same vein as Python or Bash.
-
 The Scala programming language has traditionally been a tool used for building
 "serious business" systems: compilers, big data, distributed systems or large
 web applications. With the advent of [Scala.js](http://www.scala-js.org/),
