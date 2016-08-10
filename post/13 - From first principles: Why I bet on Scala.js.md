@@ -1269,7 +1269,7 @@ return (Opal.defn(Opal.Object, '$foo', TMP_1 = function ːfoo(a, b) {
 }, TMP_1.$$arity = 2), nil) && 'foo'
 ```
 
-- [Source](OpalAddSnippet)
+- [Source][OpalAddSnippet]
 
 [OpalAddSnippet]: http://opalrb.org/try/?code:def%20foo(a%2C%20b)%0A%09a%20%2B%20b%0Aend
 
