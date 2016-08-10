@@ -886,7 +886,7 @@ code in the browser - [there](http://stackoverflow.com/questions/2213734/using-g
 
 While Scala.js was not born with a rich ecosystem of libraries, it's
 [Perfect Scala Compatibility](#perfect-scala-compatibility) meant that
-it had the potential the support many of the libraries that are common in the
+it had the potential to support many of the libraries that are common in the
 Scala ecosystem. While Scala.js and GWT technically support more-or-less the
 same subsets of their language (no reflection, no file-based config/DSLs, etc.),
 the way code is written *In the Wild* means that Scala.js supports much more
