@@ -751,7 +751,7 @@ And it turns out that in practice, this is indeed the case...
 ## Cross-Platform Ecosystem
 
 One big selling point of Scala.js has always been the ability to write
-Cross-Platform Ecosystem that runs on both browser and server, on both the
+cross-platform code that runs on both browser and server, on both the
 Javascript runtime and on the JVM.
 
 This is a feature that most other "normal" languages with added
