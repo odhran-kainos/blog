@@ -2090,7 +2090,7 @@ the last three years since I first got involved in it:
 **These are all real, meaningful, orders-of-magnitude improvements to every
 metric under the sun**: >10x faster, >10x smaller code, >10x quicker development
 cycle, >100x more libraries, >1000x more users. If you are a developer who is
-considering using Scala.js to do Serious Business™, these are statisticss that
+considering using Scala.js to do Serious Business™, these are statistics that
 matter and matter a lot. Aug 2016 Scala.js is a far better tool than Sep 2013
 Scala.js is, in every way possible.
 
