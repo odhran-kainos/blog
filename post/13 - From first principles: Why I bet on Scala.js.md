@@ -2006,6 +2006,23 @@ In any language with generic types, the above formulation would have happened
 by default, rather than needing hours of intricate code-analysis in order to
 achieve.
 
+From the point of view of a Scala or even Java programmer, the above type
+signature is not complex at all: a generic class with some arguments based on
+the generic type.  On the other hand, in a language without type
+signatures, the interplay between the various arguments, callbacks, *callback
+arguments* and how they all fit together is entirely non-obvious! 
+
+Reading the 
+implementation code is the common way you understand code in dynamic languages,
+and I can tell you trying to derive these relationships from the implementation
+code and use-sites of each argument is *very* difficult.
+In this case we ended up successfully documenting it with faux-type-signatures 
+in comments, but in most cases you won't be so lucky.
+
+**In general, being able to specify abstractions precisely turns dangerous, 
+confusing abstractions into boring, well-defined building blocks that anyone 
+can understand**.
+
 More insidious than the difficulty of pinning down this particular abstraction,
 though, is the follow-on effect: when abstractions are difficult to describe,
 and impossible to check for consistency, people tend to favor copy-paste code
