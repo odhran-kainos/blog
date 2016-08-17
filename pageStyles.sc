@@ -1,8 +1,7 @@
 import $ivy.`com.lihaoyi::scalatags:0.6.0`
 
 import scalatags.stylesheet._
-import scalatags.Text.all.{width, height, _}
-import scalatags.Text._
+import scalatags.Text.all._
 
 
 val marginWidth = "25%"
@@ -12,7 +11,7 @@ object WideStyles extends StyleSheet{
     position.fixed,
     top := 0,
     bottom := 0,
-    styles.width := marginWidth,
+    width := marginWidth,
     justifyContent.center
   )
   def headerContent = cls(
@@ -27,8 +26,8 @@ object WideStyles extends StyleSheet{
   def footer = cls(
     position.fixed,
     bottom := 0,
-    styles.height := 50,
-    styles.width := marginWidth
+    height := 50,
+    width := marginWidth
   )
 }
 object NarrowStyles extends StyleSheet{
@@ -41,7 +40,7 @@ object NarrowStyles extends StyleSheet{
   )
   def headerContent = cls(
     flexDirection.row,
-    styles.width := "100%",
+    width := "100%",
     display.flex
   )
   def linkFlex = cls(

@@ -1,6 +1,5 @@
 import $ivy.`com.lihaoyi::scalatags:0.6.0`
-import scalatags.Text.all.{width, height, _}
-import scalatags.Text._
+import scalatags.Text.all._, scalatags.Text.tags2
 import java.time.LocalDate
 import $file.pageStyles, pageStyles._
 
