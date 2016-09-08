@@ -25,7 +25,6 @@ can make the process of parsing structured text simple, easy and fun.
 
 -------------------------------------------------------------------------------
 
-- [Parsing Text](#parsing-text)
 - [Your First Parser Combinator](#your-first-parser-combinator)
 - [Regex-Like Parsers](#regex-like-parsers)
 - [Capturing and Transforming Parsers](#capturing-and-transforming-parsers)
@@ -33,8 +32,6 @@ can make the process of parsing structured text simple, easy and fun.
 - [Recursive Parsers](#recursive-parsers)
 - [Putting it together](#putting-it-together)
 - [Conclusion](#conclusion)
-
-## Parsing Text
 
 Often when programming, you find yourself dealing with structured text or
 binary data, and need to parse it into some kind of data-structure before you
