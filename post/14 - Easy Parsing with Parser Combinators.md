@@ -25,6 +25,15 @@ can make the process of parsing structured text simple, easy and fun.
 
 -------------------------------------------------------------------------------
 
+- [Parsing Text](#parsing-text)
+- [Your First Parser Combinator](#your-first-parser-combinator)
+- [Regex-Like Parsers](#regex-like-parsers)
+- [Capturing and Transforming Parsers](#capturing-and-transforming-parsers)
+- [Breaking up Parsers](#breaking-up-parsers)
+- [Recursive Parsers](#recursive-parsers)
+- [Putting it together](#putting-it-together)
+- [Conclusion](#conclusion)
+
 ## Parsing Text
 
 Often when programming, you find yourself dealing with structured text or
