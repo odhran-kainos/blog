@@ -48,7 +48,8 @@ Traditionally, your options for parsing it look something like this:
    data-formats: for example, many file formats are simply "one entry per line"
    in which case `String.split("\n")` works great. However, this falls down
    for anything non-trivial: even something as simple as [CSV] can't be naively
-   split on `"\n"` and `","`, due to the present of quoted commas and escaping.
+   split on `"\n"` and `","`, due to the presence of quoted commas and
+   escaping.
 
 3. **Can I parse it using [Regexes]?** This sometimes works, especially if the
    input data is sufficiently regular, or if you don't need 100% accuracy.
