@@ -20,7 +20,7 @@ answers.
 
 - [Memory Usage](#memory-usage)
     - [Memory use of Immutable Collections](#memory-use-of-immutable-collections)
-    - [Memory use of Arrays](#memory-use-of-Arrays)
+    - [Memory use of Arrays](#memory-use-of-arrays)
 - [Performance](#performance)
     - [Construction Performance](#construction-performance)
     - [Deconstruction Performance](#deconstruction-performance)
