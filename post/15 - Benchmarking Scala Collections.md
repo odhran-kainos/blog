@@ -31,7 +31,7 @@ answers.
     - [Arrays are great](#arrays-are-great)
     - [Sets and Maps are slow](#sets-and-maps-are-slow)
     - [Lists vs Vectors](#lists-vs-vectors)
-    - [Lists vs mutable.Buffer](#lists-vs-mutable-buffer)
+    - [Lists vs mutable.Buffer](#lists-vs-mutablebuffer)
     - [Vectors are... ok](#vectors-are-ok)
 - [Conclusion](#conclusion)
 - [Reference](#reference)
