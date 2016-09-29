@@ -1017,12 +1017,25 @@ structure, it turns out they're not that great:
    despite the `Array`s needing a full copy while `Vector`s have some degree
    of structural sharing
 
-Overall, they are an "acceptable" general purpose collection: on one hand, you
-don't see any pathological behavior, like indexed lookup in `List`s or
-item-by-item construction of `Array`s: most of the `Vector` benchmarks are
-relatively middle-of-the-pack. On the other hand, if it's possible, working
-directly with `List`s or `Array`s or `mutable.Buffer`s has much less overhead
-and might be worth it in places where performance matters.
+Overall, they are an "acceptable" general purpose collection:
+
+- On one hand, you don't see any pathological behavior, like indexed lookup in
+  `List`s or item-by-item construction of `Array`s: most of the `Vector`
+  benchmarks are relatively middle-of-the-pack. That means you can use them to
+  do more or less whatever and be sure you performance won't blow up
+  unexpectedly with O(n^2) behavior.
+
+- On the other hand, many common operations are an order of magnitude slower
+  than the "ideal" data structure: incremental building `Vector`s is 5-15x
+  slower than for `List`s, indexed-lookup is much slower than for `Array`s,
+  even concatenation of similarly-sized `Vector`s is 10x slower than
+  concatenating `Array`s.
+
+`Vector`s are a useful "default" data structure to reach for, but if it's
+at all possible, working directly with `List`s or `Array`s or `mutable.Buffer`s
+might have an order-of-magnitude less performance overhead. This might not
+matter, but it very well might be worth it in places where performance matters.
+A 10x performance difference is a lot!
 
 ## Conclusion
 
