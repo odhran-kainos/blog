@@ -874,7 +874,8 @@ surprisingly nice performance characteristics. Concatenating two `Array`s is
 faster than concatenating any other data-structure, even immutable `List`s and
 `Vector`s which are supposed to have clever structural sharing to reduce the
 need to copy-everything. This holds even for with a million elements, and is
-a 10x improvement that's definitely non-trivial.
+a 10x improvement that's definitely non-trivial. There's an open issue
+[SI-4442](https://issues.scala-lang.org/browse/SI-4442) for someone to fix this.
 
 Indexing into the `Array`, and iterating over it with a `while`-loop, are also
 so fast that the time taken is not measurable given these benchmarks. Even
