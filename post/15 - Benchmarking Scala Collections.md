@@ -675,8 +675,10 @@ collection to put stuff into, you should not use a `Set` or `Map` unless you
 *really* need the uniqueness guarantees they provide. Otherwise, chucking
 everything into a `List` or `mutable.Buffer` is much faster.
 
-Pre-allocating an array and then calling `.toSet` or `.toMap` on it isn't much
-faster.
+Pre-allocating an array and then calling `.toSet` or `.toMap` on it isn't
+faster than building up the `Set` or `Map` bit by bit using `+`. This is in
+contrast to calling `.toVector`, which *is* faster than building up the
+`Vector` incrementally...
 
 |:----------------|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|
 | **construct**   |          **0** |          **1** |          **4** |         **16** |         **64** |        **256** |      **1,024** |      **4,096** |     **16,192** |     **65,536** |    **262,144** |  **1,048,576** |
@@ -771,8 +773,8 @@ element-by-element (as seen in the
 of bulk-concatenation it's still faster just to copy everything manually into a
 new array and skip all the fancy data-structure stuff.
 
-`Vector` and `List` concatenation is much slower than concatenating
-`mutable.Buffer`s` or `Array`s, with `Vector` concatenation being twice as fast
+Though `Vector` and `List` concatenation is much slower than concatenating
+`mutable.Buffer`s or `Array`s, `Vector` concatenation is twice as fast
 as `List` concatenation.
 
 `Set` and `Map` again are surprisingly slow, with concatenation being 10x
@@ -872,16 +874,30 @@ keeping them in un-boxed `Array`s will save you tons of memory.
 Apart from primitive `Array`s, even boxed `Array`s of objects still have some
 surprisingly nice performance characteristics. Concatenating two `Array`s is
 faster than concatenating any other data-structure, even immutable `List`s and
-`Vector`s which are supposed to have clever structural sharing to reduce the
+`Vector`s which are [Persistent Data Structure] and supposed to have clever
+structural sharing to reduce the
 need to copy-everything. This holds even for with a million elements, and is
 a 10x improvement that's definitely non-trivial. There's an open issue
-[SI-4442](https://issues.scala-lang.org/browse/SI-4442) for someone to fix this.
+[SI-4442](https://issues.scala-lang.org/browse/SI-4442) for someone to fix this,
+but for now this is the state of the world.
 
 Indexing into the `Array`, and iterating over it with a `while`-loop, are also
 so fast that the time taken is not measurable given these benchmarks. Even
 using `:+` to build an `Array` from individual elements, ostentiably "O(n^2)"
 and "slow", turns out to be faster than building a `Vector` for collections of
 up to ~64 elements.
+
+It is surprising to me how much faster `Array` concatenation is than
+everything else, even "fancy" [Persistent Data Structure]s like `List` and
+`Vector` with structural sharing to avoid copying the whole thing; it turns out
+copying the whole thing is actually faster than trying to combine the fancy
+persistent data structures! Thus, even if you have an immutable collection you
+a passing around, and sometimes splitting into pieces or concatenating with
+other *similarly-sized* collections, it is actually faster to use an `Array`
+(perhaps boxed in a `WrappedArray` if you want it to be immutable) as long as
+you avoid the pathological build-up-element-by-element use case.
+
+[Persistent Data Structure]: https://en.wikipedia.org/wiki/Persistent_data_structure
 
 ### Sets and Maps are slow
 
