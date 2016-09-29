@@ -358,7 +358,7 @@ These are also specialized for small collections.
 objects, and so it's not surprising they take 10x less memory to store than
 `Array[Object]`s of the equivalent size
 
-### Memory Usage of Arrays
+### Memory Use of Arrays
 
 
 |:--------------------|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|
