@@ -625,11 +625,11 @@ a `List` or `Buffer`, as shown below.
 | m.Buffer        |             19 |             30 |             58 |            174 |            691 |          2,690 |         10,840 |         43,000 |        169,800 |        687,000 |      2,770,000 |     11,790,000 |
 
 
-Constructing a `mutable.Buffer` with `.append` seems to be about 30% faster
-than constructing a `List` with `::`: there's a consistent small difference,
-but it's probably not enough for you to notice in practice. If you want an
-accumulator to dump stuff into, a `List` or a `mutable.Buffer` will probably
-both work just fine.
+Constructing a `mutable.Buffer` with `.append` seems to be about 2-3x as slow
+as constructing a `List` with `::`, though with large lists the difference seems
+to drop down to a 1.5x difference. I find this a bit surprising, but what it means
+is that if you have an accumulator that needs to be fast, you using a `List` is 
+possibly the better option.
 
 |:----------------|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|---------------:|
 | **construct**   |          **0** |          **1** |          **4** |         **16** |         **64** |        **256** |      **1,024** |      **4,096** |     **16,192** |     **65,536** |    **262,144** |  **1,048,576** |
@@ -969,13 +969,12 @@ Apart from being an immutable collection, `List`s are often used as `var`s to
 act as a mutable bucket to put things. `mutable.Buffer` serves the same
 purpose. Which one should you use?
 
-It turns out, for many purposes it really doesn't matter. While their internals
-are totally different (linked list vs growable array) they turn out to be about
-the same speed to construct item-by-item, and to deconstruct by removing items
-one by one: `List` is slightly faster for these "put things and take things out
-of a bucket" operations, but probably not enough for you to actually notice.
+It turns out, using a `List` is actually substantially faster than using
+a `mutable.Buffer` if you are accumulating a collection item-by-item:
+2-3x for smaller collections, 1.5-2x for larger collections. A non-trivial
+difference!
 
-The real trade-offs are elsewhere:
+Apart from performance, there are other differences between them as well:
 
 - `mutable.Buffer` allows fast indexed lookup, while `List` doesn't
 
@@ -990,10 +989,10 @@ The real trade-offs are elsewhere:
 
 - `mutable.Buffer` has about half the memory overhead of a `List`
 
-If one of these factors matters to you, then you have a clear choice between
-`List` and `mutable.Buffer`. If none of them matter, you could probably use
-either of them and not notice any difference, so don't bother thinking too
-hard and just pick one arbitrarily.
+For accumulating elements one at a time, `List`s are faster, and end up
+having more memory overhead. But if one of 
+these other factors matters to you, that factor may end up deciding on your
+behalf whether to use a `List` or a `mutable.Buffer`.
 
 ### Vectors are... ok
 
@@ -1058,7 +1057,6 @@ structural sharing to reduce the work required.
 Just as important as highlighting the differences between the collections, this
 set of benchmarks highlights a lot of things that *don't* matter:
 
-- Using a `mutable.Buffer` instead of a `List` to accumulate results?
 - Calling `.foreach` on a `List` vs an `Array` vs a `Vector`?
 - Memory usage of a large `Vector` vs an `Array`?
 - Constructing a `Set` via `+`, or allocating an `Array` and calling `.toSet`?
