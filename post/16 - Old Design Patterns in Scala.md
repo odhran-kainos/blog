@@ -676,7 +676,7 @@ Which in Java would be something like
 
 
 ```scala
-Frag frag = new HtmlFrag({},
+Frag frag = new HtmlFrag(new Attr[]{},
   new HtmlFrag(
     new Header1Frag(new Attr[]{new Attr("id", "my-title")},
       new StringFrag("Hello")
