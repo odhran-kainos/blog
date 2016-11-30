@@ -358,7 +358,7 @@ to the end of this chain. - Wikipedia
 
 Using an [example from Wikipedia](https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern#Example),
 which models a chain of individuals in an organization who can approve a 
-purchase (depending on price) you first define a bunch of `PurchasePower` 
+purchase (depending on price), you first define a bunch of `PurchasePower` 
 classes:
 
 ```java
@@ -454,7 +454,7 @@ val prettyPrintFailedHandler: PartialFunction[Throwable, Res.Failing] = {
   case Ex(e: ThreadDeath)                 =>  interrupted(e)
 
 }
-val userCodeExceptionHandler: PartialFunction[Throwable, Res.Failing] = {
+val simpleFailureHandler: PartialFunction[Throwable, Res.Failing] = {
   case Ex(_: InvEx, e: ThreadDeath)       =>  interrupted(e)
 
   case Ex(_: InvEx, _: InitEx, userEx@_*) => Res.Exception(userEx(0), "")
@@ -462,7 +462,7 @@ val userCodeExceptionHandler: PartialFunction[Throwable, Res.Failing] = {
   case Ex(userEx@_*)                      => Res.Exception(userEx(0), "")
 }
 val userCodeExceptionHandler = {
-  exitHandler.orElse(prettyPrintFailedHandler).orElse(userCodeExceptionHandler)
+  exitHandler.orElse(prettyPrintFailedHandler).orElse(simpleFailureHandler)
 } 
 ```
 
@@ -678,10 +678,10 @@ Which in Java would be something like
 ```scala
 Frag frag = new HtmlFrag({},
   new HtmlFrag(
-    new Header1Frag({new Attr("id", "my-title")},
+    new Header1Frag(new Attr[]{new Attr("id", "my-title")},
       new StringFrag("Hello")
     ),
-    new ParagraphFrag({new Attr("background-color", "red")},
+    new ParagraphFrag(new Attr[]{new Attr("background-color", "red")},
       new StringFrag("Hello")
     )
   )
