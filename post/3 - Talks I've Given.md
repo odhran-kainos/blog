@@ -9,6 +9,26 @@ I'll keep this updated as time goes on.
 -------------------------------------------------------------------------------
 
 
+## Scala Scripting
+
+- **Scala Exchange** *8 Dec 2016* [Video](https://vimeo.com/194959852)
+- **Scala by the Bay** *10 Nov 2016* [Video](https://vimeo.com/191328477)
+- [Slides](../post/slides/Scala-Scripting.pdf)
+
+This talk will demonstrate a new script-file format for writing your Scala code. 
+
+Unlike traditional Scala projects, which are built with SBT or Maven or Ant and 
+edited inside your IDE, Scala Scripts do not need a "project" or "build tool" 
+in order to run. You simply write your code in a single file, and run it. Need 
+code in another script? Simply import it. Need a third-party library? You can 
+import it too. 
+
+This greatly reduces the barrier to entry of getting started writing Scala code, 
+and allows Scala to be used for common housekeeping work at the command-line, 
+much like Python or Ruby is used today. I will demonstrate this Scala Scripting 
+file format, explain how it works, and what place it could find in the Scala 
+ecosystem today.
+
 ## Client-side web dev without Javascript, with Scala.js
 **ForwardJS Summit** *10 Feb 2016*
 
