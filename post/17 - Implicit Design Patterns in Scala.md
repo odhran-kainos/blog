@@ -262,7 +262,120 @@ type. While there is some amount of boilerplate setting this up (e.g. all the
 to be defined once per type (e.g. `Jsonable`) for functions all over a codebase
 to make use of.
 
-Type-Class Implicits are a broadly useful pattern, and are a very different
+### Method Overloading 
+
+Someone who has programmed in Java or a similar language may have used method
+overloading in the past to get this kind of functionality. e.g. defining
+`convertToJson` as:
+
+```scala
+def convertToJson(t: String) = Json.Str(t)
+def convertToJson(t: Double) = Json.Num(t)
+def convertToJson(t: Int) = Json.Num(t.toDouble)
+```
+
+This works, allowing multiple different types to be passed to `convertToJson`
+while disallowing invalid types at compile time, just as our Type-class 
+Implicits version written above:
+
+```scala
+@ convertToJson("Hello")
+res5: Json.Str = Str("Hello")
+
+@ convertToJson(1.23)
+res6: Json.Num = Num(1.23)
+
+@ convertToJson(new java.io.File(","))
+cmd7.sc:1: overloaded method value convertToJson with alternatives:
+  (t: Int)$sess.cmd0.Json.Num <and>
+  (t: Double)$sess.cmd0.Json.Num <and>
+  (t: String)$sess.cmd0.Json.Str
+ cannot be applied to (java.io.File)
+val res7 = convertToJson(new java.io.File(","))
+           ^
+Compilation Failed
+```
+
+However, where this falls down is if you need to use `convertToJson` in another
+function. For example, maybe I want to write the following functions:
+
+```scala
+def convertToJsonAndPrint(x: T): Unit
+def convertMultipleItemsToJson(x: Array[T]): Seq[Json]
+def convertFutureToJson(x: Future[T]): Future[Json]
+```
+
+Using operator overloading, you have to duplicate each of these methods once
+for each type that can be converted to JSON. This results in a lot of 
+duplication:
+
+```scala
+def convertToJson(t: String) = Json.Str(t)
+def convertToJson(t: Double) = Json.Num(t)
+def convertToJson(t: Int) = Json.Num(t.toDouble)
+
+def convertToJsonAndPrint(t: String) = println(convertToJson(t))
+def convertToJsonAndPrint(t: Double) = println(convertToJson(t))
+def convertToJsonAndPrint(t: Int) = println(convertToJson(t))
+
+def convertMultipleItemsToJson(t: Array[String]) = t.map(convertToJson)
+def convertMultipleItemsToJson(t: Array[Double]) = t.map(convertToJson)
+def convertMultipleItemsToJson(t: Array[Int]) = t.map(convertToJson)
+```
+
+This works:
+
+```scala
+@ convertToJsonAndPrint(123)
+Num(123.0)
+
+@ convertMultipleItemsToJson(Array("Hello", "world"))
+res14: Array[Json.Str] = Array(Str("Hello"), Str("world"))
+```
+
+But at the cost of duplicating every operation once per-type. Here we only have
+three types and three operation, resulting in 9 methods in total, but in a 
+larger program you may easily have 10 different types which are convertible to
+JSON, which are called by a hundred different methods. While you could still 
+use method overloading, you'd need to write 1000 duplicate methods to make it 
+work.
+
+Using Type-class implicits, there's some boilerplate in defining the implicits
+as we did above, but once that's done each additional operation no longer needs
+N duplicate methods in order to work with any `Jsonable` type `T`:
+ 
+```scala
+def convertToJson[T: Jsonable](x: T): Json = {
+  implicitly[Jsonable[T]].serialize(x)
+}
+def convertToJsonAndPrint[T: Jsonable](x: T) = println(convertToJson(x))
+def convertMultipleItemsToJson[T: Jsonable](t: Array[T]) = t.map(convertToJson(_))
+```
+
+And this works just the same as the method-overloaded version above, just with
+less duplication:
+
+```scala
+@ convertToJsonAndPrint(123)
+Num(123.0)
+
+@ convertMultipleItemsToJson(Array("Hello", "world"))
+res22: Array[Json] = Array(Str("Hello"), Str("world"))
+```
+
+In general, while method overloading works, it is better to use 
+Type-class implicits. It is a bit more verbose to set up the `Jsonable` trait 
+at the start, but that it avoids having to duplicate methods throughout your 
+codebase which use `convertToJson`. Instead, any method in your codebase just 
+needs to take a `[T: Jsonable]` type parameter and it will automatically (and 
+consistently!) be able to work with the same set of types that the original 
+`convertToJson` method could, and work with other `[T: Jsonable]` methods
+(e.g. calling into `convertToJson` in their implementation) completely 
+seamlessly.
+
+--------------------------------------------------------------------------------
+
+Type-class Implicits are a broadly useful pattern, and are a very different
 pattern than the Implicit Contexts we describe above: 
 
 - Implicit Contexts tend to have different values injected in each time, 
