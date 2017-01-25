@@ -144,7 +144,8 @@ Scala.
 [MacroPy]: https://github.com/lihaoyi/macropy
 
 Furthermore, there are a large set of "obviously" functionl programming 
-languages that don't have at all. Purescript, non-Template Haskell, Scala 2.9,
+languages that don't have AST-transforming macros at all. Purescript, 
+non-Template Haskell, Scala 2.9,
 and many other "obviously" functional languages do not include support for
 compile-time AST transformations. So whatever is the core of functional 
 programming, it's not AST macros.
@@ -905,7 +906,7 @@ make a mistake or do something out of order: even in a dynamic language like
 python, a subtly bad copy-paste job can get called out by your editor so you
 can fix it before needing to run any code:
 
-![TiramisuDiagram](BasicFunctionalProgramming/ForgotExpresso.png)
+![TiramisuDiagram](BasicFunctionalProgramming/FunctionalError.png)
 
 Whether you're working in a dynamic language like Python or a static language
 like Scala, whether your code is currently working or broken, Functional 
