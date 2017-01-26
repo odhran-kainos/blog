@@ -143,7 +143,7 @@ Scala.
 [Java Annotation Processors]: http://hannesdorfmann.com/annotation-processing/annotationprocessing101
 [MacroPy]: https://github.com/lihaoyi/macropy
 
-Furthermore, there are a large set of "obviously" functionl programming 
+Furthermore, there are a large set of "obviously" functional programming 
 languages that don't have AST-transforming macros at all. Purescript, 
 non-Template Haskell, Scala 2.9,
 and many other "obviously" functional languages do not include support for
