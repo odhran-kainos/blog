@@ -239,19 +239,13 @@ Fluent is currently offered as a self-hosted, standalone
 Rather than having to ship your code to our servers, and trusting us to take 
 care of it, you can run Fluent on your own server and ensure your code never 
 leaves your VPN. On top of that you can configure email or Google/Github 
-single-sign on if you want to further control who is allowed to access it. 
+single-sign on if you want to further control who is allowed to access it.
+[Try out our online demo](https://demo.fluentcode.com/) if you want to see what
+it's like.
 
-We are currently offering Fluent as a free product for small teams; anyone who
-wishes to use it can use Fluent for up to 30 users, without needing a license 
-key. If you are a larger organization who is looking for an online code 
-explorer, we'll be happy to work with you to set up Fluent and make it work for 
-your engineers.
-
-Eventually we may start offering it as a service anyone can plug into their
-Github repositories, public or private, and host on our own servers, but that
-is not yet available.
-
-If you're curious, [try out our demo](https://demo.fluentcode.com/),
-[install it yourself](http://install.fluentcode.com/) to see how it works with
-your own repositories and codebase, and [contact us](http://www.fluentcode.com/free-trial)
-if you'd like to use Fluent for a larger team with more than 30 people! 
+We are currently offering Fluent for free for teams of up to 30 users, 
+*without* needing a license key, and you directly install it by following the 
+instructions at [install.fluentcode.com](http://install.fluentcode.com/). If 
+you have more than 30 users in your team, you can 
+[request a license](http://www.fluentcode.com/free-trial) for a one-month free 
+trial before you install it.
