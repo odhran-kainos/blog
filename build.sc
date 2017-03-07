@@ -103,19 +103,33 @@ val posts = {
         currentTableNode = null;
       }
     }
-    val rawHtmlContent = new Serializer().toHtml(ast)
-    val snippetNodes =
+
+    val splitIndex =
       ast.getChildren
-         .asScala
-         .takeWhile{
-           case n: SimpleNode if n.getType == SimpleNode.Type.HRule => false
-           case _ => true
-         }
+        .asScala
+        .indexWhere{
+          case n: SimpleNode if n.getType == SimpleNode.Type.HRule => true
+          case _ => false
+        }
+    val (headerNodes, bodyNodes) = ast.getChildren.asScala.splitAt(splitIndex)
 
     ast.getChildren.clear()
-    snippetNodes.foreach(ast.getChildren.add)
+    headerNodes.foreach(ast.getChildren.add)
 
     val rawHtmlSnippet = new Serializer().toHtml(ast)
+    ast.getChildren.clear()
+    bodyNodes.foreach(ast.getChildren.add)
+    val prelude = Seq[Frag](
+      hr,
+      b("About the Author:"),
+      i(" Haoyi is a software engineer and author of the ",
+        a(href := "http://www.fluentcode.com", target := "_blank", "Fluent Code Explorer"),
+        ", an online tool that helps you search, understand and collaborate on",
+        " a large codebase"
+      )
+    ).render
+
+    val rawHtmlContent = rawHtmlSnippet + prelude + new Serializer().toHtml(ast)
     // Handle both post/ and posts/ for legacy reasons
     val updates = DatesFor(s"post/$index - ").toSeq ++ DatesFor(s"posts/$index - ").toSeq
     (name, rawHtmlContent, rawHtmlSnippet, updates)
