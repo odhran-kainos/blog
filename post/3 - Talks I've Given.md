@@ -8,6 +8,12 @@ I'll keep this updated as time goes on.
 
 -------------------------------------------------------------------------------
 
+## Intro to Scala.js
+**Singapore Scala Meetup** *28 Mar 2017*
+
+- [Slides](../post/slides/Intro-to-Scala.js.pdf)
+
+A short introduction to the Scala.js Scala to Javascript compiler.
 
 ## Scala Scripting
 
