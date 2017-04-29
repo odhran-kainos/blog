@@ -8,6 +8,55 @@ I'll keep this updated as time goes on.
 
 -------------------------------------------------------------------------------
 
+## Four Facets of Good Open-Source Libraries
+
+- **Bay Scala Meetup** *29 Apr 2017* 
+- **SF Scala Meetup** *28 Apr 2017*
+- **New York Scala University Meetup** *26 Apr 2017*
+- [Video](https://vimeo.com/215325495)
+- [Slides](../post/Four-Facets-of-Good-Open-Source-Libraries.pdf)
+
+Creating a popular open-source library such as Ammonite, FastParse, or 
+Scalatags is a lot more than just writing Scala code. This talk will explore 
+both the code and non-code aspects of building such a library: designing the 
+public API, the role of tests/documentation, and how to think about the three 
+tensions of consistency, transparency, and intuitiveness that often pull your 
+API design in different directions. From this talk you will hopefully learn 
+everything about designing a library apart from writing code.
+
+## Anatomy of a Full-Stack Scala/Scala.js Web Application
+
+- **Scaladays Chicago** *20 Apr 2017*
+- [Video](https://vimeo.com/215327868)
+- [Slides](../post/Anatomy-of-a-full-stack-Scala-Scalajs.pdf)
+
+This talk will explore the inner workings of a real-world, moderately-sized 
+"Isomorphic" Scala/Scala.js web app: running Scala on the server and Scala.js 
+in the browser.
+
+In this talk, you will see how the Scala.js developer experience changes as an 
+application grows, how a non-trivial Scala/Scala.js application can be 
+structured, and how the "Isomorphic" property of the Scala/Scala.js stack 
+affects how you write code in reality. By the end you should have seen enough 
+to form an impression of how a real-world Scala/Scala.js application ends up 
+looking in-the-wild, compared to what a more traditional Javascript-based web 
+app may look like.
+
+
+## Taming the Java Virtual Machine
+
+- **FOSS Asia** *19 Mar 2017*
+- **Chicago Scala Meetup** *19 Apr 2017*
+- [Slides](../post/Taming-the-Java-Virtual-Machine.pdf)
+
+This talk will explore the hidden dynamics of the Java Virtual Machine. We will 
+explore the world of memory layouts, garbage collection, JIT compilation, 
+walking through the behavior of many real-world code examples. By the end of 
+this talk, you should be much more familiar with the inner workings of the JVM 
+that many of us take for granted, and hopefully will be better prepared to 
+respond next time your Java application goes bump in the night.
+
+
 ## Intro to Scala.js
 
 - **Singapore Scala Meetup** *28 Mar 2017*
