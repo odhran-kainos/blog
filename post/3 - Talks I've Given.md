@@ -14,7 +14,7 @@ I'll keep this updated as time goes on.
 - **SF Scala Meetup** *28 Apr 2017*
 - **New York Scala University Meetup** *26 Apr 2017*
 - [Video](https://vimeo.com/215325495)
-- [Slides](../post/Four-Facets-of-Good-Open-Source-Libraries.pdf)
+- [Slides](../post/slides/Four-Facets-of-Good-Open-Source-Libraries.pdf)
 
 Creating a popular open-source library such as Ammonite, FastParse, or 
 Scalatags is a lot more than just writing Scala code. This talk will explore 
@@ -28,7 +28,7 @@ everything about designing a library apart from writing code.
 
 - **Scaladays Chicago** *20 Apr 2017*
 - [Video](https://vimeo.com/215327868)
-- [Slides](../post/Anatomy-of-a-full-stack-Scala-Scalajs.pdf)
+- [Slides](../post/slides/Anatomy-of-a-full-stack-Scala-Scalajs.pdf)
 
 This talk will explore the inner workings of a real-world, moderately-sized 
 "Isomorphic" Scala/Scala.js web app: running Scala on the server and Scala.js 
@@ -47,7 +47,7 @@ app may look like.
 
 - **FOSS Asia** *19 Mar 2017*
 - **Chicago Scala Meetup** *19 Apr 2017*
-- [Slides](../post/Taming-the-Java-Virtual-Machine.pdf)
+- [Slides](../post/slides/Taming-the-Java-Virtual-Machine.pdf)
 
 This talk will explore the hidden dynamics of the Java Virtual Machine. We will 
 explore the world of memory layouts, garbage collection, JIT compilation, 
