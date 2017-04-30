@@ -121,11 +121,23 @@ val posts = {
     bodyNodes.foreach(ast.getChildren.add)
     val prelude = Seq[Frag](
       hr,
-      b("About the Author:"),
-      i(" Haoyi is a software engineer and author of the ",
-        a(href := "http://www.fluentcode.com", target := "_blank", "Fluent Code Explorer"),
-        ", an online tool that helps you search, understand and collaborate on",
-        " a large codebase"
+
+      p(
+        b("About the Author:"),
+        i(
+          " Haoyi is a software engineer, an early contributor to ", 
+          a(href:="http://www.scala-js.org/")("Scala.js"), 
+          ", and the author of many open-source Scala tools such as the ", 
+          a(href:="lihaoyi.com/Ammonite", "Ammonite REPL"), " and ",
+          a(href:="https://github.com/lihaoyi/fastparse", "FastParse"), ". "
+        )
+      ),  
+      p(
+        i(
+          "If you've enjoyed this blog, or enjoyed using Haoyi's other open ",
+          "source libraries, please chip in (or get your Company to chip in!) via ", 
+          a(href:="https://www.patreon.com/lihaoyi", "Patreon"), " so he can ", "continue his open-source work"
+        )
       )
     ).render
 
