@@ -11,7 +11,7 @@ It turns out, simple libraries do exist for parsing, under the name "Parser
 Combinators". While not as well known, these parser combinator libraries expose
 a bunch of classes and functions you can use to build a parser in a convenient
 way: without the boilerplate of hand-written [recursive-descent parsing], the
-fragiity of [Regexes], or the complexity of code-gen tools like [ANTLR]. This
+fragility of [Regexes], or the complexity of code-gen tools like [ANTLR]. This
 post will explore one such library, [FastParse], and show how parser combinators
 can make the process of parsing structured text simple, easy and fun.
 
