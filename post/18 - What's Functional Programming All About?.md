@@ -516,7 +516,7 @@ snippets, will become clear with the following thought experiment: what if we
 try to make changes to the code?
 
 Changing code is something we do all day, and sometimes we do it incorrectly.
-It would be a nice properly of a codebase if changes tended to be easier to
+It would be a nice property of a codebase if changes tended to be easier to
 make correctly, and incorrect changes were easier to spot. We'll discuss the 
 latter first.
 
