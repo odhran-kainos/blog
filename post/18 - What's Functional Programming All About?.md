@@ -623,7 +623,7 @@ statements is out of order so you can fix it.
 All of these are things that software engineers do day in, day out. And often,
 we make mistakes when doing so. With functional programming, whether in a typed
 language or not, it tends to be much more clear when you've made a trivial, 
-dumb error. That means you get feedback quicker: you get correctly quietly by 
+dumb error. That means you get feedback quicker: you get corrected quietly by 
 your linter in the privacy of your own laptop, and can quickly fix it and make
 progress, rather than waiting a long time only to be loudly yelled
 at by Jenkins CI in front of your entire team.
