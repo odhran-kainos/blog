@@ -188,7 +188,7 @@ recipe site has roughly four sections on the page:
 
 2. A step-by-step guide, with photos, of how to make the Tiramisu
 
-3. A diagram of the overall process, showing which ingredients are combine with
+3. A diagram of the overall process, showing which ingredients are combined with
    which others, to create the resultant Tiramisu
 
 4. A lively and entertaining comments section
