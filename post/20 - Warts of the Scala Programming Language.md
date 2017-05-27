@@ -2,9 +2,9 @@ Scala is my current favorite general-purpose programming language. However,
 it definitely has its share of flaws. While some are deep trade-offs in the 
 design of the language, others are trivial, silly issues which cause 
 frustration far beyond their level of sophistication: "warts". This post will 
-explore what, in my opinion, are the warts of the Scala programming language,
-to hopefully raise awareness of their existence as problems and build a desire 
-to fix them in the broader community.
+explore some of what, in my opinion, are the warts of the Scala programming 
+language, to hopefully raise awareness of their existence as problems and build 
+a desire to fix them in the broader community.
 
 -------------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ solutions that would be non-controversial. They really should have been fixed
 years ago, though the second best time to fix them starts today.
 
 This post will cover some things that I don't consider warts, to set the stage
-for exploring a wide range of what I consider the warts of the Scala programming 
+for exploring an incomplete list of things I consider the warts of the Scala programming 
 language 
 
 
@@ -999,8 +999,9 @@ compile time.
 ## Conclusion
 
 Most of the warts listed here are not inherent to the "core" of the Scala 
-language: types, values, classes, traits, functions, and implicits. None of them are
-particularly deep, nor should they be very controversial. 
+language: types, values, classes, traits, functions, and implicits. None of 
+them are particularly deep, nor should they be very controversial. This list is 
+obviously neither objective nor comprehensive.
 
 Nevertheless, these warts are annoying far beyond their level of sophistication, and 
 especially pose a barrier to newbies (such as 
