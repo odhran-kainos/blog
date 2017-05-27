@@ -520,6 +520,23 @@ sets of parentheses as they are defined with (excluding implicits), and any
 method call missing parens should be eta-expanded into the appropriate
 function value.
 
+Notably, removing the "optional parens" thing would not stop you from defining
+"property" functions that are called without parens; it would just mean you 
+need to define such functions without parens, as is already possible:
+
+```scala
+@ def baz = 3
+defined function baz
+
+@ baz
+res11: Int = 3
+
+@ baz()
+cmd12.sc:1: Int does not take parameters
+val res12 = baz()
+               ^
+Compilation Failed
+```
 
 ### Needing curlies/case for destructuring anonymous functions
 
