@@ -812,7 +812,7 @@ This one straddles the line between "Wart" and "Bug", but definitely should
 be fixed so that a class defined with one argument list doesn't magically 
 sprout two.
 
-## Presence of multiple-newlines/comments affects program logic
+## Presence of comments affects program logic
 
 Did you know the presence or absence of comments can affect the logic of your
 program?
