@@ -64,7 +64,7 @@ lets you model your data:
 - [Conclusion](#conclusion)
 
 This post is fourth in the *Strategic Scala Style* series, after [Principle
-of Least Power](StrategicScalaStylePrincipleOfLeastPower.html),
+of Least Power](StrategicScalaStylePrincipleofLeastPower.html),
 [Conciseness & Names](StrategicScalaStyleConcisenessNames.html), and
 [Practical Type Safety](StrategicScalaStylePracticalTypeSafety.html). Like the
 others, it focuses on Vanilla Scala, without any libraries or frameworks that

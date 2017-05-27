@@ -188,7 +188,7 @@ recipe site has roughly four sections on the page:
 
 2. A step-by-step guide, with photos, of how to make the Tiramisu
 
-3. A diagram of the overall process, showing which ingredients are combine with
+3. A diagram of the overall process, showing which ingredients are combined with
    which others, to create the resultant Tiramisu
 
 4. A lively and entertaining comments section
@@ -516,7 +516,7 @@ snippets, will become clear with the following thought experiment: what if we
 try to make changes to the code?
 
 Changing code is something we do all day, and sometimes we do it incorrectly.
-It would be a nice properly of a codebase if changes tended to be easier to
+It would be a nice property of a codebase if changes tended to be easier to
 make correctly, and incorrect changes were easier to spot. We'll discuss the 
 latter first.
 
@@ -623,7 +623,7 @@ statements is out of order so you can fix it.
 All of these are things that software engineers do day in, day out. And often,
 we make mistakes when doing so. With functional programming, whether in a typed
 language or not, it tends to be much more clear when you've made a trivial, 
-dumb error. That means you get feedback quicker: you get correctly quietly by 
+dumb error. That means you get feedback quicker: you get corrected quietly by 
 your linter in the privacy of your own laptop, and can quickly fix it and make
 progress, rather than waiting a long time only to be loudly yelled
 at by Jenkins CI in front of your entire team.
