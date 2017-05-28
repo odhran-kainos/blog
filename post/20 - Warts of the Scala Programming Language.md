@@ -510,15 +510,40 @@ than Java's "use-site variance", but here we have Scala providing
 definition-site parens where every caller of `bar` can pick and choose how many 
 parens they want to pass.
 
-This causes a significant amount of confusion for 
-[newbies trying to learn the language](https://stackoverflow.com/questions/8303817/nine-ways-to-define-a-method-in-scala),
-and I think really should be removed: methods should be called with as many 
-sets of parentheses as they are defined with (excluding implicits), and any 
+I think the solution to this is clear: methods should be called with as many 
+sets of parentheses as they are defined with (excluding implicits). Any 
 method call missing parens should be eta-expanded into the appropriate
 function value.
 
-This does not *take away* the ability to control how many empty-parens a 
-function is called with; rather, it shifts that decision from the *user* of a 
+Concretely, that means that given these two functions:
+
+```scala
+object thing{
+  def head: T = ???
+  def next(): T = ???
+}
+```
+
+They currently behave like this:
+
+```scala
+val first1: T = thing.head   // Works!
+val first2: T = thing.head() // Compile Error: T is not a function and cannot be called
+val first3: T = thing.next   // Works!
+val first4: T = thing.next() // Works!
+```
+
+And will there-after behave like this:
+
+```scala
+val first1: T = thing.head   // Works!
+val first2: T = thing.head() // Compile Error: T is not a function and cannot be called
+val first3: T = thing.next   // Compile Error: found () => T, expected T
+val first4: T = thing.next() // Works!
+```
+
+Notably, this does not *take away* the ability to control how many empty-parens 
+a function is called with; rather, it shifts that decision from the *user* of a 
 function to the *author* of a function. Since the author of a function already
 decides everything else about it (It's name, arguments, return type, 
 implementation, ...) giving the author the decision over empty-parens would
