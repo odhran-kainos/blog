@@ -37,7 +37,7 @@ language
     - [Implicits](#implicits)
 - [Warts](#warts)
     - [Weak eta-expansion](#weak-eta-expansion)
-    - [Calling zero-parameter methods without parens](#calling-zero-parameter-methods-without-parens)
+    - [Letting callers of zero-parameter methods decide how many parens to use](#letting-callers-of-zero-parameter-methods-decide-how-many-parens-to-use)
     - [Needing curlies/case for destructuring anonymous functions](#needing-curliescase-for-destructuring-anonymous-functions)
     - [Extraneous extension methods on Any](#extraneous-extension-methods-on-any)
     - [Convoluted de-sugaring of for-comprehensions](#convoluted-de-sugaring-of-for-comprehensions)
@@ -284,7 +284,7 @@ and frustration disproportionate given how trivial the issue is.
 The warts I'm going to discuss are:
 
 - [Weak eta-expansion](#weak-eta-expansion)
-- [Calling zero-parameter methods without parens](#calling-zero-parameter-methods-without-parens)
+- [Callers of zero-parameter methods can decide how many parens to use](#callers-of-zero-parameter-methods-can-decide-how-many-parens-to-use)
 - [Needing curlies/case for destructuring anonymous functions](#needing-curliescase-for-destructuring-anonymous-functions)
 - [Extraneous extension methods on Any](#extraneous-extension-methods-on-any)
 - [Convoluted de-sugaring of for-comprehensions](#convoluted-de-sugaring-of-for-comprehensions)
@@ -437,7 +437,7 @@ an `_` after the method - and it just needs to use that information when
 the `_` isn't present.
 
 
-### Calling zero-parameter methods without parens
+### Callers of zero-parameter methods can decide how many parens to use
 
 Scala lets you leave off empty-parens lists when calling functions. This
 looks kind of cute when calling getters:
@@ -510,19 +510,24 @@ than Java's "use-site variance", but here we have Scala providing
 definition-site parens where every caller of `bar` can pick and choose how many 
 parens they want to pass.
 
-The only reason I've heard for this feature is to "let you call Java `getFoo`
-methods without the parens", which seems like an exceedingly weak justification
-for a language feature that so thoroughly breaks the expectations of a 
-statically-typed language. This causes a significant amount of confusion for 
+This causes a significant amount of confusion for 
 [newbies trying to learn the language](https://stackoverflow.com/questions/8303817/nine-ways-to-define-a-method-in-scala),
 and I think really should be removed: methods should be called with as many 
 sets of parentheses as they are defined with (excluding implicits), and any 
 method call missing parens should be eta-expanded into the appropriate
 function value.
 
-Notably, removing the "optional parens" thing would not stop you from defining
-"property" functions that are called without parens; it would just mean you 
-need to define such functions without parens, as is already possible:
+This does not *take away* the ability to control how many empty-parens a 
+function is called with; rather, it shifts that decision from the *user* of a 
+function to the *author* of a function. Since the author of a function already
+decides everything else about it (It's name, arguments, return type, 
+implementation, ...) giving the author the decision over empty-parens would
+not be unprecedented.
+ 
+
+No-parens "property" functions would still be possible, the author of the 
+function would just need to define it without parens, as is already 
+possible:
 
 ```scala
 @ def baz = 3
@@ -537,6 +542,17 @@ val res12 = baz()
                ^
 Compilation Failed
 ```
+
+The only reason I've heard for this feature is to "let you call Java `getFoo`
+methods without the parens", which seems like an exceedingly weak justification
+for a language feature that so thoroughly breaks the expectations of a 
+statically-typed language. If that was the problem, one option would be to 
+allow use-site optional empty-parentheses only at Java call-sites or Scala 
+call-sites with a particular annotation (`@optionalParens def foo = ...`?). 
+This would limit the scope of this behavior to a mild Java-interop quirk
+(one of many), rather than a wart affecting the core of the Scala programming
+language
+
 
 ### Needing curlies/case for destructuring anonymous functions
 
