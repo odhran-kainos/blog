@@ -9,8 +9,10 @@ import collection.JavaConverters._
 import org.pegdown.{PegDownProcessor, ToHtmlSerializer, LinkRenderer, Extensions}
 import org.pegdown.ast.{VerbatimNode, ExpImageNode, HeaderNode, TextNode, SimpleNode, TableNode}
 
-
 val postsFolder = cwd/'post
+
+interp.watch(postsFolder)
+
 val targetFolder = cwd/'target
 
 object DatesFor{
@@ -175,6 +177,7 @@ val rssXml = {
   )
   """<?xml version="1.0"?>""" + snippet.render
 }
+
 @main
 def main(publish: Boolean = false) = {
 
