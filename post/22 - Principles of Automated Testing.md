@@ -203,7 +203,7 @@ A library of algorithms is likely to have a different definition of "unit" and
 
 - The library-of-algorithms may define "unit" tests as tests which run one 
   function on tiny inputs (e.g. sorting a list of zero, one, two or three 
-  numbers) while "integration" tests use multiple algorithms to construct 
+  numbers) while "integration" tests use multiple functions to construct 
   common algorithms
   
 - The website may define "unit" tests as anything that doesn't touch the HTTP 
