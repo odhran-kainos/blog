@@ -989,7 +989,7 @@ reliable:
   in-memory thousands of times faster than if they had to keep interacting with 
   the database.
 
-Essentially, this involves taking a monolothic application which looks like:
+Essentially, this involves taking a monolithic application which looks like:
 
 
 
