@@ -1063,6 +1063,14 @@ automated tests:
 - [Cost of tests](#cost-of-tests)
 - [Conclusion](#conclusion)
 
+The goal of this post is to paint a different picture of automated tests than
+is normally discussed: a picture where automated tests lie on continuous
+spectrums, rather than discrete buckets, and it's up to each project owner
+to categorize them. Where tests are "just code", subject to the same 
+constraints and allowing for the same techniques, rather than being something 
+special and different. Where tests are ruthlessly prioritized, and those that 
+provide less value than their ongoing costs are culled.
+
 This post is intentionally silent about a whole host of test-writing topics:
 [Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development), 
 [code coverage](https://en.wikipedia.org/wiki/Code_coverage),
@@ -1071,8 +1079,7 @@ More than specific tools you should use or techniques you can apply, this post
 is meant to have painted a coherent set of principles for how to think about 
 automated testing in any software project.
 
-This hopefully gives you a framework you can use to think about various 
-approaches to automated testing, and to help you be conscious of the various 
-spectrums and the trade-offs involved in each one. This should form a solid 
-foundation for any discussion of tools, techniques or best practices, and apply 
-regardless of what language, platform or environment you are working with.
+Even without such specific guidance, this post should hopefully provide you a
+solid foundation that should help you frame, discuss and evaluate any tools,
+techniques or practices related to automated testing regardless of what project
+you find yourself working in.
