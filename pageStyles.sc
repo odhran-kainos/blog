@@ -51,9 +51,20 @@ object NarrowStyles extends StyleSheet{
     fontSize := "4vw"
   )
 }
-object Styles extends StyleSheet{
+object Styles extends CascadingStyleSheet{
   override def customSheetName = Some("Styles")
-  def header = cls(
+  def hoverBox = cls.hover(
+    hoverLink(
+      opacity := 0.5
+    )
+  )
+  def hoverLink = cls(
+    opacity := 0.1,
+    &hover(
+      opacity := 1.0
+    )
+  )
+  def headerStyle = cls(
     backgroundColor := "rgb(61, 79, 93)",
     display.flex,
     alignItems.center,
@@ -73,7 +84,7 @@ object Styles extends StyleSheet{
     alignItems.center,
     padding := "10px 10px"
   )
-  def footer = cls(
+  def footerStyle = cls(
     display.flex,
     justifyContent.center,
     color := "rgb(158, 167, 174)"

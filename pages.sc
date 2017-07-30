@@ -55,7 +55,7 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       div(
         WideStyles.header,
         NarrowStyles.header,
-        Styles.header,
+        Styles.headerStyle,
         div(
           NarrowStyles.headerContent,
           WideStyles.headerContent,
@@ -98,7 +98,7 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       ),
       div(
         WideStyles.footer,
-        Styles.footer,
+        Styles.footerStyle,
         "Last published ", currentTimeText
       )
 

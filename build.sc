@@ -81,28 +81,36 @@ val posts = {
             .mkString
 
         val setId = s"id=${'"'+sanitizeAnchor(id)+'"'}"
-        printer.print(s"<$tag $setId>")
+        printer.print(s"""<$tag $setId class="${Styles.hoverBox.name}">""")
         visitChildren(node)
+        printer.print(
+          a(href := ("#" + sanitizeAnchor(id)), display.block, float.right, Styles.hoverLink)(
+            i(cls := "fa fa-link", aria.hidden := true)
+          ).render
+        )
         printer.print(s"</$tag>")
       }
-      override def visit(node: VerbatimNode) = {
-        printer.println().print("<pre><code class=\"" + node.getType() + "\">");
 
-        var text = node.getText();
+      override def visit(node: VerbatimNode) = {
+        printer.println().print(
+          s"""<pre><code style="white-space:pre" class="${node.getType()}">"""
+        )
+
+        var text = node.getText()
         // print HTML breaks for all initial newlines
         while(text.charAt(0) == '\n') {
-          printer.print("<br/>");
-          text = text.substring(1);
+          printer.print("\n")
+          text = text.substring(1)
         }
-        printer.printEncoded(text);
-        printer.print("</code></pre>");
+        printer.printEncoded(text)
+        printer.print("</code></pre>")
       }
       override def visit(node: TableNode) = {
-        currentTableNode = node;
+        currentTableNode = node
         printer.print("<table class=\"table table-bordered\">")
         visitChildren(node)
         printer.print("</table>")
-        currentTableNode = null;
+        currentTableNode = null
       }
     }
 
