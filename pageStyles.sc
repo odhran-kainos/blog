@@ -53,9 +53,15 @@ object NarrowStyles extends StyleSheet{
 }
 object Styles extends CascadingStyleSheet{
   override def customSheetName = Some("Styles")
-  def hoverBox = cls.hover(
-    hoverLink(
-      opacity := 0.5
+  def hoverBox = cls(
+    display.flex,
+    flexDirection.row,
+    alignItems.center,
+    justifyContent.spaceBetween,
+    &hover(
+      hoverLink(
+        opacity := 0.5
+      )
     )
   )
   def hoverLink = cls(

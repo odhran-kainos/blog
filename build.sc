@@ -84,7 +84,7 @@ val posts = {
         printer.print(s"""<$tag $setId class="${Styles.hoverBox.name}">""")
         visitChildren(node)
         printer.print(
-          a(href := ("#" + sanitizeAnchor(id)), display.block, float.right, Styles.hoverLink)(
+          a(href := ("#" + sanitizeAnchor(id)), Styles.hoverLink)(
             i(cls := "fa fa-link", aria.hidden := true)
           ).render
         )
