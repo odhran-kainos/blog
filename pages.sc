@@ -1,4 +1,4 @@
-import $ivy.`com.lihaoyi::scalatags:0.6.2`
+import $ivy.`com.lihaoyi::scalatags:0.6.5`
 import scalatags.Text.all._, scalatags.Text.tags2
 import java.time.LocalDate
 import $file.pageStyles, pageStyles._
@@ -145,12 +145,13 @@ def forceHttps: Frag = script(raw(
   |    window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);
 """.stripMargin
 ))
-def metadata(dates: Seq[(String, LocalDate)]) = div(
-  color := "#999",
-  marginBottom := 20,
-  "Posted ",
-  for ((sha, date) <- dates.lastOption) yield a(
-    date.toString, href := s"https://github.com/lihaoyi/blog/commit/$sha"
+def metadata(dates: Seq[(String, LocalDate)]) = div(opacity := 0.6, marginBottom := 10)(
+  i(cls:="fa fa-calendar" , aria.hidden:=true),
+  i(
+    " Posted ",
+    for ((sha, date) <- dates.lastOption) yield a(
+      date.toString, href := s"https://github.com/lihaoyi/blog/commit/$sha"
+    )
   )
 )
 def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) = pageChrome(
@@ -180,23 +181,35 @@ def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) 
     script(id:="dsq-count-scr", src:="//lihaoyi.disqus.com/count.js", attr("async"):="async")
   )
 )
-def postContent(name: String, rawHtmlContent: String, dates: Seq[(String, LocalDate)]) = pageChrome(
+
+def renderAdjacentLink(next: Boolean, name: String) = {
+  a(href := s"${sanitize(name)}.html")(
+    if(next) frag(name, " ", i(cls:="fa fa-arrow-right" , aria.hidden:=true))
+    else frag(i(cls:="fa fa-arrow-left" , aria.hidden:=true), " ", name)
+  )
+}
+def postContent(name: String,
+                rawHtmlContent: String,
+                adjacentLinks: Frag,
+                dates: Seq[(String, LocalDate)]) = pageChrome(
   Some(name),
   "..",
   Seq[Frag](
     metadata(dates),
+    div(adjacentLinks, marginBottom := 10),
     raw(rawHtmlContent),
+    adjacentLinks,
     if (dates.length < 2) ""
     else {
       div(
         hr,
-        div(
-          color := "rgb(158, 167, 174)",
-          "Updated ",
-          for((sha, date) <- dates.drop(1)) yield a(
-            date.toString, " ", href := s"https://github.com/lihaoyi/blog/commit/$sha"
+        div(opacity := 0.6)(
+          i(
+            "Updated ",
+            for((sha, date) <- dates.drop(1)) yield a(
+              date.toString, " ", href := s"https://github.com/lihaoyi/blog/commit/$sha"
+            )
           )
-
         )
       )
     },

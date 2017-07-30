@@ -1,4 +1,4 @@
-import $ivy.`com.lihaoyi::scalatags:0.6.2`
+import $ivy.`com.lihaoyi::scalatags:0.6.5`
 
 import scalatags.stylesheet._
 import scalatags.Text.all._
@@ -6,6 +6,7 @@ import scalatags.Text.all._
 
 val marginWidth = "25%"
 object WideStyles extends StyleSheet{
+  initStyleSheet()
   override def customSheetName = Some("WideStyles")
   def header = cls(
     position.fixed,
@@ -31,6 +32,7 @@ object WideStyles extends StyleSheet{
   )
 }
 object NarrowStyles extends StyleSheet{
+  initStyleSheet()
   override def customSheetName = Some("NarrowStyles")
   def header = cls(
     marginBottom := 10
@@ -52,6 +54,7 @@ object NarrowStyles extends StyleSheet{
   )
 }
 object Styles extends CascadingStyleSheet{
+  initStyleSheet()
   override def customSheetName = Some("Styles")
   def hoverBox = cls(
     display.flex,

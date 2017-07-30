@@ -1,5 +1,5 @@
 // Load dependencies
-import $ivy.{`org.pegdown:pegdown:1.6.0`, `com.lihaoyi::scalatags:0.6.2`}
+import $ivy.{`org.pegdown:pegdown:1.6.0`, `com.lihaoyi::scalatags:0.6.5`}
 import $file.pageStyles, pageStyles._
 import $file.pages, pages._
 import scalatags.Text.all._
@@ -203,10 +203,21 @@ def main(publish: Boolean = false) = {
 
   cp(cwd/"favicon.png", targetFolder/"favicon.ico")
 
-  for((name, rawHtmlContent, _, dates) <- posts){
+  for(i <- posts.indices){
+    val (name, rawHtmlContent, _, dates) = posts(i)
+
+
+    val adjacentLinks = div(display.flex, flexDirection.row, justifyContent.spaceBetween)(
+      for((j, next) <- Seq(i-1 -> false, i+1 -> true))
+      yield posts.lift(j) match{
+        case None => div()
+        case Some((name, _, _, _)) => renderAdjacentLink(next, name)
+      }
+    )
+
     write(
       targetFolder/'post/s"${sanitize(name)}.html",
-      postContent(name, rawHtmlContent, dates)
+      postContent(name, rawHtmlContent, adjacentLinks, dates)
     )
   }
 
