@@ -45,6 +45,7 @@ val (markdownFiles, otherFiles) = ls! postsFolder partition (_.ext == "md")
 markdownFiles.foreach(println)
 // Walk the posts/ folder and parse out the name, full- and first-paragraph-
 // HTML of each post to be used on their respective pages and on the index
+
 val posts = {
   val split = for(path <- markdownFiles) yield {
     val Array(number, name) = path.last.split(" - ", 2)
@@ -55,6 +56,7 @@ val posts = {
       Extensions.FENCED_CODE_BLOCKS | Extensions.TABLES | Extensions.AUTOLINKS
     )
     val ast = processor.parseMarkdown(read! path toArray)
+    val headers = collection.mutable.Buffer.empty[(String, Int)]
     class Serializer extends ToHtmlSerializer(new LinkRenderer){
       override def printImageTag(rendering: LinkRenderer.Rendering) {
         printer.print("<div style=\"text-align: center\"><img")
@@ -73,12 +75,18 @@ val posts = {
       override def visit(node: HeaderNode) = {
         val tag = "h" + node.getLevel()
 
+
         val id =
           node
             .getChildren
             .asScala
             .collect{case t: TextNode => t.getText}
             .mkString
+
+
+
+        headers.append(id -> node.getLevel())
+
 
         val setId = s"id=${'"'+sanitizeAnchor(id)+'"'}"
         printer.print(s"""<$tag $setId class="${Styles.hoverBox.name}">""")
@@ -93,7 +101,8 @@ val posts = {
 
       override def visit(node: VerbatimNode) = {
         printer.println().print(
-          s"""<pre><code style="white-space:pre" class="${node.getType()}">"""
+          """<pre style="background-color: #f8f8f8">""" +
+          s"""<code style="white-space:pre; background-color: #f8f8f8" class="${node.getType()}">"""
         )
 
         var text = node.getText()
@@ -154,7 +163,7 @@ val posts = {
     val rawHtmlContent = rawHtmlSnippet + prelude + new Serializer().toHtml(ast)
     // Handle both post/ and posts/ for legacy reasons
     val updates = DatesFor(s"post/$index - ").toSeq ++ DatesFor(s"posts/$index - ").toSeq
-    (name, rawHtmlContent, rawHtmlSnippet, updates)
+    PostInfo(name, headers, rawHtmlContent, rawHtmlSnippet, updates)
   }
 }
 
@@ -171,13 +180,13 @@ val rssXml = {
       tag("link")("http://www.lihaoyi.com/"),
       tag("description"),
 
-      for((name, rawHtmlContent, rawHtmlSnippet, updates) <- posts) yield tag("item")(
-        tag("title")(name),
-        tag("link")(s"http://www.lihaoyi.com/post/${sanitize(name)}.html"),
-        tag("description")(rawHtmlSnippet),
-        for ((sha, date) <- updates.lastOption)
+      for(post <- posts) yield tag("item")(
+        tag("title")(post.name),
+        tag("link")(s"http://www.lihaoyi.com/post/${sanitize(post.name)}.html"),
+        tag("description")(post.rawHtmlSnippet),
+        for ((sha, date) <- post.updates.lastOption)
         yield tag("pubDate")(formatRssDate(date)),
-        for ((sha, date) <- updates.headOption)
+        for ((sha, date) <- post.updates.headOption)
         yield tag("lastBuildDate")(formatRssDate(date))
       )
 
@@ -193,7 +202,7 @@ def main(publish: Boolean = false) = {
 
   write(
     targetFolder/s"index.html",
-    mainContent(posts)
+    mainContent(posts.map(p => (p.name, p.rawHtmlSnippet, p.updates.lastOption)))
   )
 
   mkdir! targetFolder/'post
@@ -204,20 +213,20 @@ def main(publish: Boolean = false) = {
   cp(cwd/"favicon.png", targetFolder/"favicon.ico")
 
   for(i <- posts.indices){
-    val (name, rawHtmlContent, _, dates) = posts(i)
+    val post = posts(i)
 
 
     val adjacentLinks = div(display.flex, flexDirection.row, justifyContent.spaceBetween)(
-      for((j, next) <- Seq(i-1 -> false, i+1 -> true))
+      for((j, isNext) <- Seq(i-1 -> false, i+1 -> true))
       yield posts.lift(j) match{
         case None => div()
-        case Some((name, _, _, _)) => renderAdjacentLink(next, name)
+        case Some(dest) => renderAdjacentLink(isNext, dest.name)
       }
     )
 
     write(
-      targetFolder/'post/s"${sanitize(name)}.html",
-      postContent(name, rawHtmlContent, adjacentLinks, dates)
+      targetFolder/'post/s"${sanitize(post.name)}.html",
+      postContent(post, adjacentLinks)
     )
   }
 

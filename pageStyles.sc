@@ -13,7 +13,19 @@ object WideStyles extends StyleSheet{
     top := 0,
     bottom := 0,
     width := marginWidth,
-    justifyContent.center
+    justifyContent.center,
+    display.flex,
+    flexDirection.column
+  )
+  def tableOfContents = cls(
+    display.flex,
+    flexDirection.column,
+    flexGrow := 1,
+    flexShrink := 1,
+    minHeight := 0,
+    marginTop := 20,
+    width := "100%"
+
   )
   def headerContent = cls(
     textAlign.center
@@ -37,6 +49,7 @@ object NarrowStyles extends StyleSheet{
   def header = cls(
     marginBottom := 10
   )
+  def tableOfContents = cls(display.none)
   def content = cls(
     padding := 16
   )

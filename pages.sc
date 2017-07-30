@@ -3,6 +3,11 @@ import scalatags.Text.all._, scalatags.Text.tags2
 import java.time.LocalDate
 import $file.pageStyles, pageStyles._
 
+case class PostInfo(name: String,
+                    headers: Seq[(String, Int)],
+                    rawHtmlContent: String,
+                    rawHtmlSnippet: String,
+                    updates: Seq[(String, java.time.LocalDate)])
 
 def sanitize(s: String): String = {
   s.filter(_.isLetterOrDigit)
@@ -10,28 +15,18 @@ def sanitize(s: String): String = {
 def sanitizeAnchor(s: String): String = {
   s.split(" |-", -1).map(_.filter(_.isLetterOrDigit)).mkString("-").toLowerCase
 }
-def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): String = {
+def pageChrome(titleText: Option[String],
+               unNesting: String,
+               contents: Frag,
+               contentHeaders: Seq[(String, Int)]): String = {
   val pageTitle = titleText.getOrElse("Haoyi's Programming Blog")
   val sheets = Seq(
     "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
     "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",
     "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/github-gist.min.css"
   )
-  def icon(s: String) = div(i(cls:= s"fa fa-$s"))
-  val headerLinks = Seq(
-    Seq(
-      div(icon("question-circle"), " About") -> s"$unNesting/post/HelloWorldBlog.html",
-      div(icon("file-text"), " Resume") -> "https://lihaoyi.github.io/Resume/",
-      div(icon("github"), " Github") -> "https://github.com/lihaoyi"
-    ),
-    Seq(
-      div(icon("twitter"), " Twitter") -> s"https://twitter.com/li_haoyi",
-//      div(icon("envelope"), " Subscribe") -> s"https://groups.google.com/forum/#!forum/haoyis-programming-blog/join",
-      div(icon("rss"), "RSS") -> s"$unNesting/feed.xml",
-      div(icon("youtube-play"), " Talks") -> s"$unNesting/post/TalksIveGiven.html"
-//      div() -> ""
-    )
-  )
+
+
   html(
     head(
       meta(charset := "utf-8"),
@@ -50,45 +45,8 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
       googleAnalytics,
       forceHttps
     ),
-    body(
-      margin := 0,
-      div(
-        WideStyles.header,
-        NarrowStyles.header,
-        Styles.headerStyle,
-        div(
-          NarrowStyles.headerContent,
-          WideStyles.headerContent,
-          h1(
-            a(
-              i(cls:= "fa fa-cogs"),
-              color := "white",
-              " Haoyi's Programming Blog", href := s"$unNesting",
-              Styles.subtleLink,
-              NarrowStyles.flexFont,
-              fontWeight.bold
-            ),
-            padding := "30px 30px",
-            margin := 0
-          ),
-          div(
-            Styles.headerLinkBox,
-            NarrowStyles.linkFlex,
-            // This is necessary otherwise it doesn't seem to render correctly
-            // on iPhone 6S+ Chrome; presumably they have some bug with flexbox
-            // which is making it take up insufficient space.
-            minWidth := 175,
-            for (headerLinksRow <- headerLinks) yield div(
-              display.flex,
-              flexDirection.row,
-              for( (name, url) <- headerLinksRow) yield div(
-                Styles.headerLink,
-                a(name, href := url, Styles.subtleLink, color := "white")
-              )
-            )
-          )
-        )
-      ),
+    body(margin := 0, backgroundColor := "#f8f8f8")(
+      navBar(unNesting, contentHeaders),
       div(
         WideStyles.content,
         NarrowStyles.content,
@@ -96,7 +54,8 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
         titleText.map(h1(_)),
         contents
       ),
-      div(
+      if (contentHeaders.nonEmpty) frag()
+      else div(
         WideStyles.footer,
         Styles.footerStyle,
         "Last published ", currentTimeText
@@ -105,6 +64,84 @@ def pageChrome(titleText: Option[String], unNesting: String, contents: Frag): St
     )
   ).render
 }
+
+def navBar(unNesting: String, contentHeaders: Seq[(String, Int)]) = {
+  def icon(s: String) = div(i(cls:= s"fa fa-$s"))
+  val headerLinks = Seq(
+    Seq(
+      div(icon("question-circle"), " About") -> s"$unNesting/post/HelloWorldBlog.html",
+      div(icon("file-text"), " Resume") -> "https://lihaoyi.github.io/Resume/",
+      div(icon("github"), " Github") -> "https://github.com/lihaoyi"
+    ),
+    Seq(
+      div(icon("twitter"), " Twitter") -> s"https://twitter.com/li_haoyi",
+      //      div(icon("envelope"), " Subscribe") -> s"https://groups.google.com/forum/#!forum/haoyis-programming-blog/join",
+      div(icon("rss"), "RSS") -> s"$unNesting/feed.xml",
+      div(icon("youtube-play"), " Talks") -> s"$unNesting/post/TalksIveGiven.html"
+      //      div() -> ""
+    )
+  )
+
+  val headerBox = div(
+    NarrowStyles.headerContent,
+    WideStyles.headerContent,
+    h1(
+      a(
+        i(cls:= "fa fa-cogs"),
+        color := "#f8f8f8",
+        " Haoyi's Programming Blog", href := s"$unNesting",
+        Styles.subtleLink,
+        NarrowStyles.flexFont,
+        fontWeight.bold
+      ),
+      padding := "30px 30px",
+      margin := 0
+    ),
+    div(
+      Styles.headerLinkBox,
+      NarrowStyles.linkFlex,
+      // This is necessary otherwise it doesn't seem to render correctly
+      // on iPhone 6S+ Chrome; presumably they have some bug with flexbox
+      // which is making it take up insufficient space.
+      minWidth := 175,
+      for (headerLinksRow <- headerLinks) yield div(
+        display.flex,
+        flexDirection.row,
+        for( (name, url) <- headerLinksRow) yield div(
+          Styles.headerLink,
+          a(name, href := url, Styles.subtleLink, color := "#f8f8f8")
+        )
+      )
+    )
+  )
+
+  val tableOfContents = if (contentHeaders.isEmpty) frag()
+  else div(WideStyles.tableOfContents, NarrowStyles.tableOfContents, color := "#f8f8f8")(
+
+    div(textAlign.center)(
+      b("Table of Contents")
+    ),
+    div(overflow.scroll, flexShrink := 1, minHeight := 0)(
+      ul(textAlign.start, marginTop := 10)(
+        for ((header, indent) <- contentHeaders)
+        yield indent match{
+          case 2 => li(a(color := "#f8f8f8", href := s"#${sanitizeAnchor(header)}")(header))
+          case 3 => li(marginLeft := 20, a(color := "#f8f8f8", href := s"#${sanitizeAnchor(header)}")(header))
+          case _ => frag()
+        }
+      )
+    )
+  )
+
+  div(
+    WideStyles.header,
+    NarrowStyles.header,
+    Styles.headerStyle,
+    headerBox,
+    tableOfContents
+  )
+}
+
 val currentTimeText = LocalDate.now.toString
 
 def commentBox(titleText: String): Frag = Seq(
@@ -145,20 +182,20 @@ def forceHttps: Frag = script(raw(
   |    window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);
 """.stripMargin
 ))
-def metadata(dates: Seq[(String, LocalDate)]) = div(opacity := 0.6, marginBottom := 10)(
+def metadata(lastDate: Option[(String, LocalDate)]) = div(opacity := 0.6, marginBottom := 10)(
   i(cls:="fa fa-calendar" , aria.hidden:=true),
   i(
     " Posted ",
-    for ((sha, date) <- dates.lastOption) yield a(
+    for ((sha, date) <- lastDate) yield a(
       date.toString, href := s"https://github.com/lihaoyi/blog/commit/$sha"
     )
   )
 )
-def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) = pageChrome(
+def mainContent(posts: Seq[(String, String, Option[(String, LocalDate)])]) = pageChrome(
   None,
   ".",
   div(
-    for((name, _, rawHtmlSnippet, dates) <- posts.reverse) yield {
+    for((name, rawHtmlSnippet, lastDate) <- posts.reverse) yield {
       val url = s"post/${sanitize(name)}.html"
       div(
         h1(a(
@@ -167,7 +204,7 @@ def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) 
           Styles.subtleLink,
           color := "rgb(34, 34, 34)"
         )),
-        metadata(dates),
+        metadata(lastDate),
         raw(rawHtmlSnippet),
         a( // Snippet to make comment count appear
           href:=s"$url#disqus_thread",
@@ -179,7 +216,8 @@ def mainContent(posts: Seq[(String, String, String, Seq[(String, LocalDate)])]) 
     },
     // snippet to
     script(id:="dsq-count-scr", src:="//lihaoyi.disqus.com/count.js", attr("async"):="async")
-  )
+  ),
+  contentHeaders = Nil
 )
 
 def renderAdjacentLink(next: Boolean, name: String) = {
@@ -188,31 +226,29 @@ def renderAdjacentLink(next: Boolean, name: String) = {
     else frag(i(cls:="fa fa-arrow-left" , aria.hidden:=true), " ", name)
   )
 }
-def postContent(name: String,
-                rawHtmlContent: String,
-                adjacentLinks: Frag,
-                dates: Seq[(String, LocalDate)]) = pageChrome(
-  Some(name),
+def postContent(post: PostInfo, adjacentLinks: Frag) = pageChrome(
+  Some(post.name),
   "..",
   Seq[Frag](
-    metadata(dates),
+    metadata(post.updates.lastOption),
     div(adjacentLinks, marginBottom := 10),
-    raw(rawHtmlContent),
+    raw(post.rawHtmlContent),
     adjacentLinks,
-    if (dates.length < 2) ""
+    if (post.updates.length < 2) ""
     else {
       div(
         hr,
         div(opacity := 0.6)(
           i(
             "Updated ",
-            for((sha, date) <- dates.drop(1)) yield a(
+            for((sha, date) <- post.updates.drop(1)) yield a(
               date.toString, " ", href := s"https://github.com/lihaoyi/blog/commit/$sha"
             )
           )
         )
       )
     },
-    commentBox(name)
-  )
+    commentBox(post.name)
+  ),
+  post.headers
 )

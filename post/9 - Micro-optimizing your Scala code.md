@@ -45,7 +45,7 @@ techniques have in a Scala codebase.
     - [What are the alternatives?](#what-are-the-alternatives) 
 
 
-### Methodology
+## Methodology
 
 In order to provide a realistic setting for this post, I'm going to use the 
 [Fansi library](https://github.com/lihaoyi/fansi) as an example. This is a new 
