@@ -121,14 +121,32 @@ def navBar(unNesting: String, contentHeaders: Seq[(String, Int)]) = {
     div(textAlign.center)(
       b("Table of Contents")
     ),
-    div(overflow.scroll, flexShrink := 1, minHeight := 0)(
-      ul(textAlign.start, marginTop := 10)(
-        for ((header, indent) <- contentHeaders)
-        yield indent match{
-          case 2 => li(a(color := "#f8f8f8", href := s"#${sanitizeAnchor(header)}")(header))
-          case 3 => li(marginLeft := 20, a(color := "#f8f8f8", href := s"#${sanitizeAnchor(header)}")(header))
-          case _ => frag()
-        }
+    div(overflowY.scroll, flexShrink := 1, minHeight := 0)(
+      ul(
+        overflow.hidden,
+        textAlign.start,
+        marginTop := 10,
+        whiteSpace.nowrap,
+        textOverflow.ellipsis,
+        marginRight := 10
+      )(
+        for {
+          (header, indent) <- contentHeaders
+          offset <- indent match{
+            case 2 => Some(0)
+            case 3 => Some(20)
+            case _ => None
+          }
+        } yield li(marginLeft := offset)(
+
+          a(
+            color := "#f8f8f8",
+            WideStyles.tableOfContentsItem,
+            href := s"#${sanitizeAnchor(header)}"
+          )(
+            header
+          )
+        )
       )
     )
   )

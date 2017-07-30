@@ -17,6 +17,19 @@ object WideStyles extends StyleSheet{
     display.flex,
     flexDirection.column
   )
+  def tableOfContentsItem = cls(
+    // We have to use inline-block and verticalAlign.middle and width: 100%
+    // here, instead of simply using display.block, because display.block items
+    // with overflow.hidden seem to misbehave and render badly in different ways
+    // between firefox (renders correctly), chrome (body of list item is offset
+    // one row from the bullet) and safari (bullet is entirely missing)
+    display.`inline-block`,
+    width := "100%",
+    verticalAlign.middle,
+    overflow.hidden,
+    textOverflow.ellipsis
+
+  )
   def tableOfContents = cls(
     display.flex,
     flexDirection.column,
