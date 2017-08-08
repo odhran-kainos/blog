@@ -291,6 +291,8 @@ constant" time, we could then prove that:
 - [Translating a "logarithmic" algorithm from Python to Java makes it 
   "effectively constant"](#what-if-constant-factors-mattered-part-deux)
 
+None of which make any sense.
+
 The basic problem here is that "effectively constant" is not a *thing* with a
 rigorous definition and broadly-accepted meaning.
 
