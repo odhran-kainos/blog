@@ -10,7 +10,7 @@ walk through why such logic is incorrect, explore some of the absurd
 conclusions we can reach if the above logic is taken to be true, and 
 demonstrate why Scala's Vector operations are not "effectively constant" time.
 
-[official Scala documentation]: http://docs.scala-lang.org/overviews/collections/performance-characteristics.html)
+[official Scala documentation]: http://docs.scala-lang.org/overviews/collections/performance-characteristics.html
 
 -------------------------------------------------------------------------------
 
