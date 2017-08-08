@@ -33,7 +33,9 @@ object DatesFor{
 
   def apply(filePrefix: String) = for {
     (file, sha, author, date) <- fileChanges
-    if file.startsWith(filePrefix)
+    // Git sometimes quotes the filenames if they contain quotes, so make sure
+    // we strip off any quotes preceding it to get at the actual `$number -` prefix
+    if file.stripPrefix("\"").startsWith(filePrefix)
   } yield {
     println("XXX " + date)
     (sha, java.time.LocalDate.parse(date))
