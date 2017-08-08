@@ -280,9 +280,9 @@ in Big-O analysis.
 Scala's immutable Vector operations (as well as the related Map and Set 
 operations) are logarithmic: the time they take to execute grows 
 logarithmically with the size of the Vector. We have seen that this can be 
-proved by high-school maths and the basics of Big-O notation. What's more, we 
-have seen the *consequences* if we accept the logic arguing that they are 
-"effectively constant! we could then prove that: 
+proved by high-school maths and the basics of Big-O notation. What's more, if 
+we accept the logic arguing that Scala Vector operations *are* "effectively 
+constant" time, we could then prove that: 
 
 - ["Logarithmic" operations are effectively constant 
   too!](#what-if-the-max-size-of-input-mattered)
