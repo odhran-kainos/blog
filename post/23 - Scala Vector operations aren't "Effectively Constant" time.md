@@ -51,11 +51,14 @@ explaining why inserting into a (simplified) immutable binary tree takes
 
 Since Scala's Vectors are immutable balanced 32-ary trees rather than binary 
 trees, all these operations (lookup, insert, remove, replace) take 
-`O(log32(n))` time instead of `O(log2(n))` time. Everything so far is 
-uncontroversial.
+`O(log32(n))` time instead of `O(log2(n))` time. Given the max size of a 
+machine integer on the JVM (`2^31`, or `2147483648`) that means it never takes
+more than 6 steps to perform an operation on the Vector. So far, all this is
+true and uncontroversial.
 
-According to the [official Scala documentation], this makes them take 
-"effectively constant" time. That is where the logic falls down.
+According to the [official Scala documentation], this makes those operations 
+take "effectively constant" time. It is that the widely repeated claim that is
+entirely incorrect, and the rest of this blog post illustrates why.
 
 ## O(log32(n)) is O(log2(n)/5) is O(log2(n))
 
