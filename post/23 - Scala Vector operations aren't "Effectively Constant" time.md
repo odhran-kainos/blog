@@ -3,7 +3,7 @@ implemented using a 32-way trees. This makes many operations take `O(log32(n))`
 time, and given a maximum size of `2^31` elements, it never takes more than `6` 
 steps to perform a given operation. They call this "effectively constant" time. 
 This fact has found its way into [books](http://tinyurl.com/yc73sutz), 
-[blog posts](https://www.47deg.com/blog/adventures-with-scala-collections/), 
+[blog posts](https://www.47deg.com/blog/adventures-with-scala-collections/#vector), 
 [StackOverflow answers](https://stackoverflow.com/questions/4441905/scala-fastest-removei-int-in-mutable-sequence),
 and even the [official Scala documentation].
 
