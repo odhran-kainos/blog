@@ -4,7 +4,7 @@ time, and given a maximum size of `2^31` elements, it never takes more than `6`
 steps to perform a given operation. They call this "effectively constant" time. 
 This fact has found its way into [books](http://tinyurl.com/yc73sutz), 
 [blog posts](https://www.47deg.com/blog/adventures-with-scala-collections/#vector), 
-[StackOverflow answers](https://stackoverflow.com/questions/4441905/scala-fastest-removei-int-in-mutable-sequence),
+[StackOverflow answers](https://stackoverflow.com/a/4442155/871202),
 and even the [official Scala documentation].
 
 While this logic sounds good on the surface, it is totally incorrect, and 
