@@ -172,7 +172,7 @@ def commentBox(titleText: String): Frag = Seq(
 
       var disqus_config = function () {
       this.page.url = "http://www.lihaoyi.com/post/${sanitize(titleText)}.html"; // Replace PAGE_URL with your page's canonical URL variable
-      this.page.identifier = "$titleText"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      this.page.identifier = "${titleText.replace("\"", "\\\"")}"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
       };
 
       (function() { // DON'T EDIT BELOW THIS LINE
