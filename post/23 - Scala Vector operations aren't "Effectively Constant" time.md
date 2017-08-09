@@ -326,5 +326,5 @@ well-established notation just because we think "we know better".
 If we think there's a better approach for analyzing algorithm performance, we 
 should rigorously define it so it can be properly discussed, and ensure we have
 satisfactory answers to all the holes described above. Until then, we should
-toe the line and accept that Scala's Vector operations are all `O(log(n))`, 
-and their execution time is logarithmic in the number of items involved.
+toe the line and accept that Scala's Vector operations are all `O(log(n))`:
+their execution time is logarithmic in the number of items involved.
