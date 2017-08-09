@@ -2,7 +2,10 @@ One oft-repeated fact is that in the Scala language, immutable Vectors are
 implemented using a 32-way trees. This makes many operations take `O(log32(n))` 
 time, and given a maximum size of `2^31` elements, it never takes more than `6` 
 steps to perform a given operation. They call this "effectively constant" time. 
-This is even part of the [official Scala documentation].
+This fact has found its way into [books](http://tinyurl.com/yc73sutz), 
+[blog posts](https://www.47deg.com/blog/adventures-with-scala-collections/), 
+[StackOverflow answers](https://stackoverflow.com/questions/4441905/scala-fastest-removei-int-in-mutable-sequence),
+and even the [official Scala documentation].
 
 While this logic sounds good on the surface, it is totally incorrect, and 
 taking the logic even one or two steps further illustrates why. This post will 
