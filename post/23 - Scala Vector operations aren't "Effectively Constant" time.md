@@ -61,7 +61,7 @@ more than 6 steps to perform an operation on the Vector.
 So far, all this is true and uncontroversial.
 
 According to the [official Scala documentation], this makes those operations 
-take "effectively constant" time. It is that the widely repeated claim that is
+take "effectively constant" time. It is *that* widely repeated claim that is
 entirely incorrect, and the rest of this blog post illustrates why.
 
 ## O(log32(n)) is O(log2(n)/5) is O(log2(n))
@@ -145,6 +145,9 @@ colloquially. While Big-O analysis is no where near the complete picture in a
 world with cache-effects and significant constant factors, if we choose it to 
 analyze the performance of our data-structures, we must follow the rules for
 our analysis to make any sense.
+
+And thus, by the rules of Big-O notation, Scala's `O(log32(n))` Vector 
+operations are just `O(log(n))`, not "effectively constant".
 
 ### But log32(Int.MaxValue) cannot go above 6!
 
@@ -234,21 +237,17 @@ irrelevant*. Given that `O(log32(n))` is equivalent to `O(0.2 * log2(n))`, that
 is then equivalent to `O(log2(n))` by the rules of Big-O analysis.
 
 However, we could run a thought experiment: what if constant factors *did* 
-matter in Big-O analysis? What if that was the mechanism that let us define
-`O(log2(n))` as "logarithmic", but `O(0.2 * log2(n))` as "effectively 
-constant". What then?
+matter in Big-O analysis, and could shift the balance between "logarithmic"
+and "effectively constant"?
 
-It turns out you can then "prove" all sorts of crazy things!
-
-Given that:
+It turns out that given:
 
 - `O(log2(n))` algorithms are "logarithmic"
 - `O(log32(n))`, or `O(0.2 * log2(n))`, algorithms are "effectively constant"
 
-That is, a "logarithmic" algorithm sped up by a constant factor of 5x is, by 
-our logic, "effectively constant".
+You can then "prove" all sorts of crazy things!
 
-Perhaps now, we can consider a single `O(0.2 * log2(n))` Vector lookup to be
+Let's consider a single `O(0.2 * log2(n))` Vector lookup to be
 "effectively constant". However what if we then perform *five* vector lookups?
 
 Given that five Vector lookups takes 5 times as long as a single Vector lookup,
