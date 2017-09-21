@@ -72,8 +72,9 @@ essentials. A [single, simple way of defining tests](#test-definitions) and a
 [single, simple syntax for smart asserts](#smart-asserts): in most things that
 uTest provides, there is one - and only one - way to do things. That one way is
 made powerful and flexible enough to accommodate a wide range of use cases, and
-if that isn't enough, you can build your own tools and helpers specialized for
-your own specific need.
+simple enough you can understand it in it's entirety. If that isn't enough, you
+can build your own tools and helpers on top of uTest specialized for your own
+specific need.
 
 uTest is simple enough you will never bump into a dark corner of the library you
 aren't familiar with. This simplicity lets you focus on what's you should be
