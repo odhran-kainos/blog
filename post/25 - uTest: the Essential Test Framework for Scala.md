@@ -39,7 +39,7 @@ uTest supports the following tasks:
 Anything else: fluent matchers, conventions about how tests should be labelled
 using "should" or "must" or "given - when - then", mocking, whether you're
 writing
-[unit or integration tests](http://www.lihaoyi.com/post/PrinciplesofAutomatedTesting.html#unit-vs-integration-tests)
+[unit vs integration tests](http://www.lihaoyi.com/post/PrinciplesofAutomatedTesting.html#unit-vs-integration-tests)
 or
 [example vs bulk tests](http://www.lihaoyi.com/post/PrinciplesofAutomatedTesting.html#example-vs-bulk-tests),
 all that is left up to the user. uTest doesn't need to know, or care: it will
