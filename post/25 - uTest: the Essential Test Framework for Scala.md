@@ -63,9 +63,9 @@ needed to use the library:
 When I myself have used [ScalaTest] or [Specs2] in the past, there has always
 been the feeling at the back of my mind that I don't fully understand how the
 test framework works, that I'm not properly using the tools the test framework
-is giving me, that my test seems to be working but I don't understand why. All
-this even as I'm already struggling to understand the complexities of *my own*
-code and test suite!
+is giving me, that I need to consciously limit myself to the subset of the
+framework that I think I understand. All this even as I'm already struggling to
+understand the complexities of *my own* code and test suite!
 
 uTest chooses a different path: it strips these features down to the bare
 essentials. A [single, simple way of defining tests](#test-definitions) and a
