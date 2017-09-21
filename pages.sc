@@ -75,8 +75,7 @@ def navBar(unNesting: String, contentHeaders: Seq[(String, Int)]) = {
     ),
     Seq(
       div(icon("twitter"), " Twitter") -> s"https://twitter.com/li_haoyi",
-      //      div(icon("envelope"), " Subscribe") -> s"https://groups.google.com/forum/#!forum/haoyis-programming-blog/join",
-      div(icon("rss"), "RSS") -> s"$unNesting/feed.xml",
+      div(icon("envelope"), " Subscribe") -> s"http://eepurl.com/c3A5Tz",
       div(icon("youtube-play"), " Talks") -> s"$unNesting/post/TalksIveGiven.html"
       //      div() -> ""
     )
