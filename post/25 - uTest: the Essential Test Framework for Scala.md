@@ -71,7 +71,7 @@ uTest chooses a different path: it strips these features down to the bare
 essentials. A [single, simple way of defining tests](#test-definitions) and a
 [single, simple syntax for smart asserts](#smart-asserts): in most things that
 uTest provides, there is one - and only one - way to do things. That one way is
-made powerful and flexible enough to accommodate a wide range of use cases, and
+made powerful and flexible enough to accommodate a wide range of use cases, yet
 simple enough you can understand it in it's entirety. If that isn't enough, you
 can build your own tools and helpers on top of uTest specialized for your own
 specific need.
