@@ -1,8 +1,8 @@
 [uTest](https://github.com/lihaoyi/utest) is a testing framework for the Scala
-programming language. Unlike other frameworks, uTest aims to be both simple and
-convenient to use, to allow you to focus on what's most important: your tests
-and your code. This post will explore what makes uTest interesting, and why you
-should consider using it to build the test suite in your next Scala project.
+programming language. uTest aims to be both simple and convenient to use, to
+allow you to focus on what's most important: your tests and your code. This post
+will explore what makes uTest interesting, and why you should consider using it
+to build the test suite in your next Scala project.
 
 [ScalaTest]: https://www.scalatest.org
 [Specs2]: https://etorreborre.github.io/specs2/
