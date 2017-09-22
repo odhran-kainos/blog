@@ -280,7 +280,7 @@ def assertResult(x: String, pred: Option[fastparse.all.Parsed[_]] => Boolean) = 
 }
 def assertComplete(x: String) = assertResult(x, _.isDefined)
 
-'endOfCommand{
+'endOfCommand - {
   * - assertComplete("{}")
   * - assertComplete("foo.bar")
   * - assertComplete("foo.bar // line comment")
