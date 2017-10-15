@@ -140,7 +140,7 @@ val posts = {
     val rawHtmlSnippet = new Serializer().toHtml(ast)
     ast.getChildren.clear()
     bodyNodes.foreach(ast.getChildren.add)
-    val prelude = Seq[Frag](
+    val postlude = Seq[Frag](
       hr,
 
       p(
@@ -159,10 +159,11 @@ val posts = {
           "source libraries, please chip in (or get your Company to chip in!) via ", 
           a(href:="https://www.patreon.com/lihaoyi", "Patreon"), " so he can ", "continue his open-source work"
         )
-      )
+      ),
+      hr
     ).render
 
-    val rawHtmlContent = rawHtmlSnippet + prelude + new Serializer().toHtml(ast)
+    val rawHtmlContent = rawHtmlSnippet + new Serializer().toHtml(ast) + postlude
     // Handle both post/ and posts/ for legacy reasons
     val updates = DatesFor(s"post/$index - ").toSeq ++ DatesFor(s"posts/$index - ").toSeq
     PostInfo(name, headers, rawHtmlContent, rawHtmlSnippet, updates)
