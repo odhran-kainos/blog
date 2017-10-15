@@ -790,7 +790,7 @@ branch of the alternative, do not backtrack because it means the other branches
 cannot possibly succeed". This has two results:
 
 - We get a more precise error message `expected "world", received "foo" at index
-  5`, since it knows not to bother backtracking and tying the right-hand-side
+  5`, since it knows not to bother backtracking and trying the right-hand-side
   branch
 
 - As the parser reaches these cuts, we can safely discard earlier parts of the
