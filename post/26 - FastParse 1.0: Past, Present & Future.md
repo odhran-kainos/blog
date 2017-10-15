@@ -430,8 +430,7 @@ Date:   Sun Apr 26 17:14:32 2015 -0700
 And by 9pm that day, it was complete enough to run Scalaparse and successfully
 parse it's first non-trivial (~4000 line) Scala file:
 
-```scala
-lihaoyi fastparse$ git show 92ede77d028dcd2f40e20cba81d0278e44d775fe
+```diff
 commit 92ede77d028dcd2f40e20cba81d0278e44d775fe
 Author: Li Haoyi <haoyi@dropbox.com>
 Date:   Sun Apr 26 21:28:18 2015 -0700
