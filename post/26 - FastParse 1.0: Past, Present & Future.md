@@ -92,8 +92,8 @@ There are example Fastparse parsers for
 [Scala](http://www.lihaoyi.com/fastparse/#ScalaParse),
 [Python](http://www.lihaoyi.com/fastparse/#PythonParse),
 [CSS](http://www.lihaoyi.com/fastparse/#CssParse). Apart from parsing `String`s,
-Fastparse can also parse `Iterator[String]`s, or binary input in the form of
-`ByteVector`s and `Iterator[ByteVector]` with example parsers for
+Fastparse can also parse "streaming" `Iterator[String]`s, or binary input in the
+form of `ByteVector`s and `Iterator[ByteVector]` with example parsers for
 [UDP Packets](http://www.lihaoyi.com/fastparse/#UDPPackets),
 [BMP images](http://www.lihaoyi.com/fastparse/#BmpParser),
 [MIDI files](http://www.lihaoyi.com/fastparse/#MidiParse), and
@@ -204,8 +204,8 @@ tools: [why do parsing libraries use
 code-generation](https://stackoverflow.com/q/8780288/871202)? After all, in most
 other tasks, you simply have a library whose functions you call: rarely do you
 find yourself generating code programmatically. In writing parsers for parsing
-user query strings, document markup HTML templates, I've always felt there had
-to be a better way.
+user query strings, document markup or HTML templates, I've always felt there
+had to be a better way.
 
 ### Scala Parser Combinators
 
@@ -237,11 +237,12 @@ Fastparse.
 
 This particular library has many shortcomings: performance was poor, error
 reporting wasn't great, and it used far more cryptic operators (`~>`, `<~`,
-`^^`, `^^^`, ...) than was really necessary. Although I was certainly not uses
-the library optimally, my parsers built using this library were slow enough that
-even my relatively small test suite with a few thousand lines of input was
-taking multiple seconds to parse. That definitely wouldn't work for many non-toy
-use cases!
+`^^`, `^^^`, ...) than was really necessary, it's `.log` debugger wasn't as
+useful as it could have been. Although I was certainly not uses the library
+optimally, my parsers built using this library were slow enough that even my
+relatively small test suite with a few thousand lines of input was taking
+multiple seconds to parse. That definitely wouldn't work for many non-toy use
+cases!
 
 The XMLite project hasn't gone anywhere (yet) but that was my first experience
 with the concept of "Parser Combinators", and I thought they were really cool.
@@ -571,10 +572,39 @@ one point in time.
 Fastparse thus uses mutable `Mutable.Success` and `Mutable.Failure` objects
 internally when interpreting a parser, only converting it to an immutable
 `Parsed.Success` or `Parsed.Failure` when Fastparse is ready to hand control
-back to the user. While this means that we have to be much more careful in
-Fastparse's *internals* in order to deal with this mutability, it makes the
-parser run a lot faster, and the user of Fastparse still gets a nice, immutable
-result back that they don't need to worry about.
+back to the user. e.g. here is the implementation of the `FlatMapped` parser,
+returned by the `.flatMap` operation:
+
+```scala
+case class FlatMapped[T, V, Elem, Repr](p1: Parser[T, Elem, Repr], func: T => Parser[V, Elem, Repr])
+                                       (implicit repr: ReprOps[Elem, Repr])
+  extends Parser[V, Elem, Repr] {
+  def parseRec(cfg: ParseCtx[Elem, Repr], index: Int) = {
+    p1.parseRec(cfg, index) match{
+      case f: Mutable.Failure[Elem, Repr] => failMore(f, index, cfg.logDepth, cut = false)
+      case s: Mutable.Success[T, Elem, Repr] =>
+        val sCut = s.cut
+        val res = func(s.value).parseRec(cfg, s.index)
+        res.cut = sCut
+        res
+    }
+  }
+  override def toString = p1.toString
+}
+```
+
+See how while the "public" interface of the parser is `.parse`, internally the
+parser is implemented using the `.parseRec` method. `.parseRec` deals with
+`Mutable.Success` and `Mutable.Failure` objects, which are re-used throughout a
+single parse run. Furthermore, since they're mutable, we need to be really
+careful to save e.g. the attribute `s.cut` into a local variable `sCut`, if we
+want to access it later, since `s.cut` will get stomped over by some other value
+when we call `func(s.value).parseRec(...)`.
+
+Throughout Fastparse's internals, we have to be extra-careful in handling the
+mutable result objects. However, it makes the parser run a lot faster, and the
+user of Fastparse still gets a nice, immutable result back, and can simply enjoy
+the speedup of their parser running significantly faster.
 
 ### Not allocating tuples when you don't care about the result
 
@@ -630,7 +660,7 @@ Where the `.!` tells Fastparse you want to capture the string:
 parser.parse("hello world") // "world"
 ```
 
-If you capture multiple things, they get added into a tuple:
+If you capture multiple things, they still get added into a tuple:
 
 ```scala
 val parser = P( ("hello" | "Hello").! ~ " " ~ ("world" | "World").! )
@@ -695,20 +725,88 @@ you've already consumed those characters and discarded them! However, FastParse
 [Cuts](http://www.lihaoyi.com/fastparse/#Cuts)!
 
 Without cuts, any parser could fail and backtrack all the way to the start of
-the input, we would be forced to buffer everything in memory in order to support
-that, which would defeat the purpose of streaming input.
+the input. Consider the following case
+
+
+```scala
+import fastparse.all._
+val parser = P( "hello" ~ " " ~ "world" | "world" ~ " " ~ "foo" ~ " " ~ "bar" )
+
+parser.parse("hello foo bar")
+```
+
+`parser` would first attempt the left-hand-side of the alternative `|`, and
+parse `"hello"` and `" "` successfully. However, after that it would find the
+next characters are `"foo"` while it expects a `"world"`: it would thus thus
+backtrack to where it was before attempting the left-hand-side, in this case to
+the start of the input, and then attempt the right-hand-side of the `|`. The
+right-hand-side parse would then succeed.
+
+However, in the following case:
+
+```scala
+import fastparse.all._
+val parser = P( "hello" ~ " " ~ "world" | "foo" ~ " " ~ "bar" ~ " " ~ "baz" )
+
+parser.parse("hello foo bar")
+```
+
+`parser` would make similarly attempt-and-fail-to-parse the left-hand-side.
+However, `parser` isn't smart enough to know that having seen `"hello"` means
+the right-hand-side could never pass without trying it, so it will still need to
+backtrack all the way to the start of the input in order to give it a shot, see
+it fail, and report a failure:
+
+`expected "hello" ~ " " ~ "world" | "foo" ~ " " ~ "bar" ~ " " ~ "baz", received
+"foo" at index 0`
+
+Because it doesn't know which side of the alternative `|` was "meant" to have
+passed, all it can do is tell you both sides failed.
+
+To support this backtracking, we would need to buffer the entire streaming input
+in memory so the parser could backtrack and look at it. This would defeat the
+purpose of streaming input.
 
 *With* cuts, things are better: we only need to backtrack as far as the latest
-cut happened. That means that as the parse progresses, a parser with cuts in it
-will progressively discard earlier parts of the input buffer, keeping the size
-of the buffer bounded. And placing cuts in your parser is something you should
-be doing anyway, in order to improve error messages when a parse fails.
+cut happened. e.g. in the following case:
+
+```scala
+import fastparse.all._
+val parser = P( "hello" ~/ " " ~ "world" | "foo" ~/ " " ~ "bar" ~ " " ~ "baz" )
+
+parser.parse("hello foo bar")
+```
+
+We use "cuts" (`~/` operator) to tell FastParse "if you reach this point in the
+branch of the alternative, do not backtrack because it means the other branches
+cannot possibly succeed". This has two results:
+
+- We get a more precise error message `expected "world", received "foo" at index
+  5`, since it knows not to bother backtracking and tying the right-hand-side
+  branch
+
+- As the parser reaches these cuts, we can safely discard earlier parts of the
+  input buffer, since we can no longer backtrack past them!
+
+The second point is important when taking streaming input: it helps us keep the
+size of the buffer bounded. And placing cuts in your parser is something you
+should be doing anyway, in order to improve error messages when a parse fails.
 
 The
 [documentation for streaming inputs](http://www.lihaoyi.com/fastparse/#StreamingParsingBufferSize)
-demonstrates this phenomena for real-world parsers on real-world inputs: parsing
-148kb of Scala code, Scalaparse only needs a buffer of 1500-2500 characters
-(depending on streaming chunk size) in order to support backtracking. The
+demonstrates this phenomena for real-world parsers on real-world inputs:
+
+
+| Parser      | Max buffer for 1-sized chunk | Max buffer for 1024-sized chunk | Input Size | Used memory |
+|:------------|-----------------------------:|--------------------------------:|-----------:|:------------|
+| ScalaParse  |                         1555 |                            2523 |     147894 | 1.4%        |
+| PythonParse |                         2006 |                            2867 |      68558 | 3.6%        |
+| BmpParse    |                           36 |                            1026 |     786486 | 0.01%       |
+| ClassParse  |                          476 |                            1371 |     332142 | 0.3%        |
+
+
+Parsing 148kb of Scala code, Scalaparse only needs a buffer of 1500-2500 characters
+(depending on how big the streaming chunks are) in order to support backtracking. The
 Python, BMP image, and Java Classfile parsers show similar numbers.
 
 It turns out that for real-world parsers of real-world data formats, it is
