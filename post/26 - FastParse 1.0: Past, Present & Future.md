@@ -5,7 +5,7 @@ have the parsers run at an acceptable speed, with great error debuggability and
 error reporting.
 
 This post goes over the history and motivations of Fastparse, and what to expect
-with the project's recent s1.0.0 release.
+with the project's recent 1.0.0 release.
 
 -------------------------------------------------------------------------------
 
