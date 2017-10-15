@@ -47,7 +47,8 @@ either `world` or `World` at line 1 column 10, but instead it saw `orld` and
 thus failed.
 
 While the above example can easily be parsed with a regex, Fastparse makes it
-easy to combine parsers together, even recursively, to parse non-trivial input
+easy to combine parsers together (something hard to do using regexes) to parse
+non-trivial input formats that regexes cannot handle, such as recursive input
 formats. For example, here's a parser that parses-and-evaluates simple
 arithmetic expressions:
 
@@ -86,6 +87,13 @@ Parsed.Success(21, _)
 @ expr.parse("1+1*")
 Failure((number | parens):1:5 ..."") 
 ```
+
+What's interesting about Fastparse isn't just that it lets you parse recursive
+input formats that regexes cannot. What is interesting is that you can implement
+your parser in the same way whether you are parsing some simple query syntax, a
+full-fledged programming language, or some ad-hoc binary data dumps, without
+having to jump from tool to tool depending on the nature of the input you need
+to parsing.
 
 There are example Fastparse parsers for
 [JSON](http://www.lihaoyi.com/fastparse/#Json),
