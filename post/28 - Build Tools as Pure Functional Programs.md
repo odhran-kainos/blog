@@ -314,8 +314,8 @@ fails. We assume that running `protoc` to make `generated_sources` from
 `proto_files` won't cause our `maven_coordinates` to change.
 
 The code is structured as functions, whose only inputs are passed as arguments,
-and only output is their return value, with no side-effects. Doesn't matter if
-it's written in Python or Scala or Haskell, that is what makes it functional.
+and only output is their return value, with no side-effects. That is what makes
+it functional, regardless if it's written in Python or Scala or Haskell.
 
 I have showed above how any build, from simple to complex, can be generally
 modeled as a directed acyclic graph. We have also seen how the directed acyclic
