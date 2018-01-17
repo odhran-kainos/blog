@@ -35,8 +35,9 @@ project as a whole:
 - Given a task the user wants to run, make sure all tasks it depends on
   are run first, in the correct order
 
-- Cache the output of tasks so they aren't repeated unnecessarily, but flush
-  the caches when necessary to make sure the output is up-to-date
+- Cache the output of tasks so they aren't repeated unnecessarily, but flush the
+  caches when necessary and re-build incrementally to make sure the output is
+  up-to-date
 
 - Parallelize the tasks that can be run in parallel
 
@@ -381,6 +382,10 @@ build tool, regardless of simplicity: I'll happily put up with awkward Makefile
 syntax or magic Ruby/Rake incantations if it will save me time in my
 build-test-debug iteration cycle.
 
+Even traditional "functional programming" languages like Haskell or OCaml
+default to a single-threaded, un-cached batch-oriented, non-queryable
+programming model that's manifestly unsuitable for build tooling.
+
 However, if those three points above are the only reason not to use a build-tool
 which models your build as pure-functions, then perhaps there is hope.
 
@@ -564,9 +569,11 @@ As a result, any executable that a user can build can be itself used in a build
 step: extending a Bazel build with a newly-built executable is no different from
 building anything else: you get all the same parallelism, caching and
 queryability when building such extensions as you do when building your "main"
-project.
+project. `compile`/`proguard`/`package`, rather than being builtin operations to
+your "build program", become just another intermediate result to build in the
+process of building your project.
 
-And while the syntax may differ in arbitrary ways (e.g. with all the `ctx.blah`
+While the syntax may differ in arbitrary ways (e.g. with all the `ctx.blah`
 prefixes), you may recognize the introduction of `ctx.run` "builtin" function as
 exactly the same transformation you often see in Lisp textbooks, from:
 
