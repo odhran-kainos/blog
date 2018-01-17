@@ -323,6 +323,8 @@ graph happens to be the *exact* data structure that underlies pure-functional
 code. If that is the case, why don't people write their builds in
 pure-functions, whether in Python or something else?
 
+## Why not a Build-Tool of Pure Functions?
+
 It turns out that you *can* write a build tool with pure functions. In fact, all
 you need is the appropriate set of implementations: a `download` function that
 downloads things from Maven Central. A `protoc` function that invokes the
@@ -354,12 +356,12 @@ each step. In the structure of this pure-functional Python snippet, we already
 have all the information necessary for all the build tools in the world to work
 with!
 
-## Why not a Build-Tool of Pure Functions?
-
 If you can write a Python script using pure functions to serve as a build tool,
 why doesn't everyone do that? That certainly is simpler than learning a whole
 new language/syntax/semantics/ecosystem just to invoke some functions in the
 correct order.
+
+## Downsides of a Naive Pure-Function Build Tool
 
 It turns out, while the above Python script with naive
 `download`/`protoc`/`package`/etc. implementations can work, it isn't a very
