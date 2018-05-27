@@ -78,7 +78,7 @@ Dict(
 
 ## What is the Visitor Pattern
 
-To begin with, let's assume that we have already parsed our Json from it's
+To begin with, let's assume that we have already parsed our Json from its
 textual input format into the Json data types defined above:
 
 ```scala
@@ -129,9 +129,9 @@ The contract of `Visitor` and `DictVisitor` is as follows:
 Exactly how "for each JSON {string, number, dictionary}" is implemented, is left
 to a separate `dispatch` function.
 
-For now, I am assuming that `Visitor` is generic: it's methods return a type
-`T`, representing the "output" of this `Visitor`. `T` will vary depending on
-what the concrete Visitor implementation is trying to do:
+For now, I am assuming that `Visitor` is generic: its methods return a type `T`,
+representing the "output" of this `Visitor`. `T` will vary depending on what the
+concrete Visitor implementation is trying to do:
 
 - If it's meant to serialize the Json tree then `T` might be a `String`
 
@@ -680,7 +680,7 @@ println(dispatchParse(res32, new StringifyVisitor()))
 println(dispatchParse(res32, new SummationVisitor()))
 // 31340
 
-println(dispatchParse(res32, new RedactVisitor(new ConstructionVisitor())))
+println(dispatchParse(res32, new RedactVisitor(new SummationVisitor())))
 // 31337
 ```
 
