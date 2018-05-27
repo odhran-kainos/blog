@@ -23,7 +23,7 @@ def pageChrome(titleText: Option[String],
   val sheets = Seq(
     "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
     "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",
-    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/github-gist.min.css"
+    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/github-gist.min.css"
   )
 
 
@@ -36,8 +36,8 @@ def pageChrome(titleText: Option[String],
       tags2.style(s"@media (min-width: 60em) {${WideStyles.styleSheetText}}"),
       tags2.style(s"@media (max-width: 60em) {${NarrowStyles.styleSheetText}}"),
       tags2.style(Styles.styleSheetText),
-      script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"),
-      script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/languages/scala.min.js"),
+      script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"),
+      script(src:="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/languages/scala.min.js"),
       script(raw("hljs.initHighlightingOnLoad();")),
       // This makes media queries work on iphone (???)
       // http://stackoverflow.com/questions/13002731/responsive-design-media-query-not-working-on-iphone
