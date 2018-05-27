@@ -104,27 +104,27 @@ A Visitor for our JSON tree may look something like this:
 
 ```scala
 abstract class Visitor[T]{
-  def acceptStr(value: String): T
-  def acceptNum(value: Int): T
-  def acceptDict(): DictVisitor[T]
+  def visitStr(value: String): T
+  def visitNum(value: Int): T
+  def visitDict(): DictVisitor[T]
 }
 abstract class DictVisitor[T]{
-  def acceptKey(key: String): Unit
-  def acceptValue(): Visitor[T]
-  def acceptValue(value: T): Unit
+  def visitKey(key: String): Unit
+  def visitValue(): Visitor[T]
+  def visitValue(value: T): Unit
   def done(): T
 }
 ```
 
 The contract of `Visitor` and `DictVisitor` is as follows:
 
-- For each JSON string, `acceptStr` is called
-- For each JSON number, `acceptNum` is called
-- For each JSON dictionary, `acceptDict` is called
-  - Within that JSON dictionary, `acceptKey` is called for each key
-  - `acceptValue()` is called before each dictionary value, and the `Visitor` it
+- For each JSON string, `visitStr` is called
+- For each JSON number, `visitNum` is called
+- For each JSON dictionary, `visitDict` is called
+  - Within that JSON dictionary, `visitKey` is called for each key
+  - `visitValue()` is called before each dictionary value, and the `Visitor` it
     returns is used when visiting that value's JSON nodes
-  - `acceptValue(value: T)` is called on the result of the visiting that value
+  - `visitValue(value: T)` is called on the result of the visiting that value
 
 Exactly how "for each JSON {string, number, dictionary}" is implemented, is left
 to a separate `dispatch` function.
@@ -148,14 +148,14 @@ on what it sees in the tree. For example:
 ```scala
 def dispatch[T](input: Json, visitor: Visitor[T]): T = {
   input match{
-    case Str(value) => visitor.acceptStr(value)
-    case Num(value) => visitor.acceptNum(value)
+    case Str(value) => visitor.visitStr(value)
+    case Num(value) => visitor.visitNum(value)
     case Dict(pairs @ _*) => 
-      val dictVisitor = visitor.acceptDict()
+      val dictVisitor = visitor.visitDict()
       for((k, v) <- pairs){
-        dictVisitor.acceptKey(k)
-        val subVisitor = dictVisitor.acceptValue()
-        dictVisitor.acceptValue(dispatch(v, subVisitor))
+        dictVisitor.visitKey(k)
+        val subVisitor = dictVisitor.visitValue()
+        dictVisitor.visitValue(dispatch(v, subVisitor))
       }
       dictVisitor.done()
   }
@@ -174,19 +174,19 @@ as an example it works well enough.
 
 ```scala
 class StringifyVisitor extends Visitor[String]{
-  def acceptStr(value: String) = "\"" + value + "\""
-  def acceptNum(value: Int) = value.toString
-  def acceptDict() = new StringifyDictVisitor
+  def visitStr(value: String) = "\"" + value + "\""
+  def visitNum(value: Int) = value.toString
+  def visitDict() = new StringifyDictVisitor
 }
 class StringifyDictVisitor extends DictVisitor[String]{
   val tokens = collection.mutable.Buffer("{")
-  def acceptKey(key: String) = {
+  def visitKey(key: String) = {
     if (tokens.length > 1) tokens.append(",")
     tokens.append("\"" + key + "\"")
     tokens.append(":")
   }
-  def acceptValue() = new StringifyVisitor
-  def acceptValue(value: String) = {
+  def visitValue() = new StringifyVisitor
+  def visitValue(value: String) = {
     tokens.append(value)
   }
   def done() = {
@@ -206,18 +206,18 @@ structure with the value of any dictionary-key named `"hello"` removed.
 
 ```scala
 class RedactTreeVisitor extends Visitor[Json]{
-  def acceptStr(value: String) = Str(value)
-  def acceptNum(value: Int) = Num(value)
-  def acceptDict() = new RedactTreeDictVisitor
+  def visitStr(value: String) = Str(value)
+  def visitNum(value: Int) = Num(value)
+  def visitDict() = new RedactTreeDictVisitor
 }
 class RedactTreeDictVisitor extends DictVisitor[Json]{
   val pairs = collection.mutable.Buffer.empty[(String, Json)]
   var lastKey = ""
-  def acceptKey(key: String) = {
+  def visitKey(key: String) = {
     lastKey = key
   }
-  def acceptValue() = new RedactTreeVisitor
-  def acceptValue(value: Json) = {
+  def visitValue() = new RedactTreeVisitor
+  def visitValue(value: Json) = {
     if (lastKey != "hello") pairs.append(lastKey -> value)
   }
   def done() = Dict(pairs:_*)
@@ -233,21 +233,21 @@ structure with any number-like strings converted into proper Json numbers
 
 ```scala
 class ToIntTreeVisitor extends Visitor[Json]{
-  def acceptStr(value: String) = {
+  def visitStr(value: String) = {
     if (value.forall(_.isDigit)) Num(value.toInt)
     else Str(value)
   }
-  def acceptNum(value: Int) = Num(value)
-  def acceptDict() = new ToIntTreeDictVisitor
+  def visitNum(value: Int) = Num(value)
+  def visitDict() = new ToIntTreeDictVisitor
 }
 class ToIntTreeDictVisitor extends DictVisitor[Json]{
   val pairs = collection.mutable.Buffer.empty[(String, Json)]
   var lastKey = ""
-  def acceptKey(key: String) = {
+  def visitKey(key: String) = {
     lastKey = key
   }
-  def acceptValue() = new ToIntTreeVisitor
-  def acceptValue(value: Json) = {
+  def visitValue() = new ToIntTreeVisitor
+  def visitValue(value: Json) = {
     pairs.append(lastKey -> value)
   }
   def done() = Dict(pairs:_*)
@@ -264,15 +264,15 @@ returns the sum:
 
 ```scala
 class SummationVisitor extends Visitor[Int]{
-  def acceptStr(value: String) = 0
-  def acceptNum(value: Int) = value
-  def acceptDict() = new SummationDictVisitor
+  def visitStr(value: String) = 0
+  def visitNum(value: Int) = value
+  def visitDict() = new SummationDictVisitor
 }
 class SummationDictVisitor extends DictVisitor[Int]{
   var sum = 0
-  def acceptKey(key: String) = {} // do nothing
-  def acceptValue() = new SummationVisitor
-  def acceptValue(value: Int) = {
+  def visitKey(key: String) = {} // do nothing
+  def visitValue() = new SummationVisitor
+  def visitValue(value: Int) = {
     sum += value
   }
   def done() = sum
@@ -433,19 +433,19 @@ necessary to the `RedactTreeVisitor` above to make this possible:
 
 ```scala
 class RedactVisitor[T](downstream: Visitor[T]) extends Visitor[T]{
-  def acceptStr(value: String) = downstream.acceptStr(value)
-  def acceptNum(value: Int) = downstream.acceptNum(value)
-  def acceptDict() = new RedactDictVisitor(downstream.acceptDict())
+  def visitStr(value: String) = downstream.visitStr(value)
+  def visitNum(value: Int) = downstream.visitNum(value)
+  def visitDict() = new RedactDictVisitor(downstream.visitDict())
 }
 class RedactDictVisitor[T](downstream: DictVisitor[T]) extends DictVisitor[T]{
   var lastKey = ""
-  def acceptKey(key: String) = {
+  def visitKey(key: String) = {
     lastKey = key
-    if (lastKey != "hello") downstream.acceptKey(key)
+    if (lastKey != "hello") downstream.visitKey(key)
   }
-  def acceptValue() = new RedactVisitor[T](downstream.acceptValue())
-  def acceptValue(value: T) = {
-    if (lastKey != "hello") downstream.acceptValue(value)
+  def visitValue() = new RedactVisitor[T](downstream.visitValue())
+  def visitValue(value: T) = {
+    if (lastKey != "hello") downstream.visitValue(value)
   }
   def done() = downstream.done()
 }
@@ -471,17 +471,17 @@ A similar change could be made to `ToIntTreeVisitor`:
 
 ```scala
 class ToIntVisitor[T](downstream: Visitor[T]) extends Visitor[T]{
-  def acceptStr(value: String) = {
-    if (value.forall(_.isDigit)) downstream.acceptNum(value.toInt)
-    else downstream.acceptStr(value)
+  def visitStr(value: String) = {
+    if (value.forall(_.isDigit)) downstream.visitNum(value.toInt)
+    else downstream.visitStr(value)
   }
-  def acceptNum(value: Int) = downstream.acceptNum(value)
-  def acceptDict() = new ToIntDictVisitor(downstream.acceptDict())
+  def visitNum(value: Int) = downstream.visitNum(value)
+  def visitDict() = new ToIntDictVisitor(downstream.visitDict())
 }
 class ToIntDictVisitor[T](downstream: DictVisitor[T]) extends DictVisitor[T]{
-  def acceptKey(key: String) = downstream.acceptKey(key)
-  def acceptValue() = new ToIntVisitor[T](downstream.acceptValue())
-  def acceptValue(value: T) = downstream.acceptValue(value)
+  def visitKey(key: String) = downstream.visitKey(key)
+  def visitValue() = new ToIntVisitor[T](downstream.visitValue())
+  def visitValue(value: T) = downstream.visitValue(value)
   def done() = downstream.done()
 }
 ```
@@ -619,9 +619,9 @@ class DispatchParser{
     while(input(offset).isWhitespace) offset += 1
   }
   def parse[T](input: String, visitor: Visitor[T]): T = {
-    if(input(offset) == DOUBLE_QUOTE) visitor.acceptStr(parseStr(input))
-    else if(input(offset).isDigit) visitor.acceptNum(parseNum(input))
-    else if(input(offset) == '{') parseDict(input, visitor.acceptDict())
+    if(input(offset) == DOUBLE_QUOTE) visitor.visitStr(parseStr(input))
+    else if(input(offset).isDigit) visitor.visitNum(parseNum(input))
+    else if(input(offset) == '{') parseDict(input, visitor.visitDict())
     else ???
   }
   def parseNum(input: String) = {
@@ -642,13 +642,13 @@ class DispatchParser{
     while(!done){
       whitespace(input)
       val key = parseStr(input)
-      dictVisitor.acceptKey(key)
+      dictVisitor.visitKey(key)
       whitespace(input)
       assert(input(offset) == ':', input(offset) -> offset)
       offset += 1
       whitespace(input)
-      val value = parse(input, dictVisitor.acceptValue())
-      dictVisitor.acceptValue(value)
+      val value = parse(input, dictVisitor.visitValue())
+      dictVisitor.visitValue(value)
       whitespace(input)
       if (input(offset) == '}') done = true
       offset += 1
@@ -716,18 +716,18 @@ constructs the `Json` tree structure! It looks something like this:
 
 ```scala
 class ConstructionVisitor extends Visitor[Json]{
-  def acceptStr(value: String) = Str(value)
-  def acceptNum(value: Int) = Num(value)
-  def acceptDict() = new ConstructionDictVisitor
+  def visitStr(value: String) = Str(value)
+  def visitNum(value: Int) = Num(value)
+  def visitDict() = new ConstructionDictVisitor
 }
 class ConstructionDictVisitor extends DictVisitor[Json]{
   val pairs = collection.mutable.Buffer.empty[(String, Json)]
   var lastKey = ""
-  def acceptKey(key: String) = {
+  def visitKey(key: String) = {
     lastKey = key
   }
-  def acceptValue() = new ConstructionVisitor
-  def acceptValue(value: Json) = {
+  def visitValue() = new ConstructionVisitor
+  def visitValue(value: Json) = {
     pairs.append(lastKey -> value)
   }
   def done() = Dict(pairs:_*)
@@ -843,7 +843,7 @@ Furthermore, all our `Visitor` machinery can work regardless of dispatcher, so
 we can implement `dispatchParse` and immediately have the ability to do
 streaming computations directly on raw input text, without ever parsing it into
 a complete tree structure, with all of our existing
-`Redact`/`ToInt`/`Stringify`/`Summation operations immediately available for
+`Redact`/`ToInt`/`Stringify`/`Summation` operations immediately available for
 us to use for free!
 
 ## Further work using the Visitor Pattern
@@ -857,14 +857,14 @@ You can define a new terminal visitor that does nothing:
 
 ```scala
 class NoOpVisitor extends Visitor[Unit]{
-  def acceptStr(value: String) = ()
-  def acceptNum(value: Int) = ()
-  def acceptDict() = new NoOpDictVisitor
+  def visitStr(value: String) = ()
+  def visitNum(value: Int) = ()
+  def visitDict() = new NoOpDictVisitor
 }
 class NoOpDictVisitor extends DictVisitor[Unit]{
-  def acceptKey(key: String) = ()
-  def acceptValue() = new NoOpVisitor()
-  def acceptValue(value: Unit) = ()
+  def visitKey(key: String) = ()
+  def visitValue() = new NoOpVisitor()
+  def visitValue(value: Unit) = ()
   def done() = ()
 }
 ```
@@ -932,16 +932,16 @@ You can use this a set of Visitors to create `Thingy` and `Inner`:
 ```scala
 
 class LiteralVisitor extends Visitor[Any]{
-  def acceptStr(value: String) = value
-  def acceptNum(value: Int) = value
-  def acceptDict() = ???
+  def visitStr(value: String) = value
+  def visitNum(value: Int) = value
+  def visitDict() = ???
 }
 
 abstract class InstantiatorVisitor extends Visitor[Any]{
-  def acceptStr(value: String) = ???
-  def acceptNum(value: Int) = ???
+  def visitStr(value: String) = ???
+  def visitNum(value: Int) = ???
   def done(values: Seq[Any]): Any
-  def acceptDict() = new InstantiatorDictVisitor(done, visitors)
+  def visitDict() = new InstantiatorDictVisitor(done, visitors)
   def visitors: Map[String, Visitor[Any]]
 }
 class InstantiatorDictVisitor(outerDone: Seq[Any] => Any,
@@ -949,11 +949,11 @@ class InstantiatorDictVisitor(outerDone: Seq[Any] => Any,
                              extends DictVisitor[Any]{
   var lastKey = ""
   val values = collection.mutable.Buffer.empty[Any]
-  def acceptKey(key: String) = {
+  def visitKey(key: String) = {
     lastKey = key
   }
-  def acceptValue() = visitors(lastKey)
-  def acceptValue(value: Any) = {
+  def visitValue() = visitors(lastKey)
+  def visitValue(value: Any) = {
     values.append(value)
   }
   def done(): Any = outerDone(values)
