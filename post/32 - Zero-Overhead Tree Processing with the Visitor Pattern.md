@@ -63,6 +63,7 @@ Dict("cow" -> Str("moo"))
         "you are": {"cow": 2}
     },
     "world": 31337
+    "bye": "314"
 }
 ```
 
@@ -72,7 +73,8 @@ Dict(
     "i am" -> Dict("cow" -> Num(1)),
     "you are" -> Dict("cow" -> Num(2))
   ),
-  "world" -> Num(31337)
+  "world" -> Num(31337),
+  "bye" -> Str("314")
 )
 ```
 
@@ -196,7 +198,7 @@ class StringifyDictVisitor extends DictVisitor[String]{
 }
 
 println(dispatch(tree, new StringifyVisitor))
-// {"hello":{"i am":{"cow":1},"you are":{"cow":2}},"world":31337}
+// {"hello":{"i am":{"cow":1},"you are":{"cow":2}},"world":31337,"bye":"314"}
 ```
 
 ### RedactTreeVisitor
@@ -224,7 +226,7 @@ class RedactTreeDictVisitor extends DictVisitor[Json]{
 }
 
 println(dispatch(tree, new RedactTreeVisitor)) 
-// Dict("hello" -> Str("redacted"), "world" -> Num(31337))
+// Dict("world" -> Num(31337), "bye" -> Str("314"))
 ```
 ### ToIntTreeVisitor
 
@@ -254,7 +256,14 @@ class ToIntTreeDictVisitor extends DictVisitor[Json]{
 }
 
 println(dispatch(tree, new ToIntTreeVisitor)) 
-// Dict("hello" -> Str("redacted"), "world" -> Num(31337))
+// Dict( 
+//   "hello" -> Dict(
+//     "i am" -> Dict("cow" -> Num(1)),
+//     "you are" -> Dict("cow" -> Num(2))
+//   ),
+//   "world" -> Num(31337),
+//   "bye" -> Num(314)
+// )
 ```
 
 ### SummationVisitor
@@ -311,7 +320,7 @@ def stringify(input: Json): String = {
   }
 }
 println(stringify(tree))
-// {"hello":{"i am":{"cow":1},"you are":{"cow":2}},"world":31337}
+// {"hello":{"i am":{"cow":1},"you are":{"cow":2}},"world":31337,"bye":"314"}
 ```
 ```scala
 def redact(input: Json): Json = {
@@ -327,7 +336,7 @@ def redact(input: Json): Json = {
   }
 }
 println(redact(tree))
-// Dict("world" -> Num(31337))
+// Dict("world" -> Num(31337), "bye" -> Str("314"))
 ```
 ```scala
 def toInt(input: Json): Json = {
@@ -345,7 +354,14 @@ def toInt(input: Json): Json = {
   }
 }
 println(toInt(tree))
-// Dict("world" -> Num(31337))
+// Dict( 
+//   "hello" -> Dict(
+//     "i am" -> Dict("cow" -> Num(1)),
+//     "you are" -> Dict("cow" -> Num(2))
+//   ),
+//   "world" -> Num(31337),
+//   "bye" -> Num(314)
+// )
 ```
 ```scala
 def summation(input: Json): Int = {
@@ -408,14 +424,14 @@ def redactToIntSum(input: Json): Int = {
       var total = 0
       for((key, value) <- pairs) {
         if (key != "hello"){
-          total += summation(value)
+          total += redactToIntSum(value)
         }
       }
       total
   }
 }
 println(redactToIntSum(tree))
-// 31337
+// 31651
 ```
 
 This gets us the efficiency we want - we no longer are constructing an
@@ -456,7 +472,7 @@ follows:
 
 ```scala
 println(dispatch(tree, new RedactVisitor(new StringifyVisitor)))
-// {"world":31337}
+// {"world":31337,"bye":"314"}
 
 println(dispatch(tree, new RedactVisitor(new SummationVisitor)))
 // 31337
@@ -490,7 +506,7 @@ Which allows us to chain both `ToIntVisitor` and `RedactVisitor` together:
 
 ```scala
 println(dispatch(tree, new RedactVisitor(new ToIntVisitor(new SummationVisitor))))
-// 31337
+// 31651
 ```
 
 Like recursive transformations, Visitors can be chained in arbitrary ways using
@@ -523,7 +539,8 @@ network, etc.. For now, let's just consider the textual form of our Json format:
         "i am": {"cow": 1},
         "you are": {"cow": 2},
     },
-    "world": 31337
+    "world": 31337,
+    "bye": "314"
 }
 ```
 
@@ -587,7 +604,8 @@ val input = """{
         "i am": {"cow": 1},
         "you are": {"cow": 2}
     },
-    "world": 31337
+    "world": 31337,
+    "bye": "314"
 }"""
 
 val data = parse(input)
@@ -603,7 +621,7 @@ println(summation(redact(tree)))
 // 31337
 
 println(stringify(redact(tree)))
-// {"world":31337}
+// {"world":31337,"bye":"314"}
 ```
 
 It might seem obvious that a `Parser` parses an input string into some kind of
@@ -674,13 +692,13 @@ behave the same - and produce the same result - either way.
 You can use this `DispatchParser` as follows:
 
 ```scala
-println(dispatchParse(res32, new StringifyVisitor()))
-// {"hello":{"i am":{"cow":1},"you are":{"cow":2}},"world":31337}
+println(dispatchParse(input, new StringifyVisitor()))
+// {"hello":{"i am":{"cow":1},"you are":{"cow":2}},"world":31337,"bye":"314"}
 
-println(dispatchParse(res32, new SummationVisitor()))
+println(dispatchParse(input, new SummationVisitor()))
 // 31340
 
-println(dispatchParse(res32, new RedactVisitor(new SummationVisitor())))
+println(dispatchParse(input, new RedactVisitor(new SummationVisitor())))
 // 31337
 ```
 
@@ -738,10 +756,17 @@ Now, if you want a version of `RedactVisitor` or `ToIntVisitor` that
 constructs a `Json` tree, simply chain it to `ConstructionVisitor`:
 
 ```scala
-dispatchParse(res32, new RedactVisitor(new ConstructionVisitor()))
-
-dispatchParsere(s32, new ToIntVisitor(new ConstructionVisitor()))
-// Dict("world" -> Num(31337))
+dispatchParse(input, new RedactVisitor(new ConstructionVisitor()))
+// Dict("world" -> Num(31337), "bye" -> Str("314"))
+dispatchParse(input, new ToIntVisitor(new ConstructionVisitor()))
+// Dict( 
+//   "hello" -> Dict(
+//     "i am" -> Dict("cow" -> Num(1)),
+//     "you are" -> Dict("cow" -> Num(2))
+//   ),
+//   "world" -> Num(31337),
+//   "bye" -> Num(314)
+// )
 ```
 
 Furthermore, you can now trivially convert the `Visitor`-based `DispatchParser`
@@ -749,13 +774,14 @@ into a `Json` tree-building `Parser`, just by providing it a
 `ConstructionVisitor`:
 
 ```scala
-dispatchParse(res32, new ConstructionVisitor())
+dispatchParse(input, new ConstructionVisitor())
 // Dict(
 //   "hello" -> Dict(
 //     "i am" -> Dict("cow" -> Num(1)),
 //     "you are" -> Dict("cow" -> Num(2))
 //   ),
 //   "world" -> Num(31337)
+//   "bye" -> Str("314")
 // )
 ```
 
@@ -811,8 +837,8 @@ Zero-overhead chaining of multiple operations without intermediate trees:
   numbers *and* removing all redacted keys/values
 
 - `dispatch(tree, new RedactVisitor(new ToIntVisitor(new ConstructionVisitor)))`
-  Construct with new `tree` with all number-like strings converted to all
-  redacted keys/values removed, without any intermediate trees
+  Construct with new `tree` with all number-like strings converted to numbers
+  and all redacted keys/values removed, without any intermediate trees
 
 Directly performing operations on raw text, without constructing a tree:
 
@@ -934,7 +960,6 @@ case class Inner(foo: String, bar: Int)
 You can use this a set of Visitors to create `Thingy` and `Inner`:
 
 ```scala
-
 class LiteralVisitor extends Visitor[Any]{
   def visitStr(value: String) = value
   def visitNum(value: Int) = value
