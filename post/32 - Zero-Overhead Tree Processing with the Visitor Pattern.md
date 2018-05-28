@@ -740,7 +740,7 @@ constructs a `Json` tree, simply chain it to `ConstructionVisitor`:
 ```scala
 dispatchParse(res32, new RedactVisitor(new ConstructionVisitor()))
 
-dispatchParseres32, new ToIntVisitor(new ConstructionVisitor()))
+dispatchParsere(s32, new ToIntVisitor(new ConstructionVisitor()))
 // Dict("world" -> Num(31337))
 ```
 
