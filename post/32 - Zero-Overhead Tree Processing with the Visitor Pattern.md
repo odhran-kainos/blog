@@ -810,6 +810,10 @@ Zero-overhead chaining of multiple operations without intermediate trees:
   performs a summation over the tree after converting number-like strings to
   numbers *and* removing all redacted keys/values
 
+- `dispatch(tree, new RedactVisitor(new ToIntVisitor(new ConstructionVisitor)))`
+  Construct with new `tree` with all number-like strings converted to all
+  redacted keys/values removed, without any intermediate trees
+
 Directly performing operations on raw text, without constructing a tree:
 
 - `dispatchParse(text, new StringifyVisitor)` performs a streaming re-formatting
