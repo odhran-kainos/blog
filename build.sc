@@ -9,17 +9,17 @@ import collection.JavaConverters._
 import org.pegdown.{PegDownProcessor, ToHtmlSerializer, LinkRenderer, Extensions}
 import org.pegdown.ast.{VerbatimNode, ExpImageNode, HeaderNode, TextNode, SimpleNode, TableNode}
 
-val postsFolder = cwd/'post
+val postsFolder = pwd/'post
 
 interp.watch(postsFolder)
 
-val targetFolder = cwd/'target
+val targetFolder = pwd/'target
 
 object DatesFor{
   implicit val wd = ImplicitWd.implicitCwd
   val commitChunks = %%('git, 'log, "--date=short").out.string.split("\n(?=commit)")
   val commits = for(chunk <- commitChunks) yield {
-    val lines = chunk.lines.toSeq
+    val lines = chunk.linesIterator.toSeq
     val sha = lines(0).stripPrefix("commit ")
     val author = lines.find(_.startsWith("Author: ")).get.stripPrefix("Author: ")
     val date = lines.find(_.startsWith("Date: ")).get.stripPrefix("Date:   ")
@@ -213,7 +213,7 @@ def main(publish: Boolean = false) = {
     cp(otherFile, targetFolder/'post/(otherFile relativeTo postsFolder))
   }
 
-  cp(cwd/"favicon.png", targetFolder/"favicon.ico")
+  cp(pwd/"favicon.png", targetFolder/"favicon.ico")
 
   for(i <- posts.indices){
     val post = posts(i)
@@ -235,7 +235,7 @@ def main(publish: Boolean = false) = {
 
   write(targetFolder/"feed.xml", rssXml)
   if (publish){
-    implicit val wd = cwd/'target
+    implicit val wd = pwd/'target
     write(wd/'CNAME, "www.lihaoyi.com")
     %git 'init
     %git('add, "-A", ".")
