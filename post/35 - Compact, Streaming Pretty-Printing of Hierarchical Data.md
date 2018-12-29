@@ -664,10 +664,17 @@ whole output in memory could easily take a long time.
 
 The key insight behind this `prettyprint` algorithm is that for this common kind
 of indentation-based mixed horizontal/vertical layout, you can make layout
-decisions in a streaming fashion with only a bounded amount of buffering. This
-gives the pretty-printer very predictable runtime characteristics, and allows it
-to be used in a streaming fashion on very large data structures without
-accumulating a corresponding very-large-string in memory.
+decisions in a streaming fashion with only a bounded amount of buffering:
+
+- When you need buffer *all* of a child's chunks, it is to verify that a child
+  can fit on one line, and thus buffering everything is cheap.
+
+- When a child's output is very large, we can make that determination after
+  buffering at most one line of chunks, so that is cheap as well.
+
+This gives the pretty-printer very predictable runtime characteristics, and
+allows it to be used in a streaming fashion on very large data structures
+without accumulating a corresponding very-large-string in memory.
 
 The described `prettyprint` algorithm is currently being used in my Scala
 [PPrint](http://www.lihaoyi.com/PPrint/) library, though extended in a few
