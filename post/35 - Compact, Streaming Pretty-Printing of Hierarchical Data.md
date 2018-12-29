@@ -549,63 +549,63 @@ width: 0
     "person1": {
         "name": "Alive",
         "favoriteColors": [
-            red,
-            green,
-            blue
+            "red",
+            "green",
+            "blue"
         ]
     },
     "person2": {
         "name": "Bob",
         "favoriteColors": [
-            cyan,
-            magenta,
-            yellow,
-            black
+            "cyan",
+            "magenta",
+            "yellow",
+            "black"
         ]
     }
 }
-width: 44
+width: 48
 {
     "person1": {
         "name": "Alive",
-        "favoriteColors": [red, green, blue]
+        "favoriteColors": ["red","green","blue"]
     },
     "person2": {
         "name": "Bob",
         "favoriteColors": [
-            cyan,
-            magenta,
-            yellow,
-            black
+            "cyan",
+            "magenta",
+            "yellow",
+            "black"
         ]
     }
 }
-width: 56
+width: 61
 {
     "person1": {
         "name": "Alive",
-        "favoriteColors": [red, green, blue]
+        "favoriteColors": ["red","green","blue"]
     },
     "person2": {
         "name": "Bob",
-        "favoriteColors": [cyan, magenta, yellow, black]
+        "favoriteColors": ["cyan","magenta","yellow","black"]
     }
 }
-width: 71
+width: 74
 {
-    "person1": {"name": "Alive", "favoriteColors": [red, green, blue]},
+    "person1": {"name": "Alive","favoriteColors": ["red","green","blue"]},
     "person2": {
         "name": "Bob",
-        "favoriteColors": [cyan, magenta, yellow, black]
+        "favoriteColors": ["cyan","magenta","yellow","black"]
     }
 }
-width: 80
+width: 84
 {
-    "person1": {"name": "Alive", "favoriteColors": [red, green, blue]},
-    "person2": {"name": "Bob", "favoriteColors": [cyan, magenta, yellow, black]}
+    "person1": {"name": "Alive","favoriteColors": ["red","green","blue"]},
+    "person2": {"name": "Bob","favoriteColors": ["cyan","magenta","yellow","black"]}
 }
-width: 146
-{"person1": {"name": "Alive", "favoriteColors": [red, green, blue]}, "person2": {"name": "Bob", "favoriteColors": [cyan, magenta, yellow, black]}}
+width: 152
+{"person1": {"name": "Alive","favoriteColors": ["red","green","blue"]},"person2": {"name": "Bob","favoriteColors": ["cyan","magenta","yellow","black"]}}
 ```
 
 You can copy-paste the code snippets above into any Scala program, or
