@@ -533,9 +533,9 @@ model = Sequential(Dense(512, activation=relu), Dense(100, activation=softmax))
 Here, we can see every width at which the pretty-printing changes:
 
 - At width 0, the printer tries to flatten it out as much as possible (though
-  obviously it is uable to reach an actual width of 0)
+  obviously it is unable to reach an actual width of 0)
 - At width 32, the first `Dense` call can be one-lined
-- At width 34, the first `Dense` call can be one-lined
+- At width 34, the second `Dense` call can be one-lined
 - At width 79, the entire statement can be put on one line.
 
 We can also see an identical sort of progression in the pretty-printed JSON,
