@@ -203,6 +203,7 @@ def main(publish: Boolean = false) = {
 
   rm! targetFolder
 
+  mkdir(targetFolder)
   write(
     targetFolder/s"index.html",
     mainContent(posts.map(p => (p.name, p.rawHtmlSnippet, p.updates.lastOption)))
@@ -236,6 +237,7 @@ def main(publish: Boolean = false) = {
   write(targetFolder/"feed.xml", rssXml)
   if (publish){
     implicit val wd = pwd/'target
+    mkdir(wd)
     write(wd/'CNAME, "www.lihaoyi.com")
     %git 'init
     %git('add, "-A", ".")
