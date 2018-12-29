@@ -64,7 +64,7 @@ mix of horizontally and vertically laid out structures: e.g. `["red", "green",
 width, while `["cyan", "magenta", "yellow", "black"]` is vertically laid out
 because if laid out horizontally it would overshoot. This layout makes maximal
 use of the horizontal space available while also formatting things vertically
-where necessary, resulting in compact output that is easy to read.
+where necessary, resulting in *compact* output that is easy to read.
 
 While there are some variety in exactly how things should be formatted - e.g.
 some people prefer closing braces on the same line as the enclosing statement -
@@ -662,7 +662,14 @@ whole output in memory could easily take a long time.
 
 ## Conclusion
 
-The describe `prettyprint` algorithm is currently being used in my Scala
+The key insight behind this `prettyprint` algorithm is that for this common kind
+of indentation-based mixed horizontal/vertical layout, you can make layout
+decisions in a streaming fashion with only a bounded amount of buffering. This
+gives the pretty-printer very predictable runtime characteristics, and allows it
+to be used in a streaming fashion on very large data structures without
+accumulating a corresponding very-large-string in memory.
+
+The described `prettyprint` algorithm is currently being used in my Scala
 [PPrint](http://www.lihaoyi.com/PPrint/) library, though extended in a few
 incidental ways (colored output, infix nodes, etc.). It is also used to display
 values in the [Ammonite Scala REPL](http://ammonite.io/), and I have used it to
@@ -678,4 +685,5 @@ with a plain string representation and (2) nested nodes, with a prefix, suffix,
 and a list of children with separators. This means simple formats like JSON or
 the subset of Python shown are trivially supported, while the core algorithm can
 be easily extended with additional `Tree` subclasses to support additional
-syntax such as infix operators, bin-packed lists, or other constructs.
+syntax such as infix operators, bin-packed lists, vertical-aligned indentation,
+or other constructs.
