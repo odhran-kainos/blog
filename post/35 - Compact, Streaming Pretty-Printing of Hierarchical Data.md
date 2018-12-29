@@ -24,7 +24,7 @@ want without undue difficulty.
 ## Requirements
 
 
-### Indented Output
+### Compact Output
 
 Let us consider two samples of hierarchical data, formatted to fit within a 50
 character wide screen. A JSON blob:
@@ -62,9 +62,9 @@ to fit nicely within a 50 character wide output. Note how both examples have a
 mix of horizontally and vertically laid out structures: e.g. `["red", "green",
 "blue"]` is horizontally laid out because it can fit within our 50 character max
 width, while `["cyan", "magenta", "yellow", "black"]` is vertically laid out
-because if laid out horizontally it would overshoot. This layout max maximal use
-of the horizontal space available while also formatting things vertically where
-necessary.
+because if laid out horizontally it would overshoot. This layout makes maximal
+use of the horizontal space available while also formatting things vertically
+where necessary, resulting in compact output that is easy to read.
 
 While there are some variety in exactly how things should be formatted - e.g.
 some people prefer closing braces on the same line as the enclosing statement -
