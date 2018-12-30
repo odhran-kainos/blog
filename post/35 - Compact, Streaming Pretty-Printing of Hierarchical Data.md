@@ -379,12 +379,30 @@ The basic approach we will take with `prettyprint` is:
   use those chunks to decide.
 
     - If we exhaust all the children, then return `multiLine = false` and an
-      iterator over all the buffered chunks
+      iterator over all the buffered chunks, each child's chunks joined by the
+      separator
 
-    - If we fail to exhaust the children, either due to a child returning
-      `multiLine = true` or due to hitting the `maxWidth` limit, return
-      `multiLine = true` and a combined iterator of the buffered chunks and the
-      iterator of remaining not-yet-buffered chunks
+    - If a child returns `multiLine = true` or we hit the `maxWidth` limit, stop
+      buffering and return `multiLine = true` and a combined iterator of the
+      buffered chunks and the iterator of remaining not-yet-buffered chunks,
+      each child's chunks joined by both the separator and the current left
+      offset and a newline
+
+Essentially, each `Nested` buffers up some amount of chunks from its children,
+enough to be able to decide whether or not it needs to be printed vertically
+(`multiLine = true`) or there is space to be printed horizontally (`multiLine =
+false`).
+
+One detail not specified above is how insertion of indentation/newlines works.
+
+- Indentation offsets are propagated recursively: every `Nested` receives the
+  current `leftOffset: Int`, and passes `leftOffset + indent` to its children
+
+- Actual insertion of indentation & newlines are only a matter for `Nested`
+  nodes with `multiLine = true`. Such a `Nested` node is only responsible for
+  indentation & newlines between its `prefix` and `suffix`: it's enclosing
+  parent (if any) will handle the indentation & newlines before `prefix` and
+  after `suffix`.
 
 In code, this looks like:
 
