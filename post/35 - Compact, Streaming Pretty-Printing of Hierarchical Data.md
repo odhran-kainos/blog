@@ -672,9 +672,12 @@ decisions in a streaming fashion with only a bounded amount of buffering:
 - When a child's output is very large, we can make that determination after
   buffering at most one line of chunks, so that is cheap as well.
 
-This gives the pretty-printer very predictable runtime characteristics, and
-allows it to be used in a streaming fashion on very large data structures
-without accumulating a corresponding very-large-string in memory.
+Unlike other algorithms which run a graph-search or constraint-minimization to
+try and find a good layout, this implementation of `prettyprint` generates the
+layout in a single depth-first traversal of the input data. This gives the
+pretty-printer very predictable runtime characteristics, and allows it to be
+used in a streaming fashion on very large data structures without accumulating a
+corresponding very-large-string in memory.
 
 The described `prettyprint` algorithm is currently being used in my Scala
 [PPrint](http://www.lihaoyi.com/PPrint/) library, though extended in a few
