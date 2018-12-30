@@ -254,17 +254,17 @@ def python = Nested(
     Nested(
       "Dense(",
       Iterator(Literal("512"), Literal("activation=relu")), 
-      ",", 
+      ", ", 
       ")"
     ),
     Nested(
       "Dense(",
       Iterator(Literal("100"), Literal("activation=softmax")), 
-      ",", 
+      ", ", 
       ")"
     ),
   ),
-  ",",
+  ", ",
   ")"
 )
 ```
@@ -309,11 +309,11 @@ def json = Nested(
             Literal("\"green\""),
             Literal("\"blue\"")
           ),
-          ",",
+          ", ",
           "]"
         )
       ),
-      ",",
+      ", ",
       "}"
     ),
     Nested(
@@ -328,15 +328,15 @@ def json = Nested(
             Literal("\"yellow\""),
             Literal("\"black\"")
           ),
-          ",",
+          ", ",
           "]"
         )
       ),
-      ",",
+      ", ",
       "}"
     )
   ), 
-  ",",  
+  ", ",
   "}"
 )
 ```
@@ -495,20 +495,23 @@ iterators by the separator, and mangling the half-buffered-half-not-buffered
 `middleChildChunks`, but otherwise it should be relatively clear what this code
 is doing.
 
-We can run this on the example JSON and Python `Tree`s above:
+We can run this on the example JSON and Python `Tree`s above, using a loop to
+only print out the `maxWidth`s at which the pretty-printing changes:
 
 ```scala
 var last = ""
-for(i <- 0 until 200){
-  val current = prettyprint(json, maxWidth = i, indent = 4).mkString
+
+for(i <- 0 until 100){
+  val current = prettyprint(python, maxWidth = i, indent = 4).mkString
   if (current != last){
     println("width: " + i)
     println(current)
     last = current
   }
 }
-for(i <- 0 until 100){
-  val current = prettyprint(python, maxWidth = i, indent = 4).mkString
+
+for(i <- 0 until 200){
+  val current = prettyprint(json, maxWidth = i, indent = 4).mkString
   if (current != last){
     println("width: " + i)
     println(current)
@@ -582,11 +585,11 @@ width: 0
         ]
     }
 }
-width: 48
+width: 50
 {
     "person1": {
         "name": "Alive",
-        "favoriteColors": ["red","green","blue"]
+        "favoriteColors": ["red", "green", "blue"]
     },
     "person2": {
         "name": "Bob",
@@ -598,32 +601,32 @@ width: 48
         ]
     }
 }
-width: 61
+width: 64
 {
     "person1": {
         "name": "Alive",
-        "favoriteColors": ["red","green","blue"]
+        "favoriteColors": ["red", "green", "blue"]
     },
     "person2": {
         "name": "Bob",
-        "favoriteColors": ["cyan","magenta","yellow","black"]
+        "favoriteColors": ["cyan", "magenta", "yellow", "black"]
     }
 }
-width: 74
+width: 77
 {
-    "person1": {"name": "Alive","favoriteColors": ["red","green","blue"]},
+    "person1": {"name": "Alive", "favoriteColors": ["red", "green", "blue"]},
     "person2": {
         "name": "Bob",
-        "favoriteColors": ["cyan","magenta","yellow","black"]
+        "favoriteColors": ["cyan", "magenta", "yellow", "black"]
     }
 }
-width: 84
+width: 88
 {
-    "person1": {"name": "Alive","favoriteColors": ["red","green","blue"]},
-    "person2": {"name": "Bob","favoriteColors": ["cyan","magenta","yellow","black"]}
+    "person1": {"name": "Alive", "favoriteColors": ["red", "green", "blue"]},
+    "person2": {"name": "Bob", "favoriteColors": ["cyan", "magenta", "yellow", "black"]}
 }
-width: 152
-{"person1": {"name": "Alive","favoriteColors": ["red","green","blue"]},"person2": {"name": "Bob","favoriteColors": ["cyan","magenta","yellow","black"]}}
+width: 160
+{"person1": {"name": "Alive", "favoriteColors": ["red", "green", "blue"]}, "person2": {"name": "Bob", "favoriteColors": ["cyan", "magenta", "yellow", "black"]}}
 ```
 
 You can copy-paste the code snippets above into any Scala program, or
